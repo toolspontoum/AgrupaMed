@@ -209,11 +209,11 @@
       min-width: 177.77vh; /* 16:9 ratio */
       transform: translate(-50%, -50%);
       pointer-events: none;
-      opacity: 0; /* Começa invisível */
-      transition: opacity 1.4s ease; /* Fade-in suave */
+      opacity: 0; /* Começa rigorosamente invisível */
+      transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1); /* Transição mais lenta para suavizar o surgimento */
     }
     .hero-video-container iframe.is-loaded {
-      opacity: 0.8; /* Valor original de opacidade */
+      opacity: 0.8; 
     }
 
     /* Overlay to ensure text legibility */
@@ -2705,9 +2705,22 @@
     // Hero iframe fade-in after load
     const heroIframe = document.querySelector('.hero-video-container iframe');
     if (heroIframe) {
-      heroIframe.addEventListener('load', () => {
-        heroIframe.classList.add('is-loaded');
-      });
+      const showVideo = () => {
+        // Delay extra de 500ms após o load para fugir dos frames iniciais cinzas do player
+        setTimeout(() => {
+          heroIframe.classList.add('is-loaded');
+        }, 500);
+      };
+
+      // Se já carregou (ex: cache), dispara agora
+      if (heroIframe.complete || heroIframe.readyState === 'complete') {
+        showVideo();
+      } else {
+        heroIframe.addEventListener('load', showVideo);
+      }
+      
+      // Fallback de segurança para garantir que apareça (caso o evento não dispare)
+      setTimeout(showVideo, 3000);
     }
 
     window.addEventListener('scroll', () => {
