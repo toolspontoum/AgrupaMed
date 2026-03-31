@@ -1,0 +1,3894 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Certificado Digital A1</title>
+
+    <!-- Tipografia Oficial -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ícones de acordo com o Design System da V2 (FontAwesome) ou via CDN para manter compatibilidade -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- GSAP & SplitType (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <!-- CSS Baseado na Fonte da Verdade (@design-system.html) -->
+    <style>
+        :root {
+            /* Fonts */
+            --font: 'Roboto', sans-serif;
+            --font-alt: 'Plus Jakarta Sans', sans-serif;
+
+            /* Paleta dLocal / Design System V2 */
+            --dl-primary: #1043FA;
+            --dl-primary-dark: #0D0095;
+            --dl-primary-deeper: #0A095B;
+            --dl-primary-night: #040125;
+
+            --dl-accent: #33B6FF;
+            --dl-green: #00B533;
+            --dl-green-dark: #21A35B;
+
+            --dl-neutral-100: #FFF;
+            --dl-neutral-200: #E9E9E9;
+            --dl-neutral-700: #2D3139;
+            --dl-neutral-900: #0A0A16;
+
+            --dl-gradient: linear-gradient(135deg, var(--dl-primary-dark) 5%, var(--dl-primary) 85%);
+            --bz-accent: #E9A132;
+            --bz-dark: #18191D;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font);
+            color: var(--dl-neutral-700);
+            background: var(--dl-primary-night);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .ds-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ── HERO ── */
+        .ds-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 40px 80px;
+            z-index: 1;
+        }
+
+        .hero-bg-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            background: #040125;
+            overflow: hidden;
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out, transform 6s linear;
+            transform: scale(1.05);
+            /* Preparando parallax/ken burns */
+        }
+
+        .hero-video-bg.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(4, 1, 37, 0.9) 0%, rgba(4, 1, 37, 0.6) 50%, rgba(4, 1, 37, 0.3) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ── SIDEBAR REDES SOCIAIS E CONTATO ── */
+        .hero-social-sidebar {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 2;
+        }
+
+        .hero-social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .hero-social-link:hover {
+            background: var(--dl-green);
+            border-color: var(--dl-green);
+            color: #fff !important;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 181, 51, 0.4);
+        }
+
+        /* ── EFEITO REVEAL MELHORADO (GSAP PREP) ── */
+        .gsap-reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .char {
+            transform: translateY(115%);
+            transition: transform 0.5s;
+        }
+
+        /* ── CONTEÚDO ── */
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            margin-left: 100px;
+            opacity: 0;
+            animation: fadeInLeft 0.8s 0.2s both cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .hero-kicker {
+            font-family: var(--font-alt);
+            font-size: clamp(14px, 1.2vw, 18px);
+            font-weight: 600;
+            color: var(--dl-green);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-kicker-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--dl-green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--dl-green);
+            animation: pulseDot 2s infinite;
+        }
+
+        .hero-heading {
+            font-family: var(--font-alt);
+            font-size: clamp(40px, 5vw, 72px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+            margin: 0 0 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text {
+            font-size: clamp(16px, 1.2vw, 18px);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 650px;
+            line-height: 1.7;
+            margin: 0 0 40px;
+        }
+
+        /* ── BENEFÍCIOS MICRO ── */
+        .hero-benefits-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.4s both cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .hero-benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .hero-benefit-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 181, 51, 0.15);
+            color: var(--dl-green);
+            font-size: 22px; /* Aumentado de 18px */
+            transition: all 0.3s;
+        }
+
+        /* Ajuste fino para ícones que parecem menores visualmente */
+        .hero-benefit-item:nth-child(2) .hero-benefit-icon i,
+        .hero-benefit-item:nth-child(4) .hero-benefit-icon i {
+            transform: scale(1.15);
+        }
+
+        .hero-benefit-item:hover .hero-benefit-icon {
+            background: var(--dl-green);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 181, 51, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* ── BOTÕES ── */
+        .hero-action-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.6s both cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .ds-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .ds-btn--primary {
+            background: var(--dl-green);
+            color: #fff !important;
+            border-color: var(--dl-green);
+            box-shadow: 0 8px 25px rgba(0, 181, 51, 0.2);
+        }
+
+        .ds-btn--primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transition: left 0.6s;
+        }
+
+        .ds-btn--primary:hover::before {
+            left: 100%;
+        }
+
+        .ds-btn--primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 181, 51, 0.4);
+            color: #fff !important;
+        }
+
+        .ds-btn--ghost {
+            background: transparent;
+            color: #fff !important;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 16px 32px;
+        }
+
+        .ds-btn--ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            transform: translateY(-4px);
+        }
+
+        /* ── CONTROLES SLIDER ── */
+        .hero-slider-controls {
+            position: absolute;
+            right: 0;
+            top: -10%;
+            bottom: -10%;
+            width: 35%;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            z-index: 2;
+        }
+
+        .hero-nav-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--dl-neutral-900);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            margin-left: 15%;
+        }
+
+        .hero-nav-btn:hover {
+            background: var(--dl-green);
+            color: #fff !important;
+            transform: scale(1.15);
+            box-shadow: 0 10px 30px rgba(0, 181, 51, 0.3);
+        }
+
+        /* ── ANIMAÇÕES ── */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0)
+            }
+        }
+
+        @keyframes pulseDot {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 181, 51, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 181, 51, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 181, 51, 0);
+            }
+        }
+
+        /* ── RESPONSIVIDADE ── */
+        @media(max-width: 1024px) {
+            .hero-social-sidebar {
+                display: none;
+            }
+
+            .hero-content {
+                margin-left: 0;
+            }
+
+            .hero-slider-controls {
+                display: none;
+            }
+
+            .ds-hero {
+                padding: 120px 20px 80px;
+            }
+
+            .hero-overlay {
+                background: rgba(4, 1, 37, 0.85);
+            }
+
+            /* Escurece mais p/ mobile */
+        }
+
+        @media(max-width: 640px) {
+            .ds-wrap {
+                padding: 0 20px; /* Reduzido de 40px para 20px globalmente no mobile */
+            }
+
+            .hero-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .hero-kicker {
+                justify-content: center;
+            }
+
+            .hero-heading {
+                text-align: center;
+            }
+
+            .hero-text {
+                text-align: center;
+                margin: 0 auto 40px;
+            }
+
+            .hero-benefits-list {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                width: 100%;
+            }
+
+            .hero-benefit-item {
+                justify-content: center;
+            }
+
+            .hero-action-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .ds-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ── SEÇÃO DIFERENCIAIS (BENTO GRID) ── */
+        .section-diferenciais {
+            position: relative;
+            background: #ffffff; /* Fundo branco solicitado */
+            padding: 120px 40px;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Ajustado para fundo claro */
+        }
+
+        .diferenciais-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 500px;
+            background: radial-gradient(50% 50% at 50% 50%, rgba(0, 181, 51, 0.04) 0%, transparent 100%); /* Glow mais sutil pro claro */
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .diferenciais-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 64px;
+            position: relative;
+            z-index: 2;
+            gap: 32px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        .diferenciais-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ds-label {
+            font-family: var(--font-alt);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--dl-green);
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ds-label-line {
+            width: 32px;
+            height: 2px;
+            background: var(--dl-green);
+        }
+
+        .ds-title {
+            font-family: var(--font-alt);
+            font-size: clamp(36px, 4vw, 56px);
+            font-weight: 800;
+            color: var(--dl-neutral-900); /* Ajustado para fundo claro */
+            margin: 0;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .ds-title span {
+            color: var(--dl-green);
+        }
+
+        .diferenciais-desc {
+            font-size: 18px;
+            color: var(--dl-neutral-700); /* Ajustado para fundo claro */
+            max-width: 450px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bento-card {
+            background: var(--dl-green); /* Fundo verde solicitado */
+            border: 1px solid rgba(0, 0, 0, 0.1); 
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            opacity: 0;
+            transform: translateY(40px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
+        }
+
+        .bento-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bento-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); 
+        }
+
+        /* Mouse Glow Hover Effect - restaurado para o efeito branco brilhante */
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255, 255, 255, 0.15), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Imagem de Fundo no Card Bento */
+        .bento-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35; /* Imagens mais presentes sem matar a legibilidade */
+            z-index: 1; /* Atrás do conteúdo */
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* .bento-card:hover .bento-bg-image {
+            opacity: 0.45; 
+        } */
+
+        .bento-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--dl-green);
+            opacity: 0.32; /* Sobreposição verde em 32% (68% de transparência) */
+            z-index: 1;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* .bento-card:hover .bento-image-overlay {
+            opacity: 0.1;
+        } */
+
+        .bento-content {
+            position: relative;
+            z-index: 3;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bento-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05); /* Fundo claro para contrastar no escuro */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff; /* Ícone branco */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: auto; /* Push content to bottom for tall/wide cards if needed, or stick to top */
+            transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .bento-card:hover .bento-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .bento-title {
+            font-family: var(--font-alt);
+            font-size: 24px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95); /* Branco levemente mais escuro */
+            margin: 32px 0 12px;
+            line-height: 1.2;
+        }
+
+        .bento-text {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8); /* Texto branco um pouco mais escuro */
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .col-span-2 { grid-column: span 2; }
+        .col-span-1 { grid-column: span 1; }
+
+        .bento-decor-img {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 181, 51, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 0.6s ease;
+            z-index: 1;
+        }
+        .bento-card:hover .bento-decor-img {
+            transform: scale(1.5);
+            background: radial-gradient(circle, rgba(0, 181, 51, 0.15) 0%, transparent 70%);
+        }
+
+        /* Responsive Settings */
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .section-diferenciais { padding: 100px 20px; }
+            .col-span-2 { grid-column: span 2; }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .col-span-2 { grid-column: span 1; }
+            .diferenciais-header { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 24px; 
+            }
+            .section-diferenciais {
+                padding: 80px 0; /* Removido padding lateral da seção, o .ds-wrap (20px) dita o limite agora */
+            }
+            .ds-title { font-size: 32px; }
+            .bento-card { 
+                padding: 32px 20px; /* Reduzido o padding lateral interno de 32px para 20px */
+            }
+        }
+
+        /* ── SEÇÃO COMO FUNCIONA (INTERACTIVE SLIDER) ── */
+        .section-como-funciona {
+            position: relative;
+            background: #f9fafb; /* Fundo cinza super claro para destacar a caixa branca */
+            padding: 100px 20px;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .cf-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .cf-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cf-label {
+            font-family: var(--font-alt);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--dl-green);
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cf-label-line {
+            width: 32px;
+            height: 2px;
+            background: var(--dl-green);
+        }
+
+        .cf-main-title {
+            font-family: var(--font-alt);
+            font-size: clamp(32px, 4vw, 56px);
+            font-weight: 800;
+            color: var(--dl-neutral-900);
+            line-height: 1.1;
+            margin: 0 0 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .cf-main-title span {
+            color: var(--dl-green);
+        }
+
+        .ds-wrap-cf {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.04);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .ds-wrap-cf.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Top Process Navigation Bar */
+        .cf-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            background: #ffffff;
+        }
+
+        .cf-nav-item {
+            padding: 32px;
+            cursor: pointer;
+            position: relative;
+            border: none;
+            background: transparent;
+            text-align: left;
+            transition: background 0.3s ease;
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .cf-nav-item:last-child {
+            border-right: none;
+        }
+
+        .cf-nav-item:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        /* Barra de destaque ativa */
+        .cf-nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--dl-green);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .cf-nav-item.active::before {
+            transform: scaleX(1);
+        }
+
+        .cf-nav-item.active {
+            background: rgba(0, 181, 51, 0.04);
+        }
+
+        .cf-nav-label {
+            font-family: var(--font-alt);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dl-neutral-500);
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .cf-nav-item.active .cf-nav-label {
+            color: var(--dl-green);
+        }
+
+        .cf-nav-title {
+            font-family: var(--font-alt);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dl-neutral-600);
+            margin: 0;
+            transition: color 0.3s;
+        }
+
+        .cf-nav-item.active .cf-nav-title,
+        .cf-nav-item:hover .cf-nav-title {
+            color: var(--dl-neutral-900);
+        }
+
+        /* Main Slider Content (2 Colunas) */
+        .cf-slider-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+            background: #ffffff;
+        }
+
+        /* Coluna Esquerda: Imagem */
+        .cf-visual-col {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(0,0,0,0.08);
+            background: #fdfdfd;
+        }
+
+        .cf-slide-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transform: scale(1.08);
+            transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .cf-slide-img.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .cf-slide-img.active:hover {
+            transform: scale(1.04);
+        }
+
+        /* Número grande decorativo sobreposto na imagem */
+        .cf-big-number {
+            position: absolute;
+            bottom: 40px;
+            left: 48px;
+            font-family: var(--font-alt);
+            font-size: 10rem;
+            font-weight: 800;
+            color: rgba(0,0,0,0.03);
+            line-height: 1;
+            pointer-events: none;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        /* Coluna Direita: Conteúdo Textual */
+        .cf-content-col {
+            padding: 64px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Slides de texto empilhados */
+        .cf-slide-text {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cf-slide-text.active {
+            display: block;
+            animation: cfSlideIn 0.5s 0.05s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        @keyframes cfSlideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cf-slide-label {
+            font-family: var(--font-alt);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--dl-green);
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .cf-slide-title {
+            font-family: var(--font-alt);
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 800;
+            color: var(--dl-neutral-900);
+            line-height: 1.1;
+            margin: 0 0 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .cf-slide-desc {
+            font-size: 18px;
+            color: var(--dl-neutral-600);
+            line-height: 1.6;
+            margin: 0 0 40px;
+            max-width: 500px;
+        }
+
+        /* Controles (Setas + Dots) */
+        .cf-controls {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .cf-arrows {
+            display: flex;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cf-arrow-btn {
+            width: 52px;
+            height: 52px;
+            background: #ffffff;
+            border: none;
+            color: var(--dl-neutral-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.25s ease;
+        }
+
+        .cf-arrow-btn:first-child {
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .cf-arrow-btn:hover {
+            background: rgba(0,0,0,0.03);
+            color: var(--dl-green);
+        }
+
+        .cf-arrow-btn:active {
+            transform: scale(0.92);
+        }
+
+        .cf-dots {
+            display: flex;
+            gap: 20px;
+        }
+
+        .cf-dot {
+            background: none;
+            border: none;
+            font-family: var(--font-alt);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dl-neutral-400);
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.3s;
+        }
+
+        .cf-dot.active {
+            color: var(--dl-neutral-900);
+        }
+
+        .cf-dot:hover {
+            color: var(--dl-green);
+        }
+
+        /* ── SEÇÃO TESTIMONIALS (DEPOIMENTOS) ── */
+        .section-testimonials {
+            padding: 100px 0;
+            background: #fafafa;
+            overflow: hidden;
+            position: relative; /* Add context for z-index */
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .testimonials-content {
+            padding-right: 20px;
+            position: relative;
+        }
+
+        .testimonials-nav {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .testimonials-nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dl-neutral-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonials-nav-btn:hover {
+            background: var(--dl-green);
+            color: #ffffff;
+            border-color: var(--dl-green);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 181, 51, 0.2);
+        }
+
+        .testimonials-carousel-wrapper {
+            position: relative;
+            min-width: 0;
+        }
+
+        /* Swiper Container */
+        .testimonials-swiper {
+            width: 100%;
+            padding-top: 40px; /* Espaço para o avatar sobrepor */
+            padding-bottom: 40px; /* Espaço para a sombra do card */
+            overflow: hidden; /* Garantir que os cards não vazem para a esquerda */
+        }
+
+        .swiper-slide {
+            opacity: 1;
+            transition: all 0.4s ease;
+        }
+
+        .swiper-slide-active {
+            /* Desktop: mostramos 2 ativos com opacidade cheia */
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .testimonial-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px 32px 32px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            height: auto;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: absolute;
+            top: -36px;
+            left: 32px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-stars {
+            color: #FACC15; /* Amarelo premium */
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            color: var(--dl-neutral-600);
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-author-name {
+            font-family: var(--font-alt);
+            font-weight: 700;
+            color: var(--dl-neutral-900);
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-author-role {
+            font-size: 13px;
+            color: var(--dl-neutral-400);
+        }
+
+        @media (max-width: 991px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .testimonials-content {
+                padding-right: 0;
+            }
+            .swiper-slide {
+                opacity: 0.4;
+            }
+            .swiper-slide-active {
+                opacity: 1; /* Apenas o primeiro ativo no mobile */
+                transform: scale(1);
+            }
+            .swiper-slide-next {
+                opacity: 0.4;
+                transform: scale(0.95);
+            }
+        }
+
+        /* ── SEÇÃO CONTATO ── */
+        .section-contact {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: #000;
+            padding: 100px 0;
+        }
+
+        .contact-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .contact-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100%;
+            min-width: 177.77vh;
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 1;
+            pointer-events: none;
+            border: none;
+            display: block;
+            opacity: 1 !important;
+        }
+
+        .contact-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(4, 1, 37, 0.7) 0%, rgba(0, 181, 51, 0.3) 100%);
+            z-index: 2;
+        }
+
+        .contact-grid {
+            position: relative;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Coluna Esquerda: Textos e Infos */
+        .contact-info-col {
+            color: #ffffff;
+            position: relative;
+            z-index: 3;
+        }
+
+        .contact-label {
+            font-family: var(--font-alt);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .contact-title {
+            font-family: var(--font-alt);
+            font-size: 48px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            margin: 0 0 24px;
+        }
+
+        .contact-desc {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 48px;
+            max-width: 90%;
+        }
+
+        .contact-blocks {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .contact-block {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            opacity: 0; /* Para animação */
+            transform: translateX(-30px);
+        }
+
+        .contact-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            background: rgba(0, 181, 51, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--dl-green);
+            transition: all 0.3s ease;
+        }
+
+        /* Microinteração de Hover no Bloco de Contato */
+        .contact-block:hover .contact-icon-wrapper {
+            background: var(--dl-green);
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 181, 51, 0.35);
+        }
+
+        .contact-detail h5 {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0 0 4px;
+            font-weight: 500;
+        }
+
+        .contact-detail p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* Coluna Direita: Formulário */
+        .contact-form-col {
+            opacity: 0; /* Para animação */
+            transform: translateY(30px);
+        }
+
+        .contact-form-card {
+            /* Efeito Glassmorphism (igual ao Banner+CTA) */
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 32px;
+            padding: 48px 40px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-form-title {
+            text-align: center;
+            font-family: var(--font-alt);
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 32px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-form .ds-input {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+        }
+
+        .contact-form .ds-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-form .ds-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-form .ds-btn {
+            margin-top: 10px;
+            justify-content: center;
+            padding: 16px;
+            font-size: 16px;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 991px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .contact-title {
+                font-size: 36px;
+            }
+            .contact-form-card {
+                padding: 32px 24px;
+            }
+            .contact-video-bg {
+                /* Escala agressiva para cobrir seções muito altas no mobile */
+                width: 300%;
+                height: 100%;
+                min-width: 100%;
+                min-height: 100%;
+                transform: translate(-50%, -50%) scale(3.5);
+            }
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            background: #000000;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Textura sutil */
+        .site-footer::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 10% 20%, rgba(51, 182, 255, 0.04), transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(0, 181, 51, 0.03), transparent 40%);
+            pointer-events: none;
+        }
+
+        /* Faixa Superior */
+        .footer-top-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-top-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-top-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(0, 181, 51, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--dl-green);
+            transition: all 0.3s ease;
+        }
+
+        .footer-top-item:hover .footer-top-icon {
+            background: var(--dl-green);
+            color: #ffffff;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 181, 51, 0.3);
+        }
+
+        .footer-top-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 4px;
+        }
+
+        .footer-top-value {
+            font-family: var(--font-alt);
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-text {
+            font-family: var(--font-alt);
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .footer-logo-text span {
+            color: var(--dl-green);
+        }
+
+        /* Área Principal */
+        .footer-main {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+            gap: 48px;
+            padding: 60px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-about p {
+            line-height: 1.7;
+            margin: 0 0 28px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social-link {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social-link:hover {
+            background: var(--dl-green);
+            border-color: var(--dl-green);
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 181, 51, 0.3);
+        }
+
+        .footer-col-title {
+            font-family: var(--font-alt);
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 24px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 14px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            font-size: 15px;
+        }
+
+        .footer-links a::before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 2px;
+            background: var(--dl-green);
+            margin-right: 0;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+            gap: 8px;
+        }
+
+        .footer-links a:hover::before {
+            width: 16px;
+            margin-right: 0;
+        }
+
+        /* Newsletter */
+        .footer-newsletter-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.6;
+            margin: 0 0 24px;
+        }
+
+        .footer-newsletter-form {
+            display: flex;
+            gap: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: border-color 0.3s ease;
+        }
+
+        .footer-newsletter-form:focus-within {
+            border-color: var(--dl-green);
+            box-shadow: 0 0 0 3px rgba(0, 181, 51, 0.15);
+        }
+
+        .footer-newsletter-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            padding: 14px 18px;
+            color: #ffffff;
+            font-family: var(--font);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .footer-newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .footer-newsletter-btn {
+            background: var(--dl-green);
+            border: none;
+            padding: 14px 20px;
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-newsletter-btn:hover {
+            background: var(--dl-green-dark);
+        }
+
+        /* Barra Inferior */
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px 0;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom a {
+            color: var(--dl-green);
+            text-decoration: none;
+        }
+
+        @media (max-width: 991px) {
+            .footer-top-strip {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .footer-main {
+                grid-template-columns: 1fr;
+                gap: 36px;
+                text-align: center; /* Centraliza textos e títulos */
+            }
+            .footer-about, .footer-newsletter {
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Centraliza conteúdo flex */
+            }
+            .footer-socials {
+                justify-content: center; /* Centraliza ícones sociais */
+            }
+            .footer-links li a {
+                justify-content: center; /* Centraliza links se forem flex */
+            }
+            .footer-newsletter-form {
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+        }
+
+        /* ── SEÇÃO LOGO MARQUEE (PARCEIROS) ── */
+        .section-marquee {
+            padding: 60px 0;
+            background: #ffffff; /* Fundo claro para constraste com os logos */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05); /* Separador suave */
+        }
+        
+        .marquee-container {
+            width: 100%;
+            display: flex;
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Máscara de gradiente nas bordas para suavizar entrada e saída */
+        .marquee-container::before,
+        .marquee-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .marquee-container::before {
+            left: 0;
+            background: linear-gradient(to right, #ffffff, transparent);
+        }
+        
+        .marquee-container::after {
+            right: 0;
+            background: linear-gradient(to left, #ffffff, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            gap: 80px; /* Espaçamento entre logos */
+            padding-right: 80px; /* Importante para o loop perfeito (mesquita de gap) */
+            animation: marqueeScroll 30s linear infinite;
+        }
+
+        /* Pausa a animação ao passar o mouse */
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        .marquee-logo {
+            height: 36px; /* Altura padronizada */
+            width: auto;
+            object-fit: contain;
+            opacity: 0.6;
+            filter: grayscale(100%);
+            transition: all 0.4s ease;
+        }
+
+        .marquee-logo:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @media (max-width: 768px) {
+            .section-marquee {
+                padding: 40px 0;
+            }
+            .marquee-track {
+                gap: 40px;
+                padding-right: 40px;
+            }
+            .marquee-logo {
+                height: 28px;
+            }
+            .marquee-container::before,
+            .marquee-container::after {
+                width: 50px;
+            }
+        }
+
+        /* ── SEÇÃO CONVERSION BANNER (CTA) ── */
+        .section-cta-banner {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000; /* Fundo base preto na seção */
+            padding: 100px 20px;
+        }
+
+        .cta-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            background: transparent; /* Container transparente */
+        }
+
+        .cta-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 */
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 1;
+            pointer-events: none;
+            border: none;
+            display: block;
+            opacity: 1 !important;
+        }
+
+        /* Green Overlay */
+        .cta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(4, 1, 37, 0.6) 0%, rgba(0, 181, 51, 0.25) 100%);
+            z-index: 2;
+        }
+
+        /* Content Container (Glassmorphism) */
+        .cta-content-wrapper {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 820px;
+            padding: 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            /* Efeito Glassmorphism Premium */
+            background: rgba(255, 255, 255, 0.08); /* Fundo translúcido */
+            backdrop-filter: blur(20px); /* Blur no fundo */
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Borda muito sutil */
+            border-radius: 32px; /* Bordas arredondadas */
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Sombra suave */
+            margin: 0 auto;
+            
+            opacity: 0; /* Prepara para GSAP */
+        }
+
+        .cta-subtitle {
+            font-family: var(--font-alt);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--dl-green);
+            font-weight: 800;
+            margin-bottom: 20px;
+            opacity: 0; /* JS Animation Start */
+            transform: translateY(20px);
+        }
+
+        .cta-main-title {
+            font-family: var(--font-alt);
+            font-size: clamp(36px, 4vw, 56px);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0 0 24px;
+            /* JS SplitType will animate children */
+        }
+
+        .cta-desc {
+            font-size: clamp(16px, 1.2vw, 18px);
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            max-width: 640px;
+            margin: 0 auto 40px;
+            opacity: 0; /* JS Animation Start */
+            transform: translateY(20px);
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            opacity: 0; /* JS Animation Start */
+            transform: translateY(20px);
+        }
+
+        /* Botão Secundário Transparente/Borda */
+        .ds-btn--outline-light {
+            background: rgba(255, 255, 255, 0.05); /* Leve preenchimento de vidro */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .ds-btn--outline-light:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hover Especial do Primary CTA */
+        .cta-actions .ds-btn--primary {
+            box-shadow: 0 10px 30px rgba(0, 181, 51, 0.25);
+            transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .cta-actions .ds-btn--primary:hover {
+            box-shadow: 0 15px 40px rgba(0, 181, 51, 0.5);
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        /* Responsividade CTA */
+        @media (max-width: 768px) {
+            .cta-content-wrapper {
+                padding: 48px 24px;
+                border-radius: 24px;
+            }
+            .cta-main-title {
+                font-size: clamp(32px, 8vw, 42px); /* Reduzindo fonte no mobile */
+                margin-bottom: 24px;
+            }
+            .cta-desc {
+                font-size: 16px;
+                margin-bottom: 32px;
+            }
+            .cta-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .cta-actions .ds-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Responsividade Como Funciona Slider */
+        @media (max-width: 1024px) {
+            .cf-nav {
+                grid-template-columns: 1fr;
+                display: flex;
+                overflow-x: auto;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .cf-nav::-webkit-scrollbar { display: none; }
+
+            .cf-nav-item {
+                min-width: 200px;
+                padding: 24px;
+                border-right: 1px solid rgba(0,0,0,0.08);
+                border-bottom: none;
+            }
+
+            .cf-slider-main {
+                grid-template-columns: 1fr;
+            }
+
+            .cf-visual-col {
+                min-height: 350px;
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.08);
+            }
+
+            .cf-content-col {
+                padding: 48px 32px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .section-como-funciona { padding: 60px 16px; }
+            .cf-header { margin-bottom: 40px; }
+            .ds-wrap-cf { border-radius: 16px; }
+            .cf-main-title { font-size: 32px; }
+            .cf-nav-item {
+                min-width: 160px;
+                padding: 20px 16px;
+            }
+            .cf-nav-title { font-size: 15px; }
+            .cf-content-col { padding: 32px 20px; }
+            .cf-slide-title { font-size: 28px; }
+            .cf-visual-col { min-height: 280px; }
+            .cf-big-number { font-size: 6rem; bottom: 20px; left: 24px; }
+        }
+
+        /* ── SEÇÃO SERVIÇOS / SOLUÇÕES (TABS) ── */
+        .section-servicos {
+            position: relative;
+            background: #060d08; /* Fundo verde escuro profundo em vez do night */
+            padding: 120px 40px;
+            overflow: hidden;
+            min-height: 850px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Background Images Container */
+        .servicos-bg-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .servicos-bg-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out, transform 4s ease-out; /* Zoom lento sutil */
+            transform: scale(1.05); /* Começa ligeiramente maior */
+        }
+
+        .servicos-bg-img.active {
+            opacity: 0.3; /* Mesclado com o fundo night */
+            transform: scale(1);
+        }
+
+        /* Gradient Overlay para garantir legibilidade dos textos */
+        .servicos-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #060d08 0%, rgba(6, 13, 8, 0.9) 50%, rgba(6, 13, 8, 0.7) 100%);
+            z-index: 1;
+        }
+
+        .servicos-content-wrap {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 64px;
+        }
+
+        /* Tabs Navigation (Topo) */
+        .servicos-tabs-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap; /* Em telas muito pequenas o scroll será resolvido no media query */
+        }
+
+        .servicos-tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+            white-space: nowrap;
+        }
+
+        .servicos-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .servicos-tab-btn.active {
+            background: var(--dl-green); /* Alterado de var(--dl-primary) para verde */
+            color: #fff;
+            border-color: var(--dl-green);
+            box-shadow: 0 4px 15px rgba(0, 181, 51, 0.3); /* Ajustado o glow para verde */
+        }
+
+        /* Layout Dividido (Esquerda: Texto, Direita: Cards) */
+        .servicos-panels-container {
+            position: relative;
+        }
+
+        .servicos-panel {
+            display: none; /* Escondido por padrão, apenas grid qdo ativo */
+            grid-template-columns: 45% 1fr;
+            gap: 60px;
+            align-items: center;
+            opacity: 0;
+        }
+
+        .servicos-panel.active {
+            display: grid;
+            animation: fadeInPanel 0.6s 0.1s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        @keyframes fadeInPanel {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Coluna Esquerda: Texto */
+        .servicos-text-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .servicos-label {
+            font-family: var(--font-alt);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #fff; /* Usando branco em cima do fundo escuro */
+            font-weight: 700;
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .servicos-title {
+            font-family: var(--font-alt);
+            font-size: clamp(32px, 4vw, 56px);
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 16px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .servicos-desc {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin: 0 0 40px;
+            max-width: 90%;
+        }
+
+        .mobile-progress-wrapper, .cf-progress-wrapper { display: none; }
+
+        /* Coluna Direita: Cards Grid (Carrossel Nativo) */
+        .servicos-cards-grid {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 24px; /* Espaço para sombra e scroll */
+            margin-bottom: -24px; /* Compensa o padding no layout geral */
+            scrollbar-width: none; /* Firefox */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .servicos-cards-grid::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .servico-card {
+            flex: 0 0 calc(50% - 8px); /* Força a caber 2 cards preenchendo o espaço, horizontais sobram pro scroll */
+            scroll-snap-align: start;
+            background: #ffffff; /* Layout clear na referência, texto limpo */
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            /* Staggering Setup via var local setada no HTML inline */
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .servicos-panel.active .servico-card {
+            /* Animação disparada quando a tab inteira fica ativa */
+            animation: cardSlideUp 0.6s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+            animation-delay: var(--stagger-delay, 0s);
+        }
+
+        @keyframes cardSlideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .servico-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        .scard-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 181, 51, 0.1); /* Verde suave */
+            color: var(--dl-green);
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        .scard-title {
+            font-family: var(--font-alt);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dl-neutral-900);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .scard-text {
+            font-size: 14px;
+            color: var(--dl-neutral-600);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .scard-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dl-green);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto; /* Push para baixo se houver textos desiguais */
+            transition: gap 0.3s;
+        }
+
+        .scard-link:hover {
+            gap: 12px; /* Setinha movendo para direita */
+        }
+
+        /* Responsividade Serviços */
+        @media (max-width: 1024px) {
+            .servicos-panel {
+                grid-template-columns: 1fr; /* Empilha texto + cards */
+                gap: 48px;
+            }
+            .servicos-text-col {
+                align-items: center;
+                text-align: center;
+            }
+            .servicos-desc {
+                max-width: 600px;
+            }
+            .servicos-overlay {
+                background: linear-gradient(180deg, #060d08 0%, rgba(6, 13, 8, 0.9) 100%); /* Muda dir gradient p/ verde escuro */
+            }
+            .section-servicos { padding: 80px 20px; background: #060d08; }
+        }
+
+        @media (max-width: 991px) {
+            .cf-nav {
+                display: flex;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .ds-wrap-cf { width: 100%; } /* Garante que o box branco ocupe o espaço disponível */
+            .cf-nav::-webkit-scrollbar { display: none; }
+            
+            /* Container da barra de progresso no mobile (Processos) */
+            .cf-progress-wrapper {
+                width: calc(100% - 48px); /* Margens laterais */
+                margin: 16px auto 0;
+                height: 4px;
+                background: rgba(0, 0, 0, 0.05); /* Escuro para fundo branco */
+                border-radius: 4px;
+                overflow: hidden;
+                display: block; /* Aparece no mobile */
+            }
+            .cf-progress-bar {
+                height: 100%;
+                width: 0%;
+                background: var(--dl-green);
+                border-radius: 4px;
+                transition: width 0.1s linear;
+            }
+
+            .cf-nav-item {
+                flex: 0 0 auto;
+                padding: 20px 24px;
+                min-width: 160px;
+                border-right: 1px solid rgba(0,0,0,0.06);
+            }
+            .cf-slider-main {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            .cf-visual-col {
+                height: 300px;
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.08);
+            }
+            .cf-content-col {
+                padding: 40px 24px;
+            }
+            .cf-big-number {
+                font-size: 6rem;
+                bottom: 20px;
+                left: 20px;
+            }
+            .cf-slide-title { font-size: 28px; }
+            .cf-slide-desc { font-size: 16px; margin-bottom: 32px; width: 100%; max-width: 100%; }
+            .cf-controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .cf-dots { gap: 12px; }
+            
+            .cta-video-bg {
+                /* Garante cobertura total em seções empilhadas e altas */
+                width: 400%;
+                height: 100%;
+                min-width: 100%;
+                min-height: 100%;
+                transform: translate(-50%, -50%) scale(3.5);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .servicos-tabs-nav {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 16px; /* Espaço para scrollbar se ficar visível no OS */
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+            }
+            .servicos-tabs-nav::-webkit-scrollbar {
+                display: none; /* Safari/Chrome hide scrollbar */
+            }
+
+            /* Container da barra de progresso no mobile (Serviços) */
+            .mobile-progress-wrapper {
+                width: 100%;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                margin-top: 16px;
+                overflow: hidden;
+                display: block; /* Só aparece no media query */
+            }
+            .mobile-progress-bar {
+                height: 100%;
+                width: 0%;
+                background: var(--dl-green);
+                border-radius: 4px;
+                transition: width 0.1s linear;
+            }
+
+            .servicos-cards-grid {
+                padding-bottom: 32px; /* Extra espaço p/ sombra no mobile */
+                margin-bottom: -32px;
+            }
+            .servico-card {
+                flex: 0 0 85%; /* Deixa uma pontinha do próximo card visível no mobile */
+            }
+            .servicos-title { font-size: 32px; }
+        }
+/* ── HEADER / NAVBAR (STICKY + GLASSMORPHISM) ── */
+.ds-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    padding: 24px 0;
+    transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    background: transparent;
+}
+
+/* Estado Sticky e Efeito Glassmorphism (Aparece ao rolar a página) */
+.ds-header.is-sticky {
+    padding: 12px 0;
+    /* Fundo branco com leve transparência e blur */
+    background: rgba(255, 255, 255, 0.9); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* Borda sutil escura */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08); 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste de cores dos links quando o Header é branco */
+.ds-header.is-sticky .ds-nav-link {
+    color: var(--dl-neutral-700);
+}
+
+.ds-header.is-sticky .ds-nav-link:hover, 
+.ds-header.is-sticky .ds-nav-link.active {
+    color: var(--dl-green);
+    background: rgba(0, 181, 51, 0.08);
+}
+
+/* Logo dinâmica baseada no estado do header */
+.ds-logo img {
+    filter: brightness(0) invert(1);
+    transition: all 0.4s ease;
+}
+
+.ds-header.is-sticky .ds-logo img,
+.ds-header.menu-is-open .ds-logo img {
+    filter: none;
+}
+
+/* Ajuste do botão mobile quando o Header é branco ou menu aberto */
+.ds-header.is-sticky .ds-mobile-toggle,
+.ds-header.menu-is-open .ds-mobile-toggle {
+    color: var(--dl-neutral-900);
+}
+
+.ds-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Área da Logo */
+.ds-logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    transition: transform 0.3s ease;
+}
+
+.ds-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Menu Centralizando Links */
+.ds-nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ds-nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-family: var(--font-alt);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Efeito Hover nas Opções de Menu com a cor do Design System */
+.ds-nav-link:hover, .ds-nav-link.active {
+    color: #fff;
+    background: rgba(0, 181, 51, 0.15); /* Cor Green do DS convertida pra rgba transparente */
+    box-shadow: 0 0 20px rgba(0, 181, 51, 0.1); /* Brilho neon leve */
+}
+
+/* Ações CTA e Toggle */
+.ds-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+}
+
+/* Overrides finos para o Botão Original caber bem na Header */
+.ds-btn-header {
+    padding: 12px 24px;
+    font-size: 14px;
+}
+
+/* Menu Hamburger Mobile */
+.ds-mobile-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.3s ease;
+}
+
+.ds-mobile-toggle:hover {
+    color: var(--dl-green);
+}
+
+/* Container do Menu Vertical Mobile */
+.ds-mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #ffffff; /* Fundo agora é branco */
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinhado ao topo */
+    align-items: flex-start; /* Alinhado a esquerda */
+    padding: 100px 40px; /* Espaço para a logo e botões de fechar */
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%); /* Entrada lateral suave */
+    transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
+}
+
+.ds-mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+}
+
+.ds-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinhado a esquerda */
+    gap: 24px;
+    width: 100%;
+}
+
+.ds-mobile-link {
+    color: var(--dl-neutral-700); /* Cor escura para fundo branco */
+    font-size: 20px; /* Fonte reduzida */
+    font-weight: 700;
+    text-decoration: none;
+    font-family: var(--font-alt);
+    transition: all 0.3s;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05); /* Separador sutil */
+}
+
+.ds-mobile-link:hover, .ds-mobile-link.active {
+    color: var(--dl-green);
+    padding-left: 10px; /* Feedback visual lateral */
+}
+
+/* ── RESPONSIVIDADE DO MENU ── */
+@media (max-width: 1024px) {
+    .ds-nav-menu {
+        display: none; /* Esconde os links centrais e usa o hamburger */
+    }
+    .ds-mobile-toggle {
+        display: block;
+    }
+    .ds-header-container {
+        padding: 0 24px;
+    }
+    .ds-btn-header {
+        display: none; /* Remove o botão de CTA no mobile conforme solicitado */
+    }
+}
+
+@media (max-width: 640px) {
+    .ds-header-container {
+        padding: 0 16px;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV / HEADER -->
+    <header id="main-header" class="ds-header">
+        <div class="ds-header-container">
+            <!-- 1. LADO ESQUERDO: Logo da Empresa -->
+            <a href="#hero" class="ds-logo" aria-label="Página Inicial">
+                <img src="Assets/img/Logo-Ponto-7-Certificado-Digital.webp" alt="Ponto 7" style="height: 48px; width: auto;">
+            </a>
+
+            <!-- 2. CENTRO: Links de Navegação -->
+            <nav class="ds-nav-menu">
+                <a href="#hero" class="ds-nav-link active">Início</a>
+                <a href="#diferenciais" class="ds-nav-link">Diferenciais</a>
+                <a href="#servicos" class="ds-nav-link">Serviços</a>
+                <a href="#como-funciona" class="ds-nav-link">Processo</a>
+                <a href="#contato" class="ds-nav-link">Contatos</a>
+            </nav>
+
+            <!-- 3. LADO DIREITO: Botão CTA e Toggle Mobile -->
+            <div class="ds-header-actions">
+                <!-- Botão de CTA seguindo o Design System -->
+                <a href="#contato" class="ds-btn ds-btn--primary ds-btn-header">
+                    Falar no WhatsApp
+                </a>
+                
+                <!-- Botão Hamburger (Apenas visível no mobile/tablet) -->
+                <button class="ds-mobile-toggle" aria-label="Abrir menu mobile" id="mobile-toggle-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Menu Mobile Oculto (Abre em Overlay) -->
+        <div class="ds-mobile-menu" id="mobile-nav">
+            <nav class="ds-mobile-nav">
+                <a href="#hero" class="ds-mobile-link active">Início</a>
+                <a href="#diferenciais" class="ds-mobile-link">Diferenciais</a>
+                <a href="#servicos" class="ds-mobile-link">Serviços</a>
+                <a href="#como-funciona" class="ds-mobile-link">Processo</a>
+                <a href="#contato" class="ds-mobile-link">Contatos</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ═══ HERO ═══ -->
+    <section id="hero" class="ds-hero">
+
+        <!-- Background Slider -->
+        <div class="hero-bg-slider" id="heroSlider">
+            <!-- Imagem 1: Focada em segurança / abstrato corporativo escuro -->
+            <img class="hero-video-bg active"
+                src="Assets/img/Imagem Hero (1).jpg"
+                alt="Tecnologia">
+            <!-- Imagem 2: Pessoas em vídeo chamada / negócios fluidos -->
+            <img class="hero-video-bg"
+                src="Assets/img/Imagem Hero (2).webp"
+                alt="Processo Online">
+        </div>
+
+        <!-- Overlay Dark / Gradient -->
+        <div class="hero-overlay"></div>
+
+        <!-- Sidebar Social (Esquerda) -->
+        <div class="hero-social-sidebar">
+            <a href="#" class="hero-social-link" title="Suporte WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="hero-social-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="hero-social-link" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="hero-social-link" title="Contato por Email"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+
+        <!-- Conteúdo Hero -->
+        <div class="ds-wrap" style="width:100%; margin:0">
+            <div class="hero-content">
+
+                <p class="hero-kicker">
+                    <span class="hero-kicker-dot"></span>
+                    <!-- COPY: HERO_KICKER -->Certificado BirdID Inteligente
+                </p>
+
+                <h1 class="hero-heading"><!-- COPY: HERO_TITLE -->Compre seu Certificado Digital A1 em minutos</h1>
+
+                <p class="hero-text"><!-- COPY: HERO_DESC -->Valide sua identidade por videochamada uma vez a cada 5 anos em um processo simples, rápido e 100% online.</p>
+
+                <!-- Micro Benefícios -->
+                <div class="hero-benefits-list">
+                    <div class="hero-benefit-item">
+                        <div class="hero-benefit-icon"><i class="fa-solid fa-cloud"></i></div>
+                        <!-- COPY: HERO_BENEFIT_1 -->Emissão 100% online
+                    </div>
+                    <div class="hero-benefit-item">
+                        <div class="hero-benefit-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                        <!-- COPY: HERO_BENEFIT_2 -->Validade de até 5 anos
+                    </div>
+                    <div class="hero-benefit-item">
+                        <div class="hero-benefit-icon"><i class="fa-solid fa-video"></i></div>
+                        <!-- COPY: HERO_BENEFIT_3 -->Videochamada rápida
+                    </div>
+                    <div class="hero-benefit-item">
+                        <div class="hero-benefit-icon"><i class="fa-solid fa-headset"></i></div>
+                        <!-- COPY: HERO_BENEFIT_4 -->Suporte especializado
+                    </div>
+                </div>
+
+                <!-- Call to Actions -->
+                <div class="hero-action-group">
+                    <a class="ds-btn ds-btn--primary" href="#comprar">
+                        <!-- COPY: HERO_CTA_PRIMARY -->Comprar Certificado A1 <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a class="ds-btn ds-btn--ghost" href="#como-funciona">
+                        <!-- COPY: HERO_CTA_SECONDARY -->Como funciona
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Controles do Slider (Direita) -->
+        <div class="hero-slider-controls">
+            <button class="hero-nav-btn" onclick="prevHeroSlide()"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="hero-nav-btn" onclick="nextHeroSlide()"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+
+    </section>
+
+    <!-- ═══ PARCEIROS / LOGO MARQUEE ═══ -->
+    <section class="section-marquee">
+        <div class="marquee-container">
+            <!-- Pista 1 -->
+            <div class="marquee-track">
+                <!-- SVG Logos Placeholder for demo (using popular tech for premium aesthetic) -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" alt="Slack" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta" class="marquee-logo">
+            </div>
+            <!-- Pista 2 (Cópia exata da Pista 1 para o loop infinito contínuo) -->
+            <div class="marquee-track">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg" alt="Slack" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM" class="marquee-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta" class="marquee-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ DIFERENCIAIS ═══ -->
+    <section id="diferenciais" class="section-diferenciais">
+        <div class="diferenciais-glow"></div>
+        <div class="ds-wrap">
+            
+            <!-- Header -->
+            <div class="diferenciais-header reveal-element">
+                <div>
+                    <p class="ds-label"><span class="ds-label-line"></span> <!-- COPY: DIFERENCIAIS_LABEL -->Nossos Diferenciais</p>
+                    <h2 class="ds-title"><!-- COPY: DIFERENCIAIS_TITLE -->Por que escolher a<br><span>Ponto 7 Digital?</span></h2>
+                </div>
+                <p class="diferenciais-desc"><!-- COPY: DIFERENCIAIS_DESC -->A parceira ideal para contabilidades e empresas, com tecnologia e atendimento humanizado para agilizar sua rotina.</p>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="bento-grid">
+                
+                <!-- Card 1: Wide -->
+                <div class="bento-card col-span-2 reveal-card" style="transition-delay: 0.1s;">
+                    <img src="Assets/img/Diferencial (1).png" alt="Validação" class="bento-bg-image" style="opacity: 1; z-index: 0;">
+                    <div class="bento-image-overlay"></div>
+                    <div class="bento-decor-img"></div>
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                        <h3 class="bento-title"><!-- COPY: DIFERENCIAIS_CARD_1_TITLE -->Validação a cada 5 anos</h3>
+                        <p class="bento-text"><!-- COPY: DIFERENCIAIS_CARD_1_TEXT -->A videochamada é feita só na primeira emissão. Menos burocracia e mais tempo para o que importa.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Normal -->
+                <div class="bento-card col-span-1 reveal-card" style="transition-delay: 0.2s;">
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <h3 class="bento-title"><!-- COPY: DIFERENCIAIS_CARD_2_TITLE -->100% Digital</h3>
+                        <p class="bento-text"><!-- COPY: DIFERENCIAIS_CARD_2_TEXT -->Todo o processo acontece online, sem papéis, cartório ou deslocamentos.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Normal -->
+                <div class="bento-card col-span-1 reveal-card" style="transition-delay: 0.3s;">
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <h3 class="bento-title"><!-- COPY: DIFERENCIAIS_CARD_3_TITLE -->Emissão Rápida</h3>
+                        <p class="bento-text"><!-- COPY: DIFERENCIAIS_CARD_3_TEXT -->Seu certificado é aprovado com agilidade. A videochamada inicial dura cerca de 5 minutos.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Normal -->
+                <div class="bento-card col-span-1 reveal-card" style="transition-delay: 0.4s;">
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="bento-title"><!-- COPY: DIFERENCIAIS_CARD_4_TITLE -->Tecnologia BirdID</h3>
+                        <p class="bento-text"><!-- COPY: DIFERENCIAIS_CARD_4_TEXT -->Mais segurança e praticidade com autenticação por código OTP no celular.</p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Wide -->
+                <div class="bento-card col-span-2 reveal-card" style="transition-delay: 0.5s;">
+                    <img src="Assets/img/Diferencial 5.png" alt="Contabilidade" class="bento-bg-image" style="opacity: 1; z-index: 0;">
+                    <div class="bento-image-overlay" style="opacity: 0.5;"></div>
+                    <div class="bento-decor-img"></div>
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-briefcase"></i></div>
+                        <h3 class="bento-title"><!-- COPY: DIFERENCIAIS_CARD_5_TITLE -->Ideal para Contabilidades</h3>
+                        <p class="bento-text"><!-- COPY: DIFERENCIAIS_CARD_5_TEXT -->Atuamos como parceira técnica da sua contabilidade para emitir certificados com rapidez e qualidade.</p>
+                    </div>
+                </div>
+
+                <!-- Card 6: Normal -->
+                <div class="bento-card col-span-1 reveal-card" style="transition-delay: 0.6s;">
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-headset"></i></div>
+                        <h3 class="bento-title"><!-- COPY: DIFERENCIAIS_CARD_6_TITLE -->Suporte Próximo</h3>
+                        <p class="bento-text"><!-- COPY: DIFERENCIAIS_CARD_6_TEXT -->Atendimento humano e ágil para ajudar você e sua contabilidade sempre que precisar.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SERVIÇOS E SOLUÇÕES (INTERATIVO) ═══ -->
+    <section id="servicos" class="section-servicos">
+        
+        <!-- Backgrounds Dinâmicos -->
+        <div class="servicos-bg-container">
+            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=2069&q=80" alt="Certificado A1" class="servicos-bg-img active" id="bg-certificado">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2070&q=80" alt="BirdID" class="servicos-bg-img" id="bg-birdid">
+            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2070&q=80" alt="Contabilidades" class="servicos-bg-img" id="bg-contabilidade">
+            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2070&q=80" alt="Processo Digital" class="servicos-bg-img" id="bg-digital">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1470&q=80" alt="Token" class="servicos-bg-img" id="bg-token">
+        </div>
+        <div class="servicos-overlay"></div>
+
+        <div class="servicos-content-wrap">
+            
+            <!-- 1) Navegação de Categorias (TABS) -->
+            <div class="servicos-tabs-nav reveal-element">
+                <button class="servicos-tab-btn active" data-target="panel-certificado" data-bg="bg-certificado"><!-- COPY: SERVICOS_TAB_1 -->Certificado Digital A1</button>
+                <button class="servicos-tab-btn" data-target="panel-birdid" data-bg="bg-birdid"><!-- COPY: SERVICOS_TAB_2 -->Validação BirdID</button>
+                <button class="servicos-tab-btn" data-target="panel-contabilidade" data-bg="bg-contabilidade"><!-- COPY: SERVICOS_TAB_3 -->Para Contabilidades</button>
+                <button class="servicos-tab-btn" data-target="panel-digital" data-bg="bg-digital"><!-- COPY: SERVICOS_TAB_4 -->Processo 100% Digital</button>
+                <button class="servicos-tab-btn" data-target="panel-token" data-bg="bg-token"><!-- COPY: SERVICOS_TAB_5 -->Autenticação via Token</button>
+            </div>
+            
+            <!-- Barra de Progresso Mobile: Serviços (Apenas visível via CSS em telas menores) -->
+            <div class="mobile-progress-wrapper">
+                <div class="mobile-progress-bar" id="servicos-progress"></div>
+            </div>
+
+            <!-- 2) Área Principal de Painéis -->
+            <div class="servicos-panels-container">
+                
+                <!-- PAINEL 1: Certificado A1 -->
+                <div class="servicos-panel active" id="panel-certificado">
+                    <!-- Coluna Esq: Texto -->
+                    <div class="servicos-text-col">
+                        <p class="servicos-label"><!-- COPY: SERVICOS_P1_LABEL -->Nossas Soluções</p>
+                        <h1 class="servicos-title"><!-- COPY: SERVICOS_P1_TITLE -->Certificado<br>Digital A1</h1>
+                        <p class="servicos-desc"><!-- COPY: SERVICOS_P1_DESC -->Válido por 1 ano, o A1 é um arquivo digital para assinar documentos com validade jurídica de onde você estiver.</p>
+                        <a href="#comprar" class="ds-btn ds-btn--primary">
+                            <!-- COPY: SERVICOS_P1_CTA -->Solicitar Certificado <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <!-- Coluna Dir: Cards -->
+                    <div class="servicos-cards-grid">
+                        <div class="servico-card" style="--stagger-delay: 0.2s;">
+                            <div class="scard-icon"><i class="fa-solid fa-file-signature"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P1_C1_TITLE -->Assinatura Dinâmica</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P1_C1_TEXT -->Assine NFs, recibos e contratos no padrão ICP-Brasil com segurança jurídica.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="servico-card" style="--stagger-delay: 0.3s;">
+                            <div class="scard-icon"><i class="fa-solid fa-laptop-house"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P1_C2_TITLE -->Multi-dispositivos</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P1_C2_TEXT -->Instale o certificado em mais de uma máquina e ganhe flexibilidade na empresa.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL 2: BirdID -->
+                <div class="servicos-panel" id="panel-birdid">
+                    <!-- Coluna Esq: Texto -->
+                    <div class="servicos-text-col">
+                        <p class="servicos-label"><!-- COPY: SERVICOS_P2_LABEL -->Tecnologia Avançada</p>
+                        <h1 class="servicos-title"><!-- COPY: SERVICOS_P2_TITLE -->Validação<br>BirdID Nuvem</h1>
+                        <p class="servicos-desc"><!-- COPY: SERVICOS_P2_DESC -->Armazene seu certificado na nuvem com a tecnologia Soluti BirdID, sem smartcards ou tokens USB.</p>
+                        <a href="#comprar" class="ds-btn ds-btn--primary">
+                            <!-- COPY: SERVICOS_P2_CTA -->Inovar agora <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <!-- Coluna Dir: Cards -->
+                    <div class="servicos-cards-grid">
+                        <div class="servico-card" style="--stagger-delay: 0.2s;">
+                            <div class="scard-icon"><i class="fa-solid fa-cloud"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P2_C1_TITLE -->Sempre com você</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P2_C1_TEXT -->Seu certificado fica na nuvem, sem risco de perda ou formatação, disponível quando você precisar.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="servico-card" style="--stagger-delay: 0.3s;">
+                            <div class="scard-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P2_C2_TITLE -->Renovação a cada 5 anos</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P2_C2_TEXT -->Após cadastrar a biometria, as renovações dispensam nova videochamada por 5 anos.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="servico-card" style="--stagger-delay: 0.4s;">
+                            <div class="scard-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P2_C3_TITLE -->Segurança Máxima</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P2_C3_TEXT -->Certificação ICP-Brasil com rastreio de uso pelo aplicativo no celular.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL 3: Contabilidades -->
+                <div class="servicos-panel" id="panel-contabilidade">
+                    <!-- Coluna Esq: Texto -->
+                    <div class="servicos-text-col">
+                        <p class="servicos-label"><!-- COPY: SERVICOS_P3_LABEL -->Parceiro Oficial</p>
+                        <h1 class="servicos-title"><!-- COPY: SERVICOS_P3_TITLE -->Serviço Pleno<br>Para Contabilidade</h1>
+                        <p class="servicos-desc"><!-- COPY: SERVICOS_P3_DESC -->Deixe a emissão dos certificados dos seus clientes com nossa equipe e ganhe comissionamento e atendimento VIP.</p>
+                        <a href="#contato" class="ds-btn ds-btn--primary">
+                            <!-- COPY: SERVICOS_P3_CTA -->Seja Parceiro <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <!-- Coluna Dir: Cards -->
+                    <div class="servicos-cards-grid">
+                        <div class="servico-card" style="--stagger-delay: 0.2s;">
+                            <div class="scard-icon"><i class="fa-solid fa-handshake"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P3_C1_TITLE -->Retenção de Clientes</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P3_C1_TEXT -->Seus clientes renovam com facilidade e percebem mais valor no suporte da sua contabilidade.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="servico-card" style="--stagger-delay: 0.3s;">
+                            <div class="scard-icon"><i class="fa-solid fa-headset"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P3_C2_TITLE -->Atendimento Humanizado</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P3_C2_TEXT -->Suporte rápido no WhatsApp, com contato direto e sem sistemas complicados.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL 4: Processo Digital -->
+                <div class="servicos-panel" id="panel-digital">
+                    <div class="servicos-text-col">
+                        <p class="servicos-label"><!-- COPY: SERVICOS_P4_LABEL -->Fluxo Ágil</p>
+                        <h1 class="servicos-title"><!-- COPY: SERVICOS_P4_TITLE -->Processo<br>100% Digital</h1>
+                        <p class="servicos-desc"><!-- COPY: SERVICOS_P4_DESC -->Validamos sua identidade em minutos, sem visitas presenciais ou reconhecimento em cartório.</p>
+                        <a href="#sobre" class="ds-btn ds-btn--primary">
+                            <!-- COPY: SERVICOS_P4_CTA -->Conhecer Processo <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="servicos-cards-grid">
+                        <div class="servico-card" style="--stagger-delay: 0.2s;">
+                            <div class="scard-icon"><i class="fa-solid fa-video"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P4_C1_TITLE -->Validação por Vídeo</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P4_C1_TEXT -->A documentação é aprovada em uma videochamada rápida pelo celular ou computador.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="servico-card" style="--stagger-delay: 0.3s;">
+                            <div class="scard-icon"><i class="fa-solid fa-bolt"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P4_C2_TITLE -->Liberação Expressa</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P4_C2_TEXT -->Após pagamento e videochamada, a liberação do certificado acontece com rapidez.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL 5: Token -->
+                <div class="servicos-panel" id="panel-token">
+                    <div class="servicos-text-col">
+                        <p class="servicos-label"><!-- COPY: SERVICOS_P5_LABEL -->Autenticador Moderno</p>
+                        <h1 class="servicos-title"><!-- COPY: SERVICOS_P5_TITLE -->Autenticação<br>via Token App</h1>
+                        <p class="servicos-desc"><!-- COPY: SERVICOS_P5_DESC -->Utilizamos o app Mobile Soluti para gerar códigos temporários e eliminar chaves físicas.</p>
+                        <a href="#demo" class="ds-btn ds-btn--primary">
+                            <!-- COPY: SERVICOS_P5_CTA -->Ver Demonstração <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="servicos-cards-grid">
+                        <div class="servico-card" style="--stagger-delay: 0.2s;">
+                            <div class="scard-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P5_C1_TITLE -->Zero Senhas Longas</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P5_C1_TEXT -->Autorize assinaturas com um token OTP de 6 dígitos gerado no aplicativo.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div class="servico-card" style="--stagger-delay: 0.3s;">
+                            <div class="scard-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                            <h3 class="scard-title"><!-- COPY: SERVICOS_P5_C2_TITLE -->Ideal para Emissão NFs</h3>
+                            <p class="scard-text"><!-- COPY: SERVICOS_P5_C2_TEXT -->Mais agilidade na emissão de notas com segurança e sem depender de aprovações físicas.</p>
+                            <a href="#" class="scard-link">Saber mais <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- Fim servicos-panels-container -->
+
+        </div>
+    </section>
+
+    <!-- ═══ COMO FUNCIONA (INTERACTIVE SLIDER) ═══ -->
+    <section id="como-funciona" class="section-como-funciona">
+        
+        <!-- Header outside the box -->
+        <div class="cf-header reveal-element">
+            <p class="cf-label"><span class="cf-label-line"></span> <!-- COPY: CF_LABEL -->Processo de Emissão</p>
+            <h2 class="cf-main-title"><!-- COPY: CF_TITLE -->Simples, rápido e validado<br><span>apenas a cada 5 anos</span></h2>
+        </div>
+
+        <div class="ds-wrap-cf reveal-element">
+            
+            <!-- Top Process Navigation -->
+            <nav class="cf-nav">
+                <button class="cf-nav-item active" data-cf-index="0">
+                    <span class="cf-nav-label"><!-- COPY: CF_NAV_LABEL_1 -->Processo 01</span>
+                    <h3 class="cf-nav-title"><!-- COPY: CF_NAV_TITLE_1 -->Envio de dados</h3>
+                </button>
+                <button class="cf-nav-item" data-cf-index="1">
+                    <span class="cf-nav-label"><!-- COPY: CF_NAV_LABEL_2 -->Processo 02</span>
+                    <h3 class="cf-nav-title"><!-- COPY: CF_NAV_TITLE_2 -->Cadastro inicial</h3>
+                </button>
+                <button class="cf-nav-item" data-cf-index="2">
+                    <span class="cf-nav-label"><!-- COPY: CF_NAV_LABEL_3 -->Processo 03</span>
+                    <h3 class="cf-nav-title"><!-- COPY: CF_NAV_TITLE_3 -->Videochamada</h3>
+                </button>
+                <button class="cf-nav-item" data-cf-index="3">
+                    <span class="cf-nav-label"><!-- COPY: CF_NAV_LABEL_4 -->Processo 04</span>
+                    <h3 class="cf-nav-title"><!-- COPY: CF_NAV_TITLE_4 -->Autenticação</h3>
+                </button>
+                <button class="cf-nav-item" data-cf-index="4">
+                    <span class="cf-nav-label"><!-- COPY: CF_NAV_LABEL_5 -->Processo 05</span>
+                    <h3 class="cf-nav-title"><!-- COPY: CF_NAV_TITLE_5 -->Finalização</h3>
+                </button>
+            </nav>
+
+            <!-- Barra de Progresso Mobile: Processos -->
+            <div class="cf-progress-wrapper">
+                <div class="cf-progress-bar" id="cf-progress"></div>
+            </div>
+
+            <!-- Main 2-Column Content -->
+            <div class="cf-slider-main">
+                
+                <!-- Left Column: Visual -->
+                <div class="cf-visual-col">
+                    <img src="Assets/img/cf-step-01.png" alt="Envio de dados" class="cf-slide-img active" data-cf-img="0">
+                    <img src="Assets/img/cf-step-02.png" alt="Cadastro inicial"  class="cf-slide-img" data-cf-img="1">
+                    <img src="Assets/img/cf-step-03.png" alt="Videochamada"      class="cf-slide-img" data-cf-img="2">
+                    <img src="Assets/img/cf-step-04.png" alt="Autenticação"      class="cf-slide-img" data-cf-img="3">
+                    <img src="Assets/img/cf-step-05.png" alt="Finalização"       class="cf-slide-img" data-cf-img="4">
+                    <div class="cf-big-number" id="cfBigNum">01</div>
+                </div>
+
+                <!-- Right Column: Text Content -->
+                <div class="cf-content-col">
+                    
+                    <!-- Slide 1 -->
+                    <div class="cf-slide-text active" data-cf-text="0">
+                        <p class="cf-slide-label"><!-- COPY: CF_SLIDE_LABEL_1 -->Processo 01</p>
+                        <h2 class="cf-slide-title"><!-- COPY: CF_SLIDE_H2_1 -->Envio de<br>dados</h2>
+                        <p class="cf-slide-desc"><!-- COPY: CF_SLIDE_DESC_1 -->Você envia os dados básicos pelo formulário e nossa equipe inicia o cadastro do certificado.</p>
+                        <a href="#contato" class="ds-btn ds-btn--primary"><!-- COPY: CF_SLIDE_CTA_1 -->Enviar dados <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="cf-slide-text" data-cf-text="1">
+                        <p class="cf-slide-label"><!-- COPY: CF_SLIDE_LABEL_2 -->Processo 02</p>
+                        <h2 class="cf-slide-title"><!-- COPY: CF_SLIDE_H2_2 -->Cadastro<br>inicial</h2>
+                        <p class="cf-slide-desc"><!-- COPY: CF_SLIDE_DESC_2 -->Após o envio, fazemos o cadastro e enviamos o link para a videochamada de validação.</p>
+                        <a href="#contato" class="ds-btn ds-btn--primary"><!-- COPY: CF_SLIDE_CTA_2 -->Iniciar cadastro <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="cf-slide-text" data-cf-text="2">
+                        <p class="cf-slide-label"><!-- COPY: CF_SLIDE_LABEL_3 -->Processo 03</p>
+                        <h2 class="cf-slide-title"><!-- COPY: CF_SLIDE_H2_3 -->Primeira<br>videochamada</h2>
+                        <p class="cf-slide-desc"><!-- COPY: CF_SLIDE_DESC_3 -->O cliente faz uma videochamada rápida, com duração média de 5 minutos.</p>
+                        <a href="#videochamada" class="ds-btn ds-btn--primary"><!-- COPY: CF_SLIDE_CTA_3 -->Agendar videochamada <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="cf-slide-text" data-cf-text="3">
+                        <p class="cf-slide-label"><!-- COPY: CF_SLIDE_LABEL_4 -->Processo 04</p>
+                        <h2 class="cf-slide-title"><!-- COPY: CF_SLIDE_H2_4 -->Autenticação<br>BirdID</h2>
+                        <p class="cf-slide-desc"><!-- COPY: CF_SLIDE_DESC_4 -->Após a validação, o cliente recebe as instruções para baixar o app BirdID e ativar a autenticação.</p>
+                        <a href="#birdid" class="ds-btn ds-btn--primary"><!-- COPY: CF_SLIDE_CTA_4 -->Baixar BirdID <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="cf-slide-text" data-cf-text="4">
+                        <p class="cf-slide-label"><!-- COPY: CF_SLIDE_LABEL_5 -->Processo 05</p>
+                        <h2 class="cf-slide-title"><!-- COPY: CF_SLIDE_H2_5 -->Finalização<br>do cadastro</h2>
+                        <p class="cf-slide-desc"><!-- COPY: CF_SLIDE_DESC_5 -->Enviamos o link final para concluir o cadastro e ativar o certificado, sem nova videochamada por 5 anos.</p>
+                        <a href="#comprar" class="ds-btn ds-btn--primary"><!-- COPY: CF_SLIDE_CTA_5 -->Começar agora <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="cf-controls">
+                        <div class="cf-arrows">
+                            <button class="cf-arrow-btn" id="cfPrev">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button class="cf-arrow-btn" id="cfNext">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <div class="cf-dots" id="cfDots">
+                            <button class="cf-dot active" data-cf-dot="0">01</button>
+                            <button class="cf-dot" data-cf-dot="1">02</button>
+                            <button class="cf-dot" data-cf-dot="2">03</button>
+                            <button class="cf-dot" data-cf-dot="3">04</button>
+                            <button class="cf-dot" data-cf-dot="4">05</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ CONVERSION BANNER / CTA ═══ -->
+    <section id="banner-cta" class="section-cta-banner">
+        
+        <!-- Video Background Container -->
+        <div class="cta-video-container">
+            <iframe class="cta-video-bg" 
+                src="https://www.youtube-nocookie.com/embed/gClVod-peQ4?autoplay=1&mute=1&controls=0&loop=1&playlist=gClVod-peQ4&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&enablejsapi=1" 
+                allow="autoplay; encrypted-media" 
+                loading="eager">
+            </iframe>
+        </div>
+
+        <!-- Green Transparent Overlay -->
+        <div class="cta-overlay"></div>
+
+        <!-- Central Content -->
+        <div class="cta-content-wrapper">
+            <p class="cta-subtitle"><!-- COPY: BANNER_LABEL -->Tecnologia Soluti BirdID</p>
+            
+            <h1 class="cta-main-title gsap-reveal-text">
+                <!-- COPY: BANNER_TITLE -->Simplifique a emissão de certificados digitais
+            </h1>
+            
+            <p class="cta-desc">
+                <!-- COPY: BANNER_PARAGRAPH -->A primeira validação é feita por videochamada. Depois, a autenticação acontece por token de forma simples e segura.
+            </p>
+            
+            <div class="cta-actions">
+                <a href="#comprar" class="ds-btn ds-btn--primary">
+                    <!-- COPY: BANNER_CTA_PRIMARY -->Emitir certificado agora <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#especialista" class="ds-btn ds-btn--outline-light">
+                    <!-- COPY: BANNER_CTA_SECONDARY -->Falar com especialista
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ DEPOIMENTOS (TESTIMONIALS) ═══ -->
+    <section class="section-testimonials">
+        <div class="ds-wrap">
+            <div class="testimonials-grid">
+                
+                <!-- Coluna Esquerda: Conteúdo -->
+                <div class="testimonials-content reveal-left">
+                    <p class="ds-label"><!-- COPY: DEPOIMENTOS_LABEL -->Depoimentos</p>
+                    <h2 class="ds-title"><!-- COPY: DEPOIMENTOS_TITLE -->O que nossos parceiros estão dizendo</h2>
+                    <p style="font-size: 18px; color: var(--dl-neutral-600); line-height: 1.6;">
+                        <!-- COPY: DEPOIMENTOS_DESC -->Unimos tecnologia e atendimento humanizado para agilizar a rotina de empresas e contabilidades.
+                    </p>
+                    
+                    <!-- Navegação Customizada -->
+                    <div class="testimonials-nav">
+                        <button class="testimonials-nav-btn swiper-btn-prev">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <button class="testimonials-nav-btn swiper-btn-next">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Carrossel Swiper -->
+                <div class="testimonials-carousel-wrapper reveal-right" style="transition-delay: 0.2s; min-width: 0;">
+                    <!-- Slider main container -->
+                    <div class="swiper testimonials-swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=256&q=80" alt="Avatar" class="testimonial-avatar">
+                                    <div class="testimonial-stars">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <p class="testimonial-text"><!-- COPY: DEPOIMENTOS_C1_TEXT -->"A Ponto 7 mudou nossa rotina com certificados digitais. O processo por videochamada reduz a burocracia e economiza tempo dos clientes."</p>
+                                    <div class="testimonial-author">
+                                        <div class="testimonial-author-name">Carlos Oliveira</div>
+                                        <div class="testimonial-author-role">Sócio Diretor, Oliveira & Associados</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80" alt="Avatar" class="testimonial-avatar">
+                                    <div class="testimonial-stars">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <p class="testimonial-text"><!-- COPY: DEPOIMENTOS_C2_TEXT -->"Eu precisava do A1 para emitir notas da minha PJ e me surpreendi com a velocidade. Em menos de duas horas, já estava com o certificado."</p>
+                                    <div class="testimonial-author">
+                                        <div class="testimonial-author-name">Juliana Costa</div>
+                                        <div class="testimonial-author-role">Desenvolvedora Sênior</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&q=80" alt="Avatar" class="testimonial-avatar">
+                                    <div class="testimonial-stars">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <p class="testimonial-text"><!-- COPY: DEPOIMENTOS_C3_TEXT -->"O suporte é excelente. Fui atendido por uma pessoa que entendeu minha urgência e resolveu tudo na hora."</p>
+                                    <div class="testimonial-author">
+                                        <div class="testimonial-author-name">Ricardo Mendes</div>
+                                        <div class="testimonial-author-role">Gerente de E-commerce</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slide 4 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80" alt="Avatar" class="testimonial-avatar">
+                                    <div class="testimonial-stars">
+                                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                    </div>
+                                    <p class="testimonial-text"><!-- COPY: DEPOIMENTOS_C4_TEXT -->"O app BirdID me dá liberdade para assinar documentos de qualquer lugar com praticidade e segurança."</p>
+                                    <div class="testimonial-author">
+                                        <div class="testimonial-author-name">Fernanda Lima</div>
+                                        <div class="testimonial-author-role">Médica Veterinária</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ CONTATO (CONTACT) ═══ -->
+    <section class="section-contact" id="contato">
+        <!-- Video Background -->
+        <div class="contact-video-container">
+            <iframe class="contact-video-bg"
+                src="https://www.youtube-nocookie.com/embed/IjPef0ETzRY?autoplay=1&mute=1&controls=0&loop=1&playlist=IjPef0ETzRY&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&enablejsapi=1"
+                allow="autoplay; encrypted-media"
+                loading="eager">
+            </iframe>
+        </div>
+
+        <!-- Overlay -->
+        <div class="contact-overlay"></div>
+
+        <div class="ds-wrap">
+            <div class="contact-grid">
+                
+                <!-- Coluna Esquerda: Info -->
+                <div class="contact-info-col">
+                    <p class="contact-label"><!-- COPY: CONTATO_LABEL -->Contato</p>
+                    <h2 class="contact-title gsap-contact-title"><!-- COPY: CONTATO_TITLE -->Vamos trabalhar juntos?</h2>
+                    <p class="contact-desc gsap-contact-desc"><!-- COPY: CONTATO_DESC -->Assessoria estratégica, processos simplificados e suporte completo em certificação digital para negócios de todos os portes.</p>
+
+                    <div class="contact-blocks">
+                        <!-- Bloco Telefone -->
+                        <div class="contact-block">
+                            <div class="contact-icon-wrapper">
+                                <i class="fa-solid fa-phone-volume"></i>
+                            </div>
+                            <div class="contact-detail">
+                                <h5><!-- COPY: CONTATO_B1_LABEL -->Ficou alguma dúvida?</h5>
+                                <p><!-- COPY: CONTATO_B1_VALOR -->0800 123 4567</p>
+                            </div>
+                        </div>
+
+                        <!-- Bloco Email -->
+                        <div class="contact-block">
+                            <div class="contact-icon-wrapper">
+                                <i class="fa-regular fa-envelope"></i>
+                            </div>
+                            <div class="contact-detail">
+                                <h5><!-- COPY: CONTATO_B2_LABEL -->Envie um email</h5>
+                                <p><!-- COPY: CONTATO_B2_VALOR -->contato@ponto7.com.br</p>
+                            </div>
+                        </div>
+
+                        <!-- Bloco Endereço -->
+                        <div class="contact-block">
+                            <div class="contact-icon-wrapper">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="contact-detail">
+                                <h5><!-- COPY: CONTATO_B3_LABEL -->Endereço</h5>
+                                <p><!-- COPY: CONTATO_B3_VALOR -->Av. Paulista, 1000 - São Paulo, SP</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Formulário -->
+                <div class="contact-form-col">
+                    <div class="contact-form-card">
+                        <h3 class="contact-form-title"><!-- COPY: CONTATO_FORM_TITLE -->Fale conosco</h3>
+                        <form class="contact-form" onsubmit="event.preventDefault();">
+                            <input type="text" class="ds-input" placeholder="Seu Nome" required>
+                            <input type="email" class="ds-input" placeholder="Seu Email" required>
+                            <textarea class="ds-input" rows="4" placeholder="Sua mensagem aqui..." required></textarea>
+                            <button type="submit" class="ds-btn ds-btn--accent">Enviar Mensagem</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="site-footer">
+        <div class="ds-wrap">
+
+            <!-- Faixa Superior -->
+            <div class="footer-top-strip">
+                <!-- Telefone -->
+                <div class="footer-top-item">
+                    <div class="footer-top-icon">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <div class="footer-top-label"><!-- COPY: FOOTER_TEL_LABEL -->Tem alguma dúvida?</div>
+                        <div class="footer-top-value"><!-- COPY: FOOTER_TEL_VALOR -->0800 123 4567</div>
+                    </div>
+                </div>
+
+                <!-- Logo -->
+                <div class="footer-logo">
+                    <a href="#" class="footer-logo-text">
+                        <img src="Assets/img/Logo-Ponto-7-Certificado-Digital.webp" alt="Ponto 7" style="height: 60px; width: auto; filter: brightness(0) invert(1);">
+                    </a>
+                </div>
+
+                <!-- Email -->
+                <div class="footer-top-item">
+                    <div class="footer-top-icon">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <div>
+                        <div class="footer-top-label"><!-- COPY: FOOTER_EMAIL_LABEL -->Enviar email</div>
+                        <div class="footer-top-value"><!-- COPY: FOOTER_EMAIL_VALOR -->contato@ponto7.com.br</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área Principal -->
+            <div class="footer-main">
+
+                <!-- Coluna 1: Institucional -->
+                <div class="footer-about">
+                    <p><!-- COPY: FOOTER_ABOUT_TEXT -->Simplificamos a emissão de certificados digitais com tecnologia e atendimento humanizado em todo o Brasil.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="footer-social-link"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Coluna 2: Explorar -->
+                <div>
+                    <h4 class="footer-col-title">Explorar</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Início</a></li>
+                        <li><a href="#diferenciais">Diferenciais</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="#como-funciona">Processo</a></li>
+                        <li><a href="#contato">Contatos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3: Links Úteis -->
+                <div>
+                    <h4 class="footer-col-title">Links Úteis</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Portfólio</a></li>
+                        <li><a href="#">Suporte</a></li>
+                        <li><a href="#">Novos Projetos</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 4: Newsletter -->
+                <div>
+                    <h4 class="footer-col-title">Newsletter</h4>
+                    <p class="footer-newsletter-text"><!-- COPY: FOOTER_NEWSLETTER_TEXT -->Receba novidades sobre certificados digitais e tecnologia no seu email.</p>
+                    <form class="footer-newsletter-form" onsubmit="event.preventDefault();">
+                        <input type="email" class="footer-newsletter-input" placeholder="Seu email" required>
+                        <button type="submit" class="footer-newsletter-btn"><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Barra Inferior -->
+            <div class="footer-bottom">
+                <!-- COPY: FOOTER_COPYRIGHT -->Copyright © 2025 <a href="#">Ponto7 Digital</a>. Todos os direitos reservados.
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Scripts Vanilla JS para funcionamento da Hero -->
+    <script>
+        // Lógica do Slider
+        let currentHeroSlide = 0;
+        let slideInterval;
+        const slides = document.querySelectorAll('#heroSlider .hero-video-bg');
+
+        function showHeroSlide(index) {
+            if (!slides.length) return;
+
+            slides.forEach(s => s.classList.remove('active'));
+            currentHeroSlide = (index + slides.length) % slides.length;
+            slides[currentHeroSlide].classList.add('active');
+        }
+
+        function nextHeroSlide() {
+            showHeroSlide(currentHeroSlide + 1);
+            resetInterval();
+        }
+
+        function prevHeroSlide() {
+            showHeroSlide(currentHeroSlide - 1);
+            resetInterval();
+        }
+
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextHeroSlide, 7000);
+        }
+
+        // Iniciar Slider Automático
+        if (slides.length > 1) {
+            slideInterval = setInterval(nextHeroSlide, 7000);
+        }
+
+        // Parallax sutil no Desktop baseado no mousemove
+        if (window.innerWidth > 1024) {
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 15;
+                const y = (e.clientY / window.innerHeight - 0.5) * 15;
+
+                const activeBg = document.querySelector('.hero-video-bg.active');
+                if (activeBg) {
+                    // Soma a escala do CSS base com a translação sutil
+                    activeBg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+                }
+            });
+        }
+
+        // --- Animações e Interações da Seção Diferenciais ---
+
+        // Efeito de Mouse Glow nos Cards Bento
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // --- Animações e Interações da Seção Serviços / Soluções ---
+        
+        const tabBtns = document.querySelectorAll('.servicos-tab-btn');
+        const panels = document.querySelectorAll('.servicos-panel');
+        const bgImages = document.querySelectorAll('.servicos-bg-img');
+
+        tabBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                // Remove active classes
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                bgImages.forEach(img => img.classList.remove('active'));
+
+                // Add active class ao botão clicado
+                btn.classList.add('active');
+
+                // Mostrar Panel adequado
+                const targetPanelId = btn.getAttribute('data-target');
+                const targetPanel = document.getElementById(targetPanelId);
+                if(targetPanel) targetPanel.classList.add('active');
+
+                // Mudar Imagem de Fundo
+                const targetBgId = btn.getAttribute('data-bg');
+                const targetBg = document.getElementById(targetBgId);
+                if(targetBg) targetBg.classList.add('active');
+
+                // Atualizar barra de progresso mobile (Baseado em clicks/categorias)
+                const servicosProgress = document.getElementById('servicos-progress');
+                if(servicosProgress) {
+                    const percent = ((index + 1) / tabBtns.length) * 100;
+                    servicosProgress.style.width = `${percent}%`;
+                }
+                
+                // Garantir rolagem para o botão visível no container mobile se clico num escondido no Desktop que impactaria mobile
+                btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            });
+        });
+
+        // Setar progresso inicial (primeira categoria ativa = 1/5 do progresso)
+        const initialProgress = document.getElementById('servicos-progress');
+        if(initialProgress && tabBtns.length > 0) {
+            initialProgress.style.width = `${(1 / tabBtns.length) * 100}%`;
+        }
+
+
+        // --- Intersection Observer (Scroll Reveal) Genérico ---
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px 0px -100px 0px", // Trigger slightly before the element
+            threshold: 0.1
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos da Seção Diferenciais
+        const headerDif = document.querySelector('.diferenciais-header.reveal-element');
+        if (headerDif) revealObserver.observe(headerDif);
+
+        document.querySelectorAll('.bento-card.reveal-card').forEach(card => {
+            revealObserver.observe(card);
+        });
+
+        // Observar elementos da Seção Como Funciona
+        const headerCF = document.querySelector('.cf-header.reveal-element');
+        if (headerCF) revealObserver.observe(headerCF);
+        
+        const boxCF = document.querySelector('.ds-wrap-cf.reveal-element');
+        if (boxCF) revealObserver.observe(boxCF);
+
+        // --- COMO FUNCIONA: Interactive Slider Logic ---
+        (function() {
+            let cfCurrent = 0;
+            const cfTotal = 5;
+            const cfNavItems = document.querySelectorAll('.cf-nav-item');
+            const cfImages = document.querySelectorAll('.cf-slide-img');
+            const cfTexts = document.querySelectorAll('.cf-slide-text');
+            const cfDots = document.querySelectorAll('.cf-dot');
+            const cfBigNum = document.getElementById('cfBigNum');
+            const cfPrev = document.getElementById('cfPrev');
+            const cfNext = document.getElementById('cfNext');
+
+            if (!cfNavItems.length) return;
+
+            function goToProcess(index) {
+                if (index === cfCurrent) return;
+                cfCurrent = index;
+
+                // Nav items
+                cfNavItems.forEach(n => n.classList.remove('active'));
+                cfNavItems[cfCurrent].classList.add('active');
+
+                // Images (fade out all, fade in current)
+                cfImages.forEach(img => img.classList.remove('active'));
+                cfImages[cfCurrent].classList.add('active');
+
+                // Big decorative number
+                cfBigNum.textContent = '0' + (cfCurrent + 1);
+
+                // Text slides
+                cfTexts.forEach(t => {
+                    t.classList.remove('active');
+                    t.style.animation = 'none'; // Reset animation
+                });
+                // Force reflow then re-apply
+                void cfTexts[cfCurrent].offsetWidth;
+                cfTexts[cfCurrent].style.animation = '';
+                cfTexts[cfCurrent].classList.add('active');
+
+                // Dots
+                cfDots.forEach(d => d.classList.remove('active'));
+                cfDots[cfCurrent].classList.add('active');
+
+                // Scroll active nav item into view on mobile
+                cfNavItems[cfCurrent].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            // Nav item clicks
+            cfNavItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    goToProcess(parseInt(item.dataset.cfIndex));
+                });
+            });
+
+            // Arrow clicks
+            cfPrev.addEventListener('click', () => {
+                const next = (cfCurrent - 1 + cfTotal) % cfTotal;
+                goToProcess(next);
+            });
+            cfNext.addEventListener('click', () => {
+                const next = (cfCurrent + 1) % cfTotal;
+                goToProcess(next);
+            });
+
+            // Dot clicks
+            cfDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    goToProcess(parseInt(dot.dataset.cfDot));
+                });
+            });
+
+            // Lógica Global de Barra de Progresso Horizontal no Mobile
+            function initHorizontalProgress(scrollContainerSelector, progressBarId) {
+                const container = document.querySelector(scrollContainerSelector);
+                const progressBar = document.getElementById(progressBarId);
+
+                if (container && progressBar) {
+                    const updateProgress = () => {
+                        const scrollLeft = container.scrollLeft;
+                        const scrollWidth = container.scrollWidth;
+                        const clientWidth = container.clientWidth;
+
+                        // Proteção para evitar divisão por 0 se o elemento não tiver scroll horizontal
+                        if (scrollWidth <= clientWidth) {
+                            progressBar.style.width = '100%';
+                            return;
+                        }
+
+                        // Calcular porcentagem (scrollWidth - clientWidth é a distância máxima rolável)
+                        const maxScroll = scrollWidth - clientWidth;
+                        const percent = (scrollLeft / maxScroll) * 100;
+                        progressBar.style.width = `${percent}%`;
+                    };
+
+                    // Atualizar ao rolar e ao redimensionar a tela
+                    container.addEventListener('scroll', updateProgress);
+                    window.addEventListener('resize', updateProgress);
+                    
+                    // Inicializar imediatamente (um pequeno setTimeout ajuda a garantir a renderização antes do cálculo)
+                    setTimeout(updateProgress, 100);
+                }
+            }
+
+            // A barra "Serviços/Soluções" é atualizada por cliques nas categorias e não por scroll.
+            // A barra "Processo de Emissão" ainda funciona por scroll.
+            // Inicializando a barra de progresso para a seção "Processo de Emissão"
+            initHorizontalProgress('.cf-nav', 'cf-progress');
+
+        })();
+
+        // --- GSAP ANIMATIONS: CONVERSION BANNER ---
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // SplitText for elegant title reveal
+            const titleSplit = new SplitType('.cta-main-title', { types: 'lines, words, chars', tagName: 'span' });
+
+            const tlBanner = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".section-cta-banner",
+                    start: "top 60%", // Start animation when section is 60% down viewport
+                    end: "bottom bottom",
+                    toggleActions: "play none none reverse" // Play on scroll down, reverse on scroll up past it
+                }
+            });
+
+            // 1. subtle scale for the background video container (parallax effect)
+            tlBanner.fromTo(".cta-video-container", 
+                { scale: 1.2 }, 
+                { scale: 1, duration: 3, ease: "power2.out" }, 
+                0
+            );
+
+            // 2. Container Glass fade in with smooth transition
+            tlBanner.fromTo(".cta-content-wrapper", 
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
+                0.1
+            );
+
+            // 3. Fade/slide up the top Kicker (Subtitle)
+            tlBanner.to(".cta-subtitle", {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "back.out(1.7)"
+            }, 0.5);
+
+            // 4. Stagger reveal the characters of the Main Title
+            tlBanner.to(titleSplit.chars, {
+                y: "0%",
+                duration: 0.8,
+                stagger: 0.02,
+                ease: "power4.out"
+            }, 0.6);
+
+            // 5. Fade/slide up the Description
+            tlBanner.to(".cta-desc", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out"
+            }, 1.1);
+
+            // 6. Fade/slide up the Buttons
+            tlBanner.to(".cta-actions", {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power3.out"
+            }, 1.3);
+
+            // --- Animações da Seção de Contato ---
+            const tlContact = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".section-contact",
+                    start: "top 70%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            // Animar Título e Descrição
+            tlContact.fromTo(".contact-label", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" })
+                     .fromTo(".gsap-contact-title", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.2")
+                     .fromTo(".gsap-contact-desc", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.3");
+
+            // Animar Blocos de Contato (Stagger)
+            tlContact.to(".contact-block", {
+                x: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.15,
+                ease: "back.out(1.4)"
+            }, "-=0.2");
+
+            // Animar Card do Formulário
+            tlContact.to(".contact-form-col", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out"
+            }, "-=0.8");
+
+        });
+
+    </script>
+    
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // Init Testimonials Swiper
+        const testimonialsSwiper = new Swiper('.testimonials-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 24,
+            loop: true,
+            grabCursor: true,
+            speed: 600,
+            navigation: {
+                nextEl: '.swiper-btn-next',
+                prevEl: '.swiper-btn-prev',
+            },
+            breakpoints: {
+                // when window width is >= 768px (Tablet/Desktop)
+                768: {
+                    slidesPerView: 1.5,
+                    spaceBetween: 32
+                },
+                // when window width is >= 1200px (Large Desktop)
+                1200: {
+                    slidesPerView: 2,
+                    spaceBetween: 40
+                }
+            }
+        });
+    </script>
+    <script>
+    /* ── SCRIPT DO MENU HEADER ── */
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.getElementById('main-header');
+        const mobileToggle = document.getElementById('mobile-toggle-btn');
+        const mobileMenu = document.getElementById('mobile-nav');
+        const mobileLinks = document.querySelectorAll('.ds-mobile-link');
+        const desktopLinks = document.querySelectorAll('.ds-nav-link');
+        const footerLinks = document.querySelectorAll('.footer-links a[href^="#"]');
+        const allLinks = document.querySelectorAll('.ds-nav-link, .ds-mobile-link, .footer-links a[href^="#"]');
+
+        // Comportamento Smooth Scroll e Estado 'Sticky' no Header
+        window.addEventListener('scroll', () => {
+            // Mostra o fundo de vidro após scroll de 50px
+            if (window.scrollY > 50) {
+                header.classList.add('is-sticky');
+            } else {
+                header.classList.remove('is-sticky');
+            }
+        });
+
+        // Lógica para abrir/fechar Menu Mobile (Hamburger)
+        let isMenuOpen = false;
+
+        const toggleMenu = () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                header.classList.add('menu-is-open');
+                mobileMenu.classList.add('is-open');
+                // Troca ícone para fechar (X) - usando fontawesome
+                mobileToggle.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                document.body.style.overflow = 'hidden'; // Impede o scroll de fundo
+            } else {
+                header.classList.remove('menu-is-open');
+                mobileMenu.classList.remove('is-open');
+                // Retorna ao botão hamburger original
+                mobileToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                document.body.style.overflow = ''; 
+            }
+        };
+
+        mobileToggle.addEventListener('click', toggleMenu);
+
+        // Fechar menu mobile automaticamente ao clicar numa opção
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) toggleMenu();
+            });
+        });
+
+        // Função de navegação suave (Smooth Scroll)
+        allLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                // Ignorar links que não sejam de âncora (#)
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#') && targetId !== '#') {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        // Calculo inteligente para evitar que o Header cubra o título da seção desejada
+                        const headerOffset = header.offsetHeight;
+                        const elementPosition = targetSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Remover 'active' globalmente e adicionar apenas ao link que acabou de ser clicado 
+                        allLinks.forEach(l => l.classList.remove('active'));
+                        
+                        // Opcionalmente atualizando a versão desktop e a mobile de forma casada:
+                        const syncLinks = document.querySelectorAll(`a[href="${targetId}"]`);
+                        syncLinks.forEach(sl => sl.classList.add('active'));
+                    }
+                }
+            });
+        });
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creative Design System — Fusion</title>
+<!-- dLocal CSS -->
+<link href="../../Downloads/bizmax-html.vercel.app/assets/css2_694f9c272275.css" rel="stylesheet">
+<link href="../../Downloads/bizmax-html.vercel.app/assets/bootstrap_014db006d614.css" rel="stylesheet">
+<link href="../../Downloads/bizmax-html.vercel.app/assets/fontawesome_7b6d7eaecf3b.css" rel="stylesheet">
+<link href="../../Downloads/bizmax-html.vercel.app/assets/animate_30093e4ce52b.css" rel="stylesheet">
+<link href="../../Downloads/bizmax-html.vercel.app/assets/swiper_f723fd9a504e.css" rel="stylesheet">
+<link href="../../Downloads/bizmax-html.vercel.app/assets/default_529cc4d34de3.css" rel="stylesheet">
+<link href="../../Downloads/bizmax-html.vercel.app/assets/style_85797983ce8e.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--font:'Roboto',sans-serif;--font-alt:'Plus Jakarta Sans',sans-serif;
+--dl-primary:#1043FA;--dl-primary-dark:#0D0095;--dl-primary-deeper:#0A095B;--dl-primary-night:#040125;
+--dl-accent:#33B6FF;--dl-green:#00B533;--dl-green-dark:#21A35B;
+--dl-neutral-100:#FFF;--dl-neutral-200:#E9E9E9;--dl-neutral-700:#2D3139;--dl-neutral-900:#0A0A16;
+--dl-gradient:linear-gradient(135deg,var(--dl-primary-dark) 5%,var(--dl-primary) 85%);
+--bz-accent:#E9A132;--bz-dark:#18191D}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--dl-neutral-700);background:#fafafa;padding-top:56px;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.ds-nav{position:fixed;top:0;left:0;width:100%;z-index:9999;background:var(--dl-primary-night);backdrop-filter:blur(20px);display:flex;align-items:center;gap:4px;height:56px;padding:0 32px;overflow-x:auto;border-bottom:1px solid rgba(51,182,255,.15)}
+.ds-nav a{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:10px 16px;border-radius:8px;transition:all .3s;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+.ds-nav a:hover,.ds-nav a.active{color:#fff;background:rgba(51,182,255,.15);box-shadow:0 0 20px rgba(51,182,255,.1)}
+
+/* ── SECTION BASE ── */
+.ds-section{padding:100px 0 80px;position:relative;overflow:hidden}
+.ds-wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.ds-label{font-family:var(--font-alt);font-size:12px;text-transform:uppercase;letter-spacing:4px;color:var(--dl-green);font-weight:700;margin-bottom:8px}
+.ds-title{font-family:var(--font-alt);font-size:42px;font-weight:800;color:var(--dl-neutral-900);margin:0 0 50px;line-height:1.1}
+.ds-title span{color:var(--dl-primary)}
+
+/* ── HERO (Left-Aligned + Video) ── */
+.ds-hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 40px 80px;z-index:1}
+.hero-bg-slider{position:absolute;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;background:#040125}
+.hero-video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease-in-out}
+.hero-video-bg.active{opacity:1}
+.hero-overlay{position:absolute;inset:0;background:rgba(4,1,37,.75);z-index:-1;pointer-events:none}
+.hero-social-sidebar{position:absolute;left:40px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:16px;z-index:2}
+.hero-social-link{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;color:#fff !important;text-decoration:none;transition:all .3s}
+.hero-social-link:hover{background:var(--dl-green);border-color:var(--dl-green);color:#fff !important;transform:scale(1.1)}
+.hero-content{max-width:800px;position:relative;z-index:2;margin-left:100px;opacity:0;animation:fadeInLeft .8s .2s both}
+.hero-kicker{font-family:var(--font-alt);font-size:clamp(14px,1.2vw,18px);font-weight:600;color:var(--dl-green);margin-bottom:24px}
+.hero-heading{font-family:var(--font-alt);font-size:clamp(40px,5vw,72px);font-weight:800;color:#fff;line-height:1.1;margin:0 0 24px}
+.hero-text{font-size:clamp(16px,1.2vw,18px);color:rgba(255,255,255,.8);max-width:600px;line-height:1.7;margin:0 0 40px}
+.hero-slider-controls{position:absolute;right:0;top:-10%;bottom:-10%;width:35%;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);clip-path:polygon(30% 0, 100% 0, 100% 100%, 0% 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;z-index:2}
+.hero-nav-btn{width:56px;height:56px;border-radius:50%;background:#fff;color:var(--dl-neutral-900);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:20px;transition:all .3s;box-shadow:0 8px 30px rgba(0,0,0,.15);margin-left:15%}
+.hero-nav-btn:hover{background:var(--dl-green);color:#fff !important;transform:scale(1.1)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(51,182,255,.1)}50%{box-shadow:0 0 40px rgba(51,182,255,.25)}}
+@media(max-width:1024px){.hero-social-sidebar{display:none}.hero-content{margin-left:0}.hero-slider-controls{display:none}.ds-hero{padding:120px 20px 80px}}
+
+/* ── ANIMATED BG for sections ── */
+.bg-dots{position:absolute;inset:0;pointer-events:none;opacity:.4;background-image:radial-gradient(circle,var(--dl-primary) 1px,transparent 1px);background-size:30px 30px}
+.bg-gradient-subtle{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 0% 100%,rgba(16,67,250,.04),transparent 60%),radial-gradient(ellipse at 100% 0%,rgba(0,181,51,.03),transparent 60%)}
+
+/* ── TYPOGRAPHY ── */
+.typo-table{width:100%;border-collapse:collapse}
+.typo-table tr{border-bottom:1px solid #eee;transition:background .2s}
+.typo-table tr:hover{background:rgba(16,67,250,.02)}
+.typo-table td{padding:22px 16px;vertical-align:middle}
+.typo-table td:first-child{width:140px;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--dl-primary);font-weight:700}
+.typo-table td:last-child{width:200px;text-align:right;font-family:'Roboto Mono',monospace;font-size:11px;color:#999;background:#f8f9fb;border-radius:6px;padding:8px 12px;white-space:nowrap}
+
+/* ── COLORS ── */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin-bottom:50px}
+.swatch{border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .3s,box-shadow .3s;background:#fff}
+.swatch:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.swatch-color{height:110px;position:relative}
+.swatch-color::after{content:attr(data-hex);position:absolute;bottom:8px;right:10px;font-size:11px;color:rgba(255,255,255,.7);font-family:monospace}
+.swatch-info{padding:16px}
+.swatch-name{font-weight:700;font-size:14px;color:var(--dl-neutral-900);margin-bottom:4px}
+.swatch-meta{font-size:11px;color:#888;font-family:monospace}
+.color-group-title{font-family:var(--font-alt);font-size:18px;font-weight:700;margin:0 0 16px;color:var(--dl-neutral-700)}
+
+/* ── COMPONENTS ── */
+.comp-card{background:#fff;border-radius:16px;padding:36px;margin-bottom:28px;box-shadow:0 2px 16px rgba(0,0,0,.04);transition:box-shadow .3s;position:relative;overflow:hidden}
+.comp-card:hover{box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.comp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--dl-gradient);opacity:0;transition:opacity .3s}
+.comp-card:hover::before{opacity:1}
+.comp-card h3{font-family:var(--font-alt);font-size:20px;font-weight:700;margin:0 0 24px;color:var(--dl-neutral-900)}
+.comp-card h3 code{font-size:13px;color:var(--dl-primary);background:rgba(16,67,250,.06);padding:3px 8px;border-radius:4px;font-weight:500}
+.comp-row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end}
+.comp-state{display:flex;flex-direction:column;align-items:center;gap:10px}
+.comp-state-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600}
+
+/* ── BTN styles (Bizmax ripple + dLocal colors) ── */
+.ds-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;position:relative;overflow:hidden;transition:all .4s;cursor:pointer;border:2px solid transparent}
+.ds-btn--primary{background:var(--dl-green);color:#fff !important;border-color:var(--dl-green)}
+.ds-btn--primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s}
+.ds-btn--primary:hover::before{left:100%}
+.ds-btn--primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,181,51,.35);color:#fff !important}
+.ds-btn--outline{background:transparent;color:var(--dl-primary);border-color:var(--dl-primary)}
+.ds-btn--outline:hover{background:var(--dl-primary);color:#fff;transform:translateY(-2px)}
+.ds-btn--ghost{background:transparent;color:var(--dl-green);border:none;padding:12px 16px}
+.ds-btn--ghost:hover{background:rgba(0,181,51,.08)}
+.ds-btn--disabled{opacity:.4;pointer-events:none}
+.ds-btn--accent{background:var(--bz-accent);color:var(--bz-dark);border-color:var(--bz-accent)}
+.ds-btn--accent:hover{box-shadow:0 8px 25px rgba(233,161,50,.35);transform:translateY(-2px)}
+
+/* ── CARDS (Bizmax layout + dLocal colors) ── */
+.ds-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.05);transition:all .4s cubic-bezier(.22,.61,.36,1);position:relative}
+.ds-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.ds-card-img{position:relative;overflow:hidden;aspect-ratio:16/10}
+.ds-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.ds-card:hover .ds-card-img img{transform:scale(1.08)}
+.ds-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,1,37,.7));pointer-events:none;transition:opacity .4s}
+.ds-card:hover .ds-card-img::after{opacity:.8}
+.ds-card-body{padding:24px}
+.ds-card-body h4{font-family:var(--font-alt);font-size:18px;font-weight:700;margin:0 0 8px;color:var(--dl-neutral-900)}
+.ds-card-body p{font-size:14px;color:#666;line-height:1.6;margin:0 0 16px}
+.ds-card-badge{position:absolute;top:16px;left:16px;background:var(--dl-green);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;z-index:2;text-transform:uppercase;letter-spacing:.5px}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+
+/* ── INPUTS ── */
+.ds-input{width:100%;padding:14px 18px;border:2px solid var(--dl-neutral-200);border-radius:10px;font-size:15px;font-family:var(--font);transition:all .3s;background:#fff;color:var(--dl-neutral-700)}
+.ds-input:focus{outline:none;border-color:var(--dl-primary);box-shadow:0 0 0 4px rgba(16,67,250,.1)}
+.ds-input::placeholder{color:#aaa}
+.ds-input--error{border-color:#D80027}.ds-input--success{border-color:var(--dl-green)}
+
+/* ── MOTION ── */
+.motion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.motion-item{background:#fff;border-radius:14px;padding:32px;text-align:center;cursor:pointer;transition:all .3s;border:1px solid #eee;position:relative;overflow:hidden}
+.motion-item:hover{border-color:var(--dl-primary);box-shadow:0 8px 30px rgba(16,67,250,.08);transform:translateY(-2px)}
+.motion-box{width:56px;height:56px;background:var(--dl-gradient);border-radius:12px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;transition:all .3s}
+.motion-item:hover .motion-box{box-shadow:0 0 30px rgba(16,67,250,.3)}
+.motion-item h4{font-size:14px;font-weight:700;margin:0 0 4px;color:var(--dl-neutral-900)}
+.motion-item code{font-size:11px;color:#888}
+
+/* ── ICONS ── */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:14px}
+.icon-item{background:#fff;border-radius:12px;padding:20px;text-align:center;transition:all .3s;border:1px solid #eee}
+.icon-item:hover{border-color:var(--dl-primary);background:var(--dl-primary-night);color:#fff;transform:translateY(-2px);box-shadow:0 8px 25px rgba(4,1,37,.15)}
+.icon-item i{font-size:24px;display:block;margin-bottom:8px;transition:color .3s}
+.icon-item:hover i{color:var(--dl-accent)}
+.icon-item span{font-size:9px;display:block;word-break:break-all;opacity:.6}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.22,.61,.36,1)}.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-30px);transition:all .8s cubic-bezier(.22,.61,.36,1)}.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(30px);transition:all .8s cubic-bezier(.22,.61,.36,1)}.reveal-right.visible{opacity:1;transform:none}
+
+/* ── SECTION BGS ── */
+.bg-dark{background:var(--dl-primary-night);color:#fff}.bg-dark .ds-title{color:#fff}.bg-dark .ds-label{color:var(--dl-accent)}
+.bg-light{background:#f4f7fc}
+.bg-white{background:#fff}
+
+/* ── FOOTER ── */
+.ds-footer{background:var(--dl-primary-night);padding:40px;text-align:center;color:rgba(255,255,255,.4);font-size:14px}
+.ds-footer a{color:var(--dl-green);text-decoration:none}
+
+/* ── ACCORDION (dLocal Dropdown) ── */
+.c-solutions-dropdown {
+  --_py: calc(var(--section-y) * 0.4);
+  --_px: calc(var(--wrapper-x) * 1.6);
+  --_br: 1.6rem;
+  --_cards-offsey-y: calc(var(--_py) * -1);
+  --_open-bg: linear-gradient(45deg, var(--dl-primary-300, #33e068) 62%, var(--dl-primary-night, #040125) 110%);
+  --_arrow-size: calc(var(--fz-700, 48px) * 0.5);
+  --btn-fz: var(--fz-200, 16px);
+  --text-margin-top: 1.5em;
+  margin-top: calc(var(--section-y) * 0.5);
+  list-style: none;
+  padding: 0;
+}
+.c-solutions-dropdown__item {
+  --heading-fz: calc(var(--fz-700, 48px) * 0.5);
+  --heading-fw: 400;
+  --animation-duration: 500ms;
+  position: relative;
+  background-color: var(--dl-neutral-100, #fff);
+  padding: var(--_py, 20px) var(--_px, 32px);
+  border-radius: var(--_br, 16px);
+  box-shadow: 0 0 2rem 0 hsl(var(--dl-neutral-900-hsl, 240 9% 10%) / 15%);
+  z-index: 1;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: padding var(--animation-duration) ease-out, background var(--animation-duration) ease-out;
+}
+.c-solutions-dropdown__item:not(:last-child) {
+  padding-bottom: calc(var(--_py, 20px) - var(--_cards-offsey-y, -20px));
+}
+.c-solutions-dropdown__item:not(:first-child) {
+  margin-top: var(--_cards-offsey-y, -20px);
+}
+.c-solutions-dropdown__item:not(.is-active) {
+  cursor: pointer;
+}
+.c-solutions-dropdown__item.is-active {
+  --text-color: var(--dl-neutral-100, #fff);
+  background: var(--dl-gradient);
+}
+.c-solutions-dropdown__item.is-active:not(:last-child) {
+  padding-bottom: calc(var(--_py, 20px) * 1.2 - var(--_cards-offsey-y, -20px));
+}
+.c-solutions-dropdown__item.is-active:last-child {
+  padding-bottom: calc(var(--_py, 20px) * 1.4);
+}
+.c-solutions-dropdown__item.is-active {
+  --heading-color: var(--dl-neutral-100, #fff);
+}
+.c-solutions-dropdown__heading {
+  margin: 0;
+  font-family: var(--font-alt);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dl-neutral-900);
+  transition: color var(--animation-duration) ease-out;
+}
+.c-solutions-dropdown__item.is-active .c-solutions-dropdown__heading {
+  position: absolute;
+  left: -99999px;
+}
+.c-solutions-dropdown__heading-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+.c-solutions-dropdown__arrow {
+  position: absolute;
+  width: var(--_arrow-size, 24px);
+  height: auto;
+  right: var(--_px, 32px);
+  top: var(--_py, 20px);
+  cursor: pointer;
+  pointer-events: none;
+  z-index: 1;
+  transform: rotate(0deg);
+  transition: transform var(--animation-duration) ease-out;
+}
+.c-solutions-dropdown__arrow path {
+  fill: var(--dl-primary);
+  transition: fill var(--animation-duration) ease-out;
+}
+.c-solutions-dropdown__item.is-active .c-solutions-dropdown__arrow {
+  pointer-events: initial;
+  transform: rotate(180deg);
+}
+.c-solutions-dropdown__item.is-active .c-solutions-dropdown__arrow path {
+  fill: #fff;
+}
+.c-solutions-dropdown__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  pointer-events: none;
+  transition: grid-template-rows var(--animation-duration) ease-out;
+}
+.c-solutions-dropdown__item.is-active .c-solutions-dropdown__body {
+  grid-template-rows: 1fr;
+  pointer-events: initial;
+  overflow: visible;
+  transition: grid-template-rows var(--animation-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.c-solutions-dropdown__wrap {
+  min-height: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: center;
+  transition: opacity var(--animation-duration) ease-out, transform var(--animation-duration) ease-out, visibility 0s linear var(--animation-duration);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.c-solutions-dropdown__item.is-active .c-solutions-dropdown__wrap {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity var(--animation-duration) ease-out, transform var(--animation-duration) ease-out;
+  padding-top: 20px;
+}
+.c-solutions-dropdown__text {
+  color: #fff;
+}
+.c-solutions-dropdown__title {
+  font-family: var(--font-alt);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  line-height: 1.1;
+  color: #fff;
+}
+.c-solutions-dropdown__subtitle {
+  font-family: var(--font-alt);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: rgba(255,255,255,0.9);
+}
+.c-solutions-dropdown__desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 24px;
+  max-width: 90%;
+}
+.c-solutions-dropdown__link {
+  color: var(--dl-green);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.3s, color 0.3s;
+}
+.c-solutions-dropdown__link:hover {
+  gap: 10px;
+  color: #fff;
+}
+.c-solutions-dropdown__image {
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  position: relative;
+}
+.c-solutions-dropdown__pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .ds-hero{padding:100px 20px 60px}
+  .hero-img-showcase{grid-template-columns:1fr}
+  .ds-wrap{padding:0 20px}
+  .ds-title{font-size:32px}
+  .cards-grid{grid-template-columns:1fr}
+  .c-solutions-dropdown__wrap {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="ds-nav">
+<a href="#hero">Hero</a><a href="#typography">Typography</a><a href="#colors">Colors</a>
+<a href="#components">Components</a><a href="#icons">Icons</a><a href="#motion">Motion</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero" class="ds-hero">
+<div class="hero-bg-slider" id="heroSlider">
+<video class="hero-video-bg active" autoplay loop muted playsinline>
+<source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+</video>
+<img class="hero-video-bg" src="../../Downloads/bizmax-html.vercel.app/assets/portfolio_1_2a143459b9e2.jpeg" alt="Slide 2">
+<img class="hero-video-bg" src="../../Downloads/bizmax-html.vercel.app/assets/post_1_45beacd5f9b7.jpeg" alt="Slide 3">
+</div>
+<div class="hero-overlay"></div>
+
+<div class="hero-social-sidebar">
+<a href="#" class="hero-social-link"><i class="fa-brands fa-facebook-f"></i></a>
+<a href="#" class="hero-social-link"><i class="fa-brands fa-twitter"></i></a>
+<a href="#" class="hero-social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+<a href="#" class="hero-social-link"><i class="fa-solid fa-globe"></i></a>
+</div>
+
+<div class="ds-wrap" style="width:100%;margin:0">
+<div class="hero-content">
+<p class="hero-kicker">This Week Only for World Premier</p>
+<h1 class="hero-heading">Inventive and interested<br>in innovation</h1>
+<p class="hero-text">I have been a loyal customer of this auto parts company for years and I cannot recommend them enough. Their extensive selection of high-quality parts and accessories.</p>
+<a class="ds-btn ds-btn--primary" href="#typography">Get A Quote</a>
+</div>
+</div>
+
+<div class="hero-slider-controls">
+<button class="hero-nav-btn" onclick="prevHeroSlide()"><i class="fa-solid fa-arrow-left"></i></button>
+<button class="hero-nav-btn" onclick="nextHeroSlide()"><i class="fa-solid fa-arrow-right"></i></button>
+</div>
+</section>
+
+<!-- ═══ TYPOGRAPHY ═══ -->
+<section id="typography" class="ds-section bg-white">
+<div class="bg-gradient-subtle"></div>
+<div class="ds-wrap">
+<p class="ds-label reveal">Section 01</p>
+<h2 class="ds-title reveal">Typo<span>graphy</span></h2>
+<table class="typo-table reveal">
+<tr><td>H1</td><td><h1 style="font-family:var(--font-alt);font-size:clamp(40px,5vw,72px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin:0">The quick brown fox</h1></td><td>72px / 800 / 1.05<br>Plus Jakarta Sans<br>letter-spacing: −0.02em</td></tr>
+<tr><td>H2</td><td><h2 style="font-family:var(--font-alt);font-size:clamp(32px,4vw,54px);font-weight:800;line-height:1.1;margin:0">The quick brown fox</h2></td><td>54px / 800 / 1.1<br>Plus Jakarta Sans</td></tr>
+<tr><td>H3</td><td><h3 style="font-family:var(--font-alt);font-size:clamp(24px,3vw,40px);font-weight:700;line-height:1.15;margin:0">The quick brown fox jumps</h3></td><td>40px / 700 / 1.15<br>Plus Jakarta Sans</td></tr>
+<tr><td>H4</td><td><h4 style="font-family:var(--font-alt);font-size:clamp(20px,2vw,28px);font-weight:700;line-height:1.2;margin:0">The quick brown fox jumps over</h4></td><td>28px / 700 / 1.2<br>Plus Jakarta Sans</td></tr>
+<tr><td>H5</td><td><h5 style="font-family:var(--font-alt);font-size:20px;font-weight:600;line-height:1.3;margin:0">The quick brown fox jumps over the lazy</h5></td><td>20px / 600 / 1.3</td></tr>
+<tr><td>H6</td><td><h6 style="font-family:var(--font-alt);font-size:16px;font-weight:600;line-height:1.4;margin:0;text-transform:uppercase;letter-spacing:1px">The quick brown fox jumps over the lazy dog</h6></td><td>16px / 600 / 1.4<br>uppercase, ls: 1px</td></tr>
+<tr><td>Body LG</td><td><p style="font-size:18px;line-height:1.7;margin:0">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p></td><td>18px / 400 / 1.7<br>Roboto</td></tr>
+<tr><td>Body</td><td><p style="font-size:16px;line-height:1.6;margin:0">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p></td><td>16px / 400 / 1.6<br>Roboto</td></tr>
+<tr><td>Body SM</td><td><p style="font-size:14px;line-height:1.5;margin:0">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p></td><td>14px / 400 / 1.5</td></tr>
+<tr><td>Caption</td><td><p style="font-size:12px;line-height:1.4;margin:0;color:#888">The quick brown fox jumps over the lazy dog.</p></td><td>12px / 400 / 1.4</td></tr>
+<tr><td>Label</td><td><p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--dl-green);margin:0">Section Label</p></td><td>12px / 700 / uppercase<br>ls: 3px, color: green</td></tr>
+<tr><td>Helper</td><td><p style="font-size:13px;color:#999;margin:0;font-style:italic">This field is required</p></td><td>13px / 400 / italic</td></tr>
+<tr><td>Mono</td><td><code style="font-family:'Roboto Mono',monospace;font-size:14px;background:#f0f2f8;padding:4px 10px;border-radius:4px">console.log('hello')</code></td><td>14px / Roboto Mono</td></tr>
+</table>
+</div>
+</section>
+
+<!-- ═══ COLORS ═══ -->
+<section id="colors" class="ds-section bg-light">
+<div class="bg-dots"></div>
+<div class="ds-wrap">
+<p class="ds-label reveal">Section 02</p>
+<h2 class="ds-title reveal">Color <span>System</span></h2>
+
+<h3 class="color-group-title reveal">Primary Blues</h3>
+<div class="color-grid reveal">
+<div class="swatch"><div class="swatch-color" style="background:#3272F0" data-hex="#3272F0"></div><div class="swatch-info"><div class="swatch-name">Primary 100</div><div class="swatch-meta">#3272F0 · hsl(220,86%,57%)<br>Role: links, interactive</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#1043FA" data-hex="#1043FA"></div><div class="swatch-info"><div class="swatch-name">Primary 200</div><div class="swatch-meta">#1043FA · hsl(227,91%,52%)<br>Role: headings accent, CTAs</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#0D0095" data-hex="#0D0095"></div><div class="swatch-info"><div class="swatch-name">Primary 600</div><div class="swatch-meta">#0D0095 · hsl(245,100%,29%)<br>Role: gradient start, deep bg</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#0A095B" data-hex="#0A095B"></div><div class="swatch-info"><div class="swatch-name">Primary 800</div><div class="swatch-meta">#0A095B · hsl(241,82%,20%)<br>Role: dark surfaces</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#040125" data-hex="#040125"></div><div class="swatch-info"><div class="swatch-name">Primary 900</div><div class="swatch-meta">#040125 · hsl(245,95%,7%)<br>Role: nav bg, footer, night</div></div></div>
+</div>
+
+<h3 class="color-group-title reveal">Secondary &amp; Accent</h3>
+<div class="color-grid reveal">
+<div class="swatch"><div class="swatch-color" style="background:#00B533" data-hex="#00B533"></div><div class="swatch-info"><div class="swatch-name">Green 600</div><div class="swatch-meta">#00B533 · hsl(137,100%,35%)<br>Role: primary CTA, success, dot</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#21A35B" data-hex="#21A35B"></div><div class="swatch-info"><div class="swatch-name">Green 400</div><div class="swatch-meta">#21A35B · hsl(147,66%,38%)<br>Role: link default, badges</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#33B6FF" data-hex="#33B6FF"></div><div class="swatch-info"><div class="swatch-name">Accent Blue</div><div class="swatch-meta">#33B6FF · hsl(201,100%,60%)<br>Role: glow, decorative, hero</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#E9A132" data-hex="#E9A132"></div><div class="swatch-info"><div class="swatch-name">Bizmax Gold</div><div class="swatch-meta">#E9A132<br>Role: warm accent, badges alt</div></div></div>
+</div>
+
+<h3 class="color-group-title reveal">Neutrals</h3>
+<div class="color-grid reveal">
+<div class="swatch"><div class="swatch-color" style="background:#FFF;border:1px solid #eee" data-hex="#FFF"></div><div class="swatch-info"><div class="swatch-name">White</div><div class="swatch-meta">#FFFFFF · cards, input bg</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#F6F9FC" data-hex="#F6F9FC"></div><div class="swatch-info"><div class="swatch-name">Near White</div><div class="swatch-meta">#F6F9FC · section bg alt</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#E9E9E9" data-hex="#E9E9E9"></div><div class="swatch-info"><div class="swatch-name">Neutral 200</div><div class="swatch-meta">#E9E9E9 · borders, dividers</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#9CA3AF" data-hex="#9CA3AF"></div><div class="swatch-info"><div class="swatch-name">Neutral 400</div><div class="swatch-meta">#9CA3AF · placeholder, muted</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#2D3139" data-hex="#2D3139"></div><div class="swatch-info"><div class="swatch-name">Neutral 700</div><div class="swatch-meta">#2D3139 · body text default</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:#0A0A16" data-hex="#0A0A16"></div><div class="swatch-info"><div class="swatch-name">Neutral 900</div><div class="swatch-meta">#0A0A16 · headings, bold text</div></div></div>
+</div>
+
+<h3 class="color-group-title reveal">Gradients</h3>
+<div class="color-grid reveal">
+<div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,#0D0095 5%,#1043FA 85%)"></div><div class="swatch-info"><div class="swatch-name">Primary Gradient</div><div class="swatch-meta">135deg · hero bg, motion boxes</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,#040125,#0D0095 40%,#33B6FF)"></div><div class="swatch-info"><div class="swatch-name">Night → Accent</div><div class="swatch-meta">135deg · dark section bg</div></div></div>
+<div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,#00B533,#33B6FF)"></div><div class="swatch-info"><div class="swatch-name">Green → Accent</div><div class="swatch-meta">135deg · CTA glow, badges</div></div></div>
+</div>
+</div>
+</section>
+
+<!-- ═══ COMPONENTS ═══ -->
+<section id="components" class="ds-section bg-white">
+<div class="bg-gradient-subtle"></div>
+<div class="ds-wrap">
+<p class="ds-label reveal">Section 03</p>
+<h2 class="ds-title reveal">UI <span>Components</span></h2>
+
+<!-- Buttons -->
+<div class="comp-card reveal">
+<h3>Buttons <code>.ds-btn</code></h3>
+<div class="comp-row" style="margin-bottom:20px">
+<div class="comp-state"><span class="comp-state-label">Primary</span><a class="ds-btn ds-btn--primary" href="#">Get Started <i class="fa-solid fa-arrow-right"></i></a></div>
+<div class="comp-state"><span class="comp-state-label">Outline</span><a class="ds-btn ds-btn--outline" href="#">Learn More</a></div>
+<div class="comp-state"><span class="comp-state-label">Ghost</span><a class="ds-btn ds-btn--ghost" href="#">View Docs <i class="fa-solid fa-arrow-right"></i></a></div>
+<div class="comp-state"><span class="comp-state-label">Accent</span><a class="ds-btn ds-btn--accent" href="#">Contact Us</a></div>
+<div class="comp-state"><span class="comp-state-label">Disabled</span><a class="ds-btn ds-btn--primary ds-btn--disabled" href="#">Disabled</a></div>
+</div>
+<p style="font-size:13px;color:#888;margin:0">Hover: ripple shine (::before sweep) + translateY(-2px) + colored shadow. Transition: 0.4s cubic-bezier(.22,.61,.36,1)</p>
+</div>
+
+<!-- Cards -->
+<div class="comp-card reveal">
+<h3>Cards <code>.ds-card</code></h3>
+<div class="cards-grid">
+<div class="ds-card"><div class="ds-card-badge">New</div><div class="ds-card-img"><img src="../../Downloads/bizmax-html.vercel.app/assets/service_1_6513d82fb8e8.jpeg" alt="Service"></div><div class="ds-card-body"><h4>Accounting &amp; Bookkeeping</h4><p>Services related to financial record-keeping, bookkeeping, and preparation.</p><a class="ds-btn ds-btn--ghost" href="#" style="padding:0">Read More <i class="fa-solid fa-arrow-right"></i></a></div></div>
+<div class="ds-card"><div class="ds-card-badge" style="background:var(--dl-primary)">Featured</div><div class="ds-card-img"><img src="../../Downloads/bizmax-html.vercel.app/assets/portfolio_1_2a143459b9e2.jpeg" alt="Portfolio"></div><div class="ds-card-body"><h4>Creative Workspace</h4><p>Design and development solutions for modern digital businesses.</p><a class="ds-btn ds-btn--ghost" href="#" style="padding:0">View Project <i class="fa-solid fa-arrow-right"></i></a></div></div>
+<div class="ds-card"><div class="ds-card-img"><img src="../../Downloads/bizmax-html.vercel.app/assets/post_1_45beacd5f9b7.jpeg" alt="Blog"></div><div class="ds-card-body"><h4>Digital Marketing</h4><p>We provide a range of digital marketing solutions including website design.</p><a class="ds-btn ds-btn--ghost" href="#" style="padding:0">Read More <i class="fa-solid fa-arrow-right"></i></a></div></div>
+</div>
+<p style="font-size:13px;color:#888;margin:16px 0 0">Hover: translateY(-8px) + scale(1.08) on image + shadow deepens. Transition: 0.4s ease-out</p>
+</div>
+
+<!-- Inputs -->
+<div class="comp-card reveal">
+<h3>Inputs <code>.ds-input</code></h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+<div><span class="comp-state-label">Default</span><input class="ds-input" placeholder="Your Name" type="text"></div>
+<div><span class="comp-state-label">Focus (click)</span><input class="ds-input" placeholder="Email Address" type="email"></div>
+<div><span class="comp-state-label">Error</span><input class="ds-input ds-input--error" placeholder="Required Field" type="text"><p style="color:#D80027;font-size:12px;margin:4px 0 0">This field is required</p></div>
+<div><span class="comp-state-label">Success</span><input class="ds-input ds-input--success" value="valid@email.com" type="email"></div>
+<div><span class="comp-state-label">Textarea</span><textarea class="ds-input" rows="3" placeholder="Write your message..."></textarea></div>
+</div>
+<p style="font-size:13px;color:#888;margin:16px 0 0">Focus: border → primary blue + 4px glow ring. Transition: 0.3s ease</p>
+</div>
+
+<!-- Navbar Demo -->
+<div class="comp-card reveal">
+<h3>Navbar <code>.ds-nav</code></h3>
+<div style="background:var(--dl-primary-night);border-radius:10px;padding:16px 24px;display:flex;align-items:center;gap:20px;overflow-x:auto">
+<span style="color:#fff;font-weight:700;font-size:18px;font-family:var(--font-alt)">Brand<span style="color:var(--dl-green)">.</span></span>
+<a href="#" style="color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:6px;transition:all .3s;background:rgba(51,182,255,.15);color:#fff">Home</a>
+<a href="#" style="color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:6px;transition:all .3s">About</a>
+<a href="#" style="color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:6px;transition:all .3s">Services</a>
+<a href="#" style="color:rgba(255,255,255,.65);font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:6px;transition:all .3s">Contact</a>
+<a class="ds-btn ds-btn--primary" href="#" style="margin-left:auto;padding:8px 20px;font-size:13px">Get Started</a>
+</div>
+</div>
+
+<!-- Badges -->
+<div class="comp-card reveal">
+<h3>Badges &amp; Tooltips</h3>
+<div class="comp-row">
+<span style="background:var(--dl-green);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px">Success</span>
+<span style="background:var(--dl-primary);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px">Info</span>
+<span style="background:#D80027;color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px">Error</span>
+<span style="background:var(--bz-accent);color:var(--bz-dark);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px">Warning</span>
+<span style="background:var(--dl-neutral-200);color:var(--dl-neutral-700);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px">Neutral</span>
+</div>
+<div style="margin-top:24px">
+<div style="position:relative;display:inline-block;background:var(--dl-primary-night);color:#fff;font-size:13px;padding:10px 18px;border-radius:8px;box-shadow:0 8px 25px rgba(4,1,37,.3)">Tooltip text goes here<div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid var(--dl-primary-night)"></div></div>
+</div>
+</div>
+
+<!-- Accordion (dLocal dropdown) -->
+<div class="comp-card reveal">
+<h3>Accordion / Dropdown <code>.c-solutions-dropdown</code></h3>
+<div style="background:var(--color-neutral-100); padding:2rem; border-radius:12px;">
+
+<ul class="c-solutions-dropdown"> 
+<li class="c-solutions-dropdown__item js-solutions-dropdown-item is-active" onclick="toggleDlocalAccordion(event, this)"> 
+<svg class="c-solutions-dropdown__arrow js-solutions-dropdown-close" height="27" viewbox="0 0 25 29" width="22" xmlns="http://www.w3.org/2000/svg"> 
+<path d="m23.9 15.8c-.6-.6-1.7-.6-2.3 0l-7.5 7.5v-21.2c0-.5-.2-.9-.5-1.2-.6-.6-1.8-.6-2.4 0-.3.3-.5.7-.5 1.2v21.2l-7.5-7.5c-.7-.7-1.7-.7-2.3 0-.7.7-.7 1.7 0 2.3l10.3 10.3c.2.2.3.3.5.4.2 0 .4.1.6.1s.5 0 .6-.1c.2 0 .3-.2.5-.4l10.3-10.3c.7-.7.7-1.7 0-2.3z" fill="#2d59f5"></path> 
+</svg> 
+<h3 class="c-solutions-dropdown__heading u-heading">
+<a class="c-solutions-dropdown__heading-link js-solutions-dropdown-btn" href="javascript:void(0)">
+Payins<span class="u-hidden-for-seo">: Accept local payment methods and boost conversion rates</span> 
+</a> 
+</h3> 
+<div class="c-solutions-dropdown__body"> 
+<div class="c-solutions-dropdown__wrap"> 
+<div class="c-solutions-dropdown__text"> 
+<p class="c-solutions-dropdown__title u-heading">
+Payins<span class="u-hidden-for-seo">: Accept local payment methods and boost conversion rates</span> 
+</p> 
+<p class="c-solutions-dropdown__subtitle u-heading">
+Accept local payment methods and boost conversion rates 
+</p> 
+<p class="c-solutions-dropdown__desc">With dynamic FX conversion, cross-border transactions, no transfer limits, and support for multiple alternative and instant payment methods, allow your customers in high-growth markets to pay how they know, and unlock new growth opportunities.</p> 
+<a class="c-solutions-dropdown__link c-link" href="#">
+Interested in Payins?
+<span class="c-link__arrow"></span> 
+</a> 
+</div> 
+<div class="c-solutions-dropdown__image"> 
+<picture class="c-solutions-dropdown__pic c-pic"> 
+<img alt="Payins" class="c-pic__img" height="320" loading="lazy" src="../../Downloads/bizmax-html.vercel.app/assets/service_1_6513d82fb8e8.jpeg" title="Payins" width="334"/> 
+</picture> 
+</div> 
+</div> 
+</div> 
+</li> 
+
+<li class="c-solutions-dropdown__item js-solutions-dropdown-item" onclick="toggleDlocalAccordion(event, this)"> 
+<svg class="c-solutions-dropdown__arrow js-solutions-dropdown-close" height="27" viewbox="0 0 25 29" width="22" xmlns="http://www.w3.org/2000/svg"> 
+<path d="m23.9 15.8c-.6-.6-1.7-.6-2.3 0l-7.5 7.5v-21.2c0-.5-.2-.9-.5-1.2-.6-.6-1.8-.6-2.4 0-.3.3-.5.7-.5 1.2v21.2l-7.5-7.5c-.7-.7-1.7-.7-2.3 0-.7.7-.7 1.7 0 2.3l10.3 10.3c.2.2.3.3.5.4.2 0 .4.1.6.1s.5 0 .6-.1c.2 0 .3-.2.5-.4l10.3-10.3c.7-.7.7-1.7 0-2.3z" fill="#2d59f5"></path> 
+</svg> 
+<h3 class="c-solutions-dropdown__heading u-heading">
+<a class="c-solutions-dropdown__heading-link js-solutions-dropdown-btn" href="javascript:void(0)">
+Payouts<span class="u-hidden-for-seo">: Send payments globally in local currency</span> 
+</a> 
+</h3> 
+<div class="c-solutions-dropdown__body"> 
+<div class="c-solutions-dropdown__wrap"> 
+<div class="c-solutions-dropdown__text"> 
+<p class="c-solutions-dropdown__title u-heading">
+Payouts<span class="u-hidden-for-seo">: Send payments globally in local currency</span> 
+</p> 
+<p class="c-solutions-dropdown__subtitle u-heading">
+Send payments globally in local currency 
+</p> 
+<p class="c-solutions-dropdown__desc">Pay your staff, customers, and partners in the currency of their choice. Streamlined payouts that enhance customer satisfaction and simplify your cross-border payment process across emerging markets.</p> 
+<a class="c-solutions-dropdown__link c-link" href="#">
+Interested in Payouts?
+<span class="c-link__arrow"></span> 
+</a> 
+</div> 
+<div class="c-solutions-dropdown__image"> 
+<picture class="c-solutions-dropdown__pic c-pic"> 
+<img alt="Payouts" class="c-pic__img" height="320" loading="lazy" src="../../Downloads/bizmax-html.vercel.app/assets/portfolio_1_2a143459b9e2.jpeg" title="Payouts" width="334"/> 
+</picture> 
+</div> 
+</div> 
+</div> 
+</li> 
+</ul>
+
+</div>
+</div>
+</section>
+
+<!-- ═══ ICONS ═══ -->
+<section id="icons" class="ds-section bg-light">
+<div class="ds-wrap">
+<p class="ds-label reveal">Section 04</p>
+<h2 class="ds-title reveal">Icon <span>System</span></h2>
+<p class="reveal" style="font-size:15px;color:#666;margin:-30px 0 30px">Font Awesome 6 icons from both reference designs. Hover to see dark mode.</p>
+<div class="icon-grid reveal">
+<div class="icon-item"><i class="fa-brands fa-facebook-f"></i><span>facebook-f</span></div>
+<div class="icon-item"><i class="fa-brands fa-twitter"></i><span>twitter</span></div>
+<div class="icon-item"><i class="fa-brands fa-linkedin-in"></i><span>linkedin-in</span></div>
+<div class="icon-item"><i class="fa-brands fa-dribbble"></i><span>dribbble</span></div>
+<div class="icon-item"><i class="fa-solid fa-arrow-right"></i><span>arrow-right</span></div>
+<div class="icon-item"><i class="fa-solid fa-chart-line"></i><span>chart-line</span></div>
+<div class="icon-item"><i class="fa-solid fa-user"></i><span>user</span></div>
+<div class="icon-item"><i class="fa-solid fa-comment-dots"></i><span>comment-dots</span></div>
+<div class="icon-item"><i class="fa-solid fa-angles-right"></i><span>angles-right</span></div>
+<div class="icon-item"><i class="fa-solid fa-expand"></i><span>expand</span></div>
+<div class="icon-item"><i class="fa-solid fa-arrow-up"></i><span>arrow-up</span></div>
+<div class="icon-item"><i class="fa-solid fa-arrow-left"></i><span>arrow-left</span></div>
+</div>
+<h3 class="color-group-title reveal" style="margin-top:40px">Size &amp; Color Variants</h3>
+<div class="comp-row reveal" style="align-items:center;gap:40px;margin-top:16px">
+<div style="text-align:center"><i class="fa-solid fa-arrow-right" style="font-size:14px"></i><br><code style="font-size:11px">14px</code></div>
+<div style="text-align:center"><i class="fa-solid fa-arrow-right" style="font-size:20px"></i><br><code style="font-size:11px">20px</code></div>
+<div style="text-align:center"><i class="fa-solid fa-arrow-right" style="font-size:28px"></i><br><code style="font-size:11px">28px</code></div>
+<div style="text-align:center"><i class="fa-solid fa-arrow-right" style="font-size:36px;color:var(--dl-primary)"></i><br><code style="font-size:11px">primary</code></div>
+<div style="text-align:center"><i class="fa-solid fa-arrow-right" style="font-size:36px;color:var(--dl-green)"></i><br><code style="font-size:11px">green</code></div>
+<div style="text-align:center;background:var(--dl-primary-night);padding:12px 16px;border-radius:8px"><i class="fa-solid fa-arrow-right" style="font-size:36px;color:#fff"></i><br><code style="font-size:11px;color:rgba(255,255,255,.5)">white</code></div>
+</div>
+</div>
+</section>
+
+<!-- ═══ MOTION ═══ -->
+<section id="motion" class="ds-section bg-dark">
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(16,67,250,.15),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(0,181,51,.08),transparent 50%);pointer-events:none"></div>
+<div class="ds-wrap" style="position:relative;z-index:2">
+<p class="ds-label reveal">Section 05</p>
+<h2 class="ds-title reveal">Motion &amp; <span style="color:var(--dl-accent)">Animation</span></h2>
+
+<h3 class="color-group-title reveal" style="color:rgba(255,255,255,.8)">Scroll Reveal Gallery — click to replay</h3>
+<div class="motion-grid reveal" style="margin-bottom:40px">
+<div class="motion-item" onclick="replayAnim(this,'fadeInLeft')" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)"><div class="motion-box"><i class="fa-solid fa-arrow-left"></i></div><h4 style="color:#fff">Fade In Left</h4><code>0.8s ease-out, delay 0.2s</code></div>
+<div class="motion-item" onclick="replayAnim(this,'fadeInUp')" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)"><div class="motion-box"><i class="fa-solid fa-arrow-up"></i></div><h4 style="color:#fff">Fade In Up</h4><code>0.8s ease-out, delay 0.2s</code></div>
+<div class="motion-item" onclick="replayAnim(this,'fadeInRight')" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)"><div class="motion-box"><i class="fa-solid fa-arrow-right"></i></div><h4 style="color:#fff">Fade In Right</h4><code>0.8s ease-out, delay 0.4s</code></div>
+<div class="motion-item" onclick="replayAnim(this,'glowPulse')" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)"><div class="motion-box"><i class="fa-solid fa-sun"></i></div><h4 style="color:#fff">Glow Pulse</h4><code>2s infinite, box-shadow</code></div>
+</div>
+
+<h3 class="color-group-title reveal" style="color:rgba(255,255,255,.8)">Transition Tokens</h3>
+<table class="typo-table reveal" style="margin-bottom:40px">
+<tr style="border-color:rgba(255,255,255,.08)"><td style="color:var(--dl-accent)">Fast</td><td style="color:rgba(255,255,255,.7)">Hover states, focus rings, tooltip show</td><td style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)">0.2s ease</td></tr>
+<tr style="border-color:rgba(255,255,255,.08)"><td style="color:var(--dl-accent)">Normal</td><td style="color:rgba(255,255,255,.7)">Buttons, icons, inputs, badges</td><td style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)">0.3s ease</td></tr>
+<tr style="border-color:rgba(255,255,255,.08)"><td style="color:var(--dl-accent)">Smooth</td><td style="color:rgba(255,255,255,.7)">Cards, overlays, social reveals</td><td style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)">0.4s cubic-bezier(.22,.61,.36,1)</td></tr>
+<tr style="border-color:rgba(255,255,255,.08)"><td style="color:var(--dl-accent)">Slow</td><td style="color:rgba(255,255,255,.7)">Image zoom, portfolio overlays</td><td style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)">0.6s ease-out</td></tr>
+<tr style="border-color:rgba(255,255,255,.08)"><td style="color:var(--dl-accent)">Infinite</td><td style="color:rgba(255,255,255,.7)">Particles, floating circles, marquee</td><td style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)">8-12s linear infinite</td></tr>
+</table>
+
+<h3 class="color-group-title reveal" style="color:rgba(255,255,255,.8)">Interactive Hover Demos</h3>
+<div class="comp-row reveal" style="gap:30px;margin-top:16px">
+<div class="comp-state"><span class="comp-state-label" style="color:rgba(255,255,255,.5)">Button Ripple</span><a class="ds-btn ds-btn--primary" href="#">Hover Me <i class="fa-solid fa-arrow-right"></i></a></div>
+<div class="comp-state"><span class="comp-state-label" style="color:rgba(255,255,255,.5)">Card Lift</span><div class="ds-card" style="width:200px"><div class="ds-card-body"><h4 style="font-size:14px">Hover this card</h4><p style="font-size:12px;margin:0">translateY(-8px)</p></div></div></div>
+<div class="comp-state"><span class="comp-state-label" style="color:rgba(255,255,255,.5)">Outline Fill</span><a class="ds-btn ds-btn--outline" href="#">Hover Me</a></div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<div class="ds-footer">
+<p>Creative Design System — Fusion of <a href="../../Downloads/bizmax-html.vercel.app/index.html">Bizmax</a> layouts &amp; <a href="#">dLocal</a> colors · Auto-generated pattern library</p>
+</div>
+
+<!-- JS -->
+<script>
+// Scroll reveal
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+// Nav active
+document.addEventListener('scroll',()=>{const links=document.querySelectorAll('.ds-nav a');const y=window.scrollY+100;links.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s&&s.offsetTop<=y&&s.offsetTop+s.offsetHeight>y){links.forEach(l=>l.classList.remove('active'));a.classList.add('active')}})});
+
+// Motion replay
+function replayAnim(el,name){const box=el.querySelector('.motion-box');box.style.animation='none';box.offsetHeight;box.style.animation=name+' 0.8s both'}
+
+// Hero Slider
+let currentHeroSlide = 0;
+function showHeroSlide(index) {
+  const slides = document.querySelectorAll('#heroSlider .hero-video-bg');
+  if (!slides.length) return;
+  slides.forEach(s => s.classList.remove('active'));
+  currentHeroSlide = (index + slides.length) % slides.length;
+  slides[currentHeroSlide].classList.add('active');
+}
+function nextHeroSlide() { showHeroSlide(currentHeroSlide + 1); }
+function prevHeroSlide() { showHeroSlide(currentHeroSlide - 1); }
+
+// Accordion (dLocal version)
+function toggleDlocalAccordion(e, element) {
+  // Check if clicked element was a nested link
+  if (e.target.closest('a') && !e.target.classList.contains('c-solutions-dropdown__heading-link')) {
+    return;
+  }
+  const item = element.closest('.c-solutions-dropdown__item');
+  const allItems = document.querySelectorAll('.c-solutions-dropdown__item');
+  
+  if (item.classList.contains('is-active')) {
+    item.classList.remove('is-active');
+    return;
+  }
+  
+  allItems.forEach(i => i.classList.remove('is-active'));
+  item.classList.add('is-active');
+}
+</script>
+</body></html>
