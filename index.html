@@ -522,6 +522,83 @@
       box-shadow: var(--shadow-md);
     }
 
+    /* Reflexo de luz no hover (ponto7.site design-system .ds-btn--primary) — azul: mais lento */
+    .btn-primary::before,
+    .navbar-cta::before,
+    .btn-about-cta::before,
+    .steps-slide__cta::before,
+    .features-tab-btn.active::before,
+    .pricing-plan-item.is-active::before,
+    .pricing-toggle__btn.is-active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+      transition: left 0.95s ease;
+      pointer-events: none;
+    }
+
+    .btn-primary:hover::before,
+    .navbar-cta:hover::before,
+    .btn-about-cta:hover::before,
+    .steps-slide__cta:hover::before,
+    .features-tab-btn.active:hover::before,
+    .pricing-plan-item.is-active:hover::before,
+    .pricing-toggle__btn.is-active:hover::before {
+      left: 100%;
+    }
+
+    /* Botões com fundo claro/branco: reflexo mais lento e leve tom azulado */
+    .btn-outline::before,
+    .btn-banner-ghost::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(36, 105, 254, 0.14), transparent);
+      transition: left 1.25s ease;
+      pointer-events: none;
+    }
+
+    .btn-banner-ghost::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+    }
+
+    .btn-outline:hover::before,
+    .btn-banner-ghost:hover::before {
+      left: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn-primary::before,
+      .navbar-cta::before,
+      .btn-about-cta::before,
+      .steps-slide__cta::before,
+      .features-tab-btn.active::before,
+      .pricing-plan-item.is-active::before,
+      .pricing-toggle__btn.is-active::before,
+      .btn-outline::before,
+      .btn-banner-ghost::before {
+        transition: none;
+      }
+      .btn-primary:hover::before,
+      .navbar-cta:hover::before,
+      .btn-about-cta:hover::before,
+      .steps-slide__cta:hover::before,
+      .features-tab-btn.active:hover::before,
+      .pricing-plan-item.is-active:hover::before,
+      .pricing-toggle__btn.is-active:hover::before,
+      .btn-outline:hover::before,
+      .btn-banner-ghost:hover::before {
+        left: -100%;
+      }
+    }
+
     /* =========================================
        LOGO MARQUEE
        ========================================= */
@@ -1011,6 +1088,8 @@
 
     /* About CTA button — themed green like the reference */
     .btn-about-cta {
+      position: relative;
+      overflow: hidden;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -1596,6 +1675,8 @@
     }
 
     .features-tab-btn {
+      position: relative;
+      overflow: hidden;
       font-family: var(--font-body);
       font-size: 13px;
       font-weight: 600;
@@ -2147,6 +2228,26 @@
       font-family: var(--font-body);
       will-change: opacity, transform, filter;
       backface-visibility: hidden;
+      transition:
+        transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.45s ease,
+        background 0.35s ease,
+        border-color 0.35s ease,
+        filter 0.45s ease;
+    }
+
+    @keyframes bannerCtaBtnFloat {
+      0%,
+      100% {
+        transform: translateY(-4px);
+      }
+      50% {
+        transform: translateY(-9px);
+      }
+    }
+
+    .banner-cta-actions .btn:hover {
+      animation: bannerCtaBtnFloat 2.1s ease-in-out infinite;
     }
 
     .banner-cta-actions .btn-primary {
@@ -2297,6 +2398,10 @@
         animation: none;
         filter: none;
       }
+
+      .banner-cta-actions .btn:hover {
+        animation: none;
+      }
     }
 
     @media (max-width: 640px) {
@@ -2393,6 +2498,8 @@
 
     /* Lista tipo bento / cards DS: branco + borda */
     .pricing-plan-item {
+      position: relative;
+      overflow: hidden;
       width: 100%;
       display: flex;
       align-items: center;
@@ -2455,6 +2562,7 @@
 
     .pricing-toggle__btn {
       position: relative;
+      overflow: hidden;
       z-index: 1;
       border: none;
       padding: 10px 22px;
@@ -3098,6 +3206,8 @@
     }
 
     .steps-slide__cta {
+      position: relative;
+      overflow: hidden;
       display: inline-flex;
       align-items: center;
       gap: 8px;
