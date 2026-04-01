@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ponto7 — Seu Assistente de Residência Médica com IA</title>
+  <title>Medpro — Seu Assistente de Residência Médica com IA</title>
   <meta name="description" content="Construa e valide seu currículo de residência médica com inteligência artificial. Automatize a leitura de certificados e editais.">
 
   <!-- Fonts: Space Grotesk & Inter -->
@@ -70,7 +70,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
-      scroll-padding-top: clamp(80px, 14vh, 104px);
+      scroll-padding-top: clamp(92px, 16vh, 120px);
     }
 
     body {
@@ -91,101 +91,165 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
-      width: min(max-content, calc(100vw - 24px));
+      width: min(1180px, calc(100vw - 24px));
       max-width: 1180px;
+      box-sizing: border-box;
       background: rgba(255, 255, 255, 0.80);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--color-border);
-      border-radius: 48px;
-      padding: 10px 18px 10px 22px;
+      border-radius: 52px;
+      padding: 12px 26px 12px 30px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 20px 28px;
       box-shadow: var(--shadow-sm);
       opacity: 0;
       animation: navReveal 1s 0.2s var(--ease-out-expo) forwards;
     }
 
+    .site-header {
+      position: relative;
+      z-index: 100;
+    }
+
     .navbar-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
       text-decoration: none;
       margin-right: auto;
+      flex-shrink: 0;
     }
-    .navbar-logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--color-primary-base), var(--color-primary-dark));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-family: var(--font-display);
-      font-size: 16px;
-      box-shadow: 0 2px 8px rgba(36,105,254,0.3);
-    }
-    .navbar-logo-text {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--text-main);
-      letter-spacing: -0.02em;
+
+    .navbar-logo-img {
+      display: block;
+      height: 44px;
+      width: auto;
+      max-width: min(100%, 300px);
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
     .navbar-links {
       display: flex;
       align-items: center;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       justify-content: flex-end;
-      gap: 20px;
-      flex-shrink: 0;
+      gap: 8px 22px;
+      flex: 1;
+      min-width: 0;
     }
 
-    /* Hover alinhado ao .ds-nav do dlocal.com/design-system.html */
-    .navbar-links a {
+    /* Hover alinhado ao .ds-nav — não afeta o CTA (design system .c-btn-primary) */
+    .navbar-links > a:not(.navbar-cta) {
       text-decoration: none;
       color: #555;
       font-weight: 600;
       font-size: 14px;
-      padding: 8px 4px;
+      padding: 8px 6px;
       border-radius: 0;
       transition: color 0.2s ease;
       white-space: nowrap;
     }
-    .navbar-links a:hover {
+    .navbar-links > a:not(.navbar-cta):hover {
       color: #000;
       background: transparent;
     }
-    .navbar-links a:focus-visible {
+    .navbar-links > a:not(.navbar-cta):focus-visible {
       outline: 2px solid var(--color-primary-base);
       outline-offset: 3px;
       border-radius: 2px;
     }
 
+    /* Igual a .c-btn + .c-btn-primary em @assets/design_system.html */
     .navbar-cta {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 24px;
+      padding: 16px 36px;
       border-radius: 48px;
-      background: linear-gradient(180deg, var(--color-primary-base) 0%, var(--color-primary-dark) 100%);
-      color: var(--text-inverse);
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       text-decoration: none;
-      border: none;
-      cursor: pointer;
       transition: var(--transition-base);
-      box-shadow: 0 4px 14px rgba(36, 105, 254, 0.3);
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid transparent;
+      background: linear-gradient(180deg, var(--color-primary-base) 0%, var(--color-primary-dark) 100%);
+      color: var(--color-white);
+      box-shadow: 0 4px 14px 0 rgba(36, 105, 254, 0.39);
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .navbar-cta:hover {
+      box-shadow: 0 6px 20px rgba(36, 105, 254, 0.23);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(36, 105, 254, 0.4);
+    }
+    .navbar-cta:focus-visible {
+      outline: 2px solid var(--color-primary-base);
+      outline-offset: 3px;
+    }
+
+    .navbar-burger {
+      display: none;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .navbar-burger:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .navbar-burger:focus-visible {
+      outline: 2px solid var(--color-primary-base);
+      outline-offset: 2px;
+    }
+    .navbar-burger-lines {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      width: 22px;
+    }
+    .navbar-burger-lines span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      border-radius: 1px;
+      background: currentColor;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .navbar-burger.is-open .navbar-burger-lines span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .navbar-burger.is-open .navbar-burger-lines span:nth-child(2) {
+      opacity: 0;
+    }
+    .navbar-burger.is-open .navbar-burger-lines span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .navbar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(15, 23, 42, 0.32);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .navbar-overlay:not([hidden]) {
+      display: block;
     }
 
     @keyframes navReveal {
@@ -614,27 +678,12 @@
       margin-bottom: 16px;
     }
 
-    .site-footer__logo-icon {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, var(--color-primary-base), var(--color-primary-dark));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-inverse);
-      font-weight: 700;
-      font-family: var(--font-display);
-      font-size: 17px;
-      box-shadow: 0 2px 10px rgba(36, 105, 254, 0.28);
-    }
-
-    .site-footer__logo-text {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 20px;
-      color: var(--text-main);
-      letter-spacing: -0.02em;
+    .site-footer__logo-img {
+      display: block;
+      height: 40px;
+      width: auto;
+      max-width: 220px;
+      object-fit: contain;
     }
 
     .site-footer__tagline {
@@ -764,10 +813,45 @@
       .site-footer__grid {
         grid-template-columns: 1fr;
         gap: 40px;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .site-footer__brand,
+      .site-footer__contact,
+      .site-footer__quick {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .site-footer__logo {
+        justify-content: center;
       }
 
       .site-footer__tagline {
         max-width: 100%;
+      }
+
+      .site-footer__socials {
+        justify-content: center;
+      }
+
+      .site-footer__contact-list {
+        align-items: center;
+        width: 100%;
+      }
+
+      .site-footer__contact-link {
+        justify-content: center;
+      }
+
+      .site-footer__nav-list {
+        align-items: center;
       }
     }
 
@@ -2173,9 +2257,9 @@
       opacity: 1;
       transform: translateY(0);
       transition:
-        opacity 1s var(--ease-out-expo),
-        transform 1s var(--ease-out-expo);
-      transition-delay: var(--banner-desc-delay, 0.75s);
+        opacity 0.85s var(--ease-out-expo),
+        transform 0.85s var(--ease-out-expo);
+      transition-delay: var(--banner-desc-delay, 0.32s);
     }
 
     html.js .banner-cta-section:not(.is-revealed) .banner-cta-actions .btn {
@@ -2185,15 +2269,8 @@
     }
 
     html.js .banner-cta-section.is-revealed .banner-cta-actions .btn {
-      animation: bannerCtaBtnIn 1.12s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-    }
-
-    html.js .banner-cta-section.is-revealed .banner-cta-actions .btn:nth-child(1) {
-      animation-delay: var(--banner-actions-delay, 0.95s);
-    }
-
-    html.js .banner-cta-section.is-revealed .banner-cta-actions .btn:nth-child(2) {
-      animation-delay: calc(var(--banner-actions-delay, 0.95s) + 0.32s);
+      animation: bannerCtaBtnIn 0.95s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+      animation-delay: var(--banner-actions-delay, 0.32s);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -3517,10 +3594,65 @@
        ========================================= */
     @media (max-width: 900px) {
       .navbar {
-        padding: 8px 8px 8px 16px;
-        gap: 4px;
+        padding: 10px 14px 10px 18px;
+        gap: 12px;
+        justify-content: space-between;
       }
-      .navbar-links { display: none; }
+      .navbar-logo {
+        margin-right: 0;
+      }
+      .navbar-logo-img {
+        height: 40px;
+        max-width: min(100%, 260px);
+      }
+      .navbar-burger {
+        display: inline-flex;
+      }
+      .navbar-links {
+        display: none;
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        top: calc(20px + 10px + 40px + 10px + 14px);
+        z-index: 95;
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        flex: none;
+        min-width: 0;
+        gap: 0;
+        padding: 12px 8px;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+        max-height: min(70vh, 520px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .navbar.is-menu-open .navbar-links {
+        display: flex;
+      }
+      .navbar-links > a:not(.navbar-cta) {
+        display: block;
+        padding: 14px 16px;
+        font-size: 15px;
+        border-radius: 12px;
+        white-space: normal;
+      }
+      .navbar-links > a:not(.navbar-cta):hover {
+        background: rgba(0, 0, 0, 0.04);
+      }
+      .navbar-cta {
+        margin-top: 8px;
+        text-align: center;
+        justify-content: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
 
       .steps-progress {
         display: block;
@@ -3635,24 +3767,44 @@
 <body>
   <div class="global-spotlight" id="global-spotlight"></div>
 
-  <!-- ============ NAVBAR ============ -->
-  <nav class="navbar" id="navbar">
-    <a href="#" class="navbar-logo">
-      <div class="navbar-logo-icon">P7</div>
-      <span class="navbar-logo-text">Ponto7</span>
-    </a>
+  <!-- ============ HEADER / NAVBAR ============ -->
+  <header class="site-header">
+    <nav class="navbar" id="navbar" aria-label="Principal">
+      <a href="#hero" class="navbar-logo">
+        <img
+          class="navbar-logo-img"
+          src="@assets/Logo%20do%20site.webp"
+          alt="Medpro"
+          width="220"
+          height="44"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </a>
 
-    <div class="navbar-links">
-      <a href="#about">Quem somos</a>
+    <div class="navbar-links" id="navbar-menu">
+      <a href="#about">O que fazemos</a>
       <a href="#steps">Como funciona</a>
       <a href="#solution">Solução</a>
       <a href="#funcionalidades">Funcionalidades</a>
       <a href="#testimonials">Depoimentos</a>
       <a href="#pricing">Planos</a>
+      <a href="#" class="navbar-cta">Começar Agora</a>
     </div>
-
-    <a href="#" class="navbar-cta">Começar Agora</a>
-  </nav>
+      <button
+        type="button"
+        class="navbar-burger"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="navbar-menu"
+      >
+        <span class="navbar-burger-lines" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+    </nav>
+    <div class="navbar-overlay" id="navbar-overlay" hidden></div>
+  </header>
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
@@ -3773,25 +3925,25 @@
       <div class="hero-dashboard-wrapper">
         <div class="hero-dashboard" id="hero-dashboard">
           <img src="@assets/hero-dashboard.png" 
-               alt="Ponto7 Dashboard — Design Sprint Timeline" 
+               alt="Medpro Dashboard — Design Sprint Timeline" 
                loading="eager">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ QUEM SOMOS ============ -->
+  <!-- ============ O QUE FAZEMOS ============ -->
   <section class="about-section" id="about">
     <div class="about-wrapper">
       <!-- Left Column: Text -->
       <div class="about-text">
-        <span class="about-label about-fade-up">Quem Somos</span>
+        <span class="about-label about-fade-up">O que fazemos</span>
         <h1 class="about-heading about-fade-up about-stagger-1">
-          Tecnologia que transforma carreiras médicas.
+          Certificados à pontuação com IA.
         </h1>
         <p class="about-description about-fade-up about-stagger-2">
-          O Ponto7 nasceu da dor real de quem já passou pelo processo seletivo de residência médica. Combinamos inteligência artificial e análise de editais para automatizar o que sempre foi manual.
-          <strong>Seu foco é estudar — o currículo fica com a gente.</strong>
+          A <strong>Medpro Residência</strong> existe para quem disputa vaga em programa de residência médica: centralizamos seus documentos, aplicamos as regras de pontuação dos editais de referência e traduzimos tudo em score claro e auditável — para você saber onde reforçar o currículo antes da inscrição.
+          <strong>Seu foco é estudar; nós estruturamos o currículo com você.</strong>
         </p>
         <div class="about-cta-group about-fade-up about-stagger-3">
           <a href="#" class="btn-about-cta" id="cta-about">
@@ -3821,7 +3973,7 @@
 
         <!-- Circular portrait -->
         <div class="about-portrait">
-          <img src="@assets/quem-somos-portrait.png" alt="Estudante de medicina usando o Ponto7" loading="lazy">
+          <img src="@assets/quem-somos-portrait.png" alt="Estudante de medicina usando a Medpro Residência" loading="lazy">
         </div>
       </div>
     </div>
@@ -4346,7 +4498,7 @@
           <div class="features-text-col">
             <p class="features-label">Funcionalidades</p>
             <h1 class="features-title">Pontuação automática<br>alinhada ao edital</h1>
-            <p class="features-desc">O Ponto7 calcula seus pontos conforme regras de editais de referência. Menos planilhas, mais transparência em cada etapa do processo.</p>
+            <p class="features-desc">O Medpro calcula seus pontos conforme regras de editais de referência. Menos planilhas, mais transparência em cada etapa do processo.</p>
             <a href="#steps" class="btn btn-primary features-main-cta">Ver como funciona
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -4515,7 +4667,7 @@
     <div class="testimonials-wrap">
       <div class="testimonials-header">
         <span class="testimonials-label">Depoimentos</span>
-        <h1 class="testimonials-heading">Resultados reais de quem usou o Ponto7.</h1>
+        <h1 class="testimonials-heading">Resultados reais de quem usou o Medpro.</h1>
         <p class="testimonials-subtitle">
           Médicos de diferentes fases da preparação já reduziram retrabalho, organizaram seus documentos e ganharam clareza de pontuação.
         </p>
@@ -4722,7 +4874,7 @@
                 <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" alt="Dra. Fernanda">
                 <div><div class="testi-card__name">Dra. Fernanda I.</div><div class="testi-card__role">@fernandai</div></div>
               </div>
-              <p class="testi-card__text">"Com o Ponto7 eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."</p>
+              <p class="testi-card__text">"Com o Medpro eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."</p>
             </article>
             <article class="testi-card">
               <div class="testi-card__head">
@@ -4759,7 +4911,7 @@
                 <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" alt="Dra. Fernanda">
                 <div><div class="testi-card__name">Dra. Fernanda I.</div><div class="testi-card__role">@fernandai</div></div>
               </div>
-              <p class="testi-card__text">"Com o Ponto7 eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."</p>
+              <p class="testi-card__text">"Com o Medpro eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."</p>
             </article>
             <article class="testi-card">
               <div class="testi-card__head">
@@ -4786,7 +4938,7 @@
     <div class="banner-cta-overlay" aria-hidden="true"></div>
     <div class="banner-cta-inner">
       <div class="banner-cta-card">
-        <p class="banner-cta-label">Ponto7 · currículo com IA</p>
+        <p class="banner-cta-label">Medpro · currículo com IA</p>
         <h1 class="banner-cta-title" id="banner-cta-title">Simplifique a montagem do seu currículo de residência</h1>
         <p class="banner-cta-desc">
           Envie certificados, valide por edital e acompanhe sua pontuação em tempo real — com segurança para você focar na aprovação.
@@ -5018,8 +5170,15 @@
       <div class="site-footer__grid">
         <div class="site-footer__brand">
           <a href="#hero" class="site-footer__logo">
-            <span class="site-footer__logo-icon" aria-hidden="true">P7</span>
-            <span class="site-footer__logo-text">Ponto7</span>
+            <img
+              class="site-footer__logo-img"
+              src="@assets/Logo%20do%20site.webp"
+              alt="Medpro"
+              width="180"
+              height="40"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <p class="site-footer__tagline">
             Assistente de currículo para residência médica com IA: organize certificados, valide por edital e acompanhe sua pontuação com clareza.
@@ -5049,11 +5208,11 @@
               </a>
             </li>
             <li>
-              <a class="site-footer__contact-link" href="mailto:contato@ponto7.com.br">
+              <a class="site-footer__contact-link" href="mailto:contato@medpro.com.br">
                 <span class="site-footer__contact-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 </span>
-                <span>contato@ponto7.com.br</span>
+                <span>contato@medpro.com.br</span>
               </a>
             </li>
           </ul>
@@ -5062,7 +5221,7 @@
         <nav class="site-footer__quick" aria-label="Links rápidos">
           <p class="site-footer__col-title">Links rápidos</p>
           <ul class="site-footer__nav-list">
-            <li><a href="#about">Quem somos</a></li>
+            <li><a href="#about">O que fazemos</a></li>
             <li><a href="#steps">Como funciona</a></li>
             <li><a href="#solution">Solução</a></li>
             <li><a href="#funcionalidades">Funcionalidades</a></li>
@@ -5072,7 +5231,7 @@
         </nav>
       </div>
       <div class="site-footer__bottom">
-        <p>© 2026 Ponto7. Todos os direitos reservados.</p>
+        <p>© 2026 Medpro. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer>
@@ -5081,7 +5240,7 @@
   <script>
     document.documentElement.classList.add('js');
 
-    // Banner + CTA: letras no título + entrada em sequência (IntersectionObserver)
+    // Banner + CTA: letras no título; texto e botões entram no mesmo instante da primeira letra
     (function initBannerCtaReveal() {
       const section = document.querySelector('.banner-cta-section');
       const titleEl = document.querySelector('#banner-cta-title');
@@ -5104,11 +5263,9 @@
         span.textContent = ch === ' ' ? '\u00A0' : ch;
         titleEl.appendChild(span);
       });
-      const n = fullText.length;
-      const charStagger = 0.052;
-      const titleAnimEnd = 0.32 + n * charStagger + 0.95;
-      section.style.setProperty('--banner-desc-delay', `${titleAnimEnd + 0.12}s`);
-      section.style.setProperty('--banner-actions-delay', `${titleAnimEnd + 0.28}s`);
+      const titleStartDelay = 0.32;
+      section.style.setProperty('--banner-desc-delay', `${titleStartDelay}s`);
+      section.style.setProperty('--banner-actions-delay', `${titleStartDelay}s`);
 
       const io = new IntersectionObserver(
         (entries) => {
@@ -5430,6 +5587,40 @@
 
     // 1. Navbar scroll effect — adds shadow on scroll
     const navbar = document.getElementById('navbar');
+
+    (function initNavbarMobileMenu() {
+      const burger = document.querySelector('.navbar-burger');
+      const menu = document.getElementById('navbar-menu');
+      const overlay = document.getElementById('navbar-overlay');
+      if (!burger || !menu || !overlay || !navbar) return;
+
+      function setMenuOpen(open) {
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+        burger.classList.toggle('is-open', open);
+        navbar.classList.toggle('is-menu-open', open);
+        overlay.hidden = !open;
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+
+      burger.addEventListener('click', () => {
+        setMenuOpen(burger.getAttribute('aria-expanded') !== 'true');
+      });
+
+      overlay.addEventListener('click', () => setMenuOpen(false));
+
+      menu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => setMenuOpen(false));
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setMenuOpen(false);
+      });
+
+      window.matchMedia('(min-width: 901px)').addEventListener('change', (e) => {
+        if (e.matches) setMenuOpen(false);
+      });
+    })();
 
     // Hero iframe fade-in after load
     const heroIframe = document.querySelector('.hero-video-container iframe');

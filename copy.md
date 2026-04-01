@@ -1,4 +1,4 @@
-# Copy do site — Ponto7 (`index.html`)
+# Copy do site — Medpro (`index.html`)
 
 Este arquivo é a **fonte editorial** dos textos da homepage.  
 **Como usar:** edite os campos abaixo mantendo os **IDs de seção** e os **nomes dos campos**. Depois avise no chat para sincronizar o `index.html` (e o objeto `PRICING_PLANS` no JS, quando aplicável).
@@ -14,15 +14,14 @@ Este arquivo é a **fonte editorial** dos textos da homepage.
 
 ## `meta` (head)
 
-- **title:** Ponto7 — Seu Assistente de Residência Médica com IA
+- **title:** Medpro — Seu Assistente de Residência Médica com IA
 - **meta_description:** Construa e valide seu currículo de residência médica com inteligência artificial. Automatize a leitura de certificados e editais.
 
 ---
 
 ## `navbar`
 
-- **logo_abrev:** P7
-- **logo_texto:** Ponto7
+- **logo_img:** `@assets/Logo do site.webp` (navbar + footer; `alt` Medpro; no HTML usar `Logo%20do%20site.webp` se o servidor não aceitar espaço na URL)
 - **link_sobre:** Sobre
 - **link_solucao:** Solução
 - **link_planos:** Planos
@@ -46,17 +45,17 @@ Este arquivo é a **fonte editorial** dos textos da homepage.
   - HC-FMUSP
   - ENARE
   - SUS-SP
-- **dashboard_img_alt:** Ponto7 Dashboard — Design Sprint Timeline
+- **dashboard_img_alt:** Medpro Dashboard — Design Sprint Timeline
 
 ---
 
 ## `about` (#about)
 
-- **label:** Quem Somos
-- **h1:** Tecnologia que transforma carreiras médicas.
-- **p:** O Ponto7 nasceu da dor real de quem já passou pelo processo seletivo de residência médica. Combinamos inteligência artificial e análise de editais para automatizar o que sempre foi manual. **Seu foco é estudar — o currículo fica com a gente.** (manter `<strong>` em volta da segunda frase se quiser o mesmo destaque)
+- **label:** O que fazemos
+- **h1:** Certificados à pontuação com IA.
+- **p:** A **Medpro Residência** existe para quem disputa vaga em programa de residência médica: centralizamos seus documentos, aplicamos as regras de pontuação dos editais de referência e traduzimos tudo em score claro e auditável — para você saber onde reforçar o currículo antes da inscrição. **Seu foco é estudar; nós estruturamos o currículo com você.** (primeira menção à marca em `<strong>`; segunda frase em `<strong>` para destaque)
 - **cta:** Conhecer a Plataforma
-- **portrait_img_alt:** Estudante de medicina usando o Ponto7
+- **portrait_img_alt:** Estudante de medicina usando a Medpro Residência
 
 ---
 
@@ -230,7 +229,7 @@ Este arquivo é a **fonte editorial** dos textos da homepage.
 - **tab_btn:** Pontuação Automática
 - **label:** Funcionalidades
 - **h1:** Pontuação automática<br>alinhada ao edital
-- **p:** O Ponto7 calcula seus pontos conforme regras de editais de referência. Menos planilhas, mais transparência em cada etapa do processo.
+- **p:** O Medpro calcula seus pontos conforme regras de editais de referência. Menos planilhas, mais transparência em cada etapa do processo.
 - **cta:** Ver como funciona
 - **card_a_h3:** Critérios por instituição
 - **card_a_p:** Editais USP, UNIFESP, ENARE e outros mapeados em regras de pontuação que você pode auditar a qualquer momento.
@@ -295,7 +294,7 @@ Este arquivo é a **fonte editorial** dos textos da homepage.
 ## `testimonials` (#testimonials)
 
 - **label:** Depoimentos
-- **h1:** Resultados reais de quem usou o Ponto7.
+- **h1:** Resultados reais de quem usou o Medpro.
 - **p:** Médicos de diferentes fases da preparação já reduziram retrabalho, organizaram seus documentos e ganharam clareza de pontuação.
 
 **nota:** No HTML há **cópias duplicadas** dos mesmos cards para o carrossel. Ao alterar, mantenha as mesmas frases nas duplicatas ou peça sincronização no chat.
@@ -384,7 +383,7 @@ Este arquivo é a **fonte editorial** dos textos da homepage.
 
 - **nome:** Dra. Fernanda I.
 - **role:** @fernandai
-- **quote:** "Com o Ponto7 eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."
+- **quote:** "Com o Medpro eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."
 
 **15**
 
@@ -397,7 +396,7 @@ Este arquivo é a **fonte editorial** dos textos da homepage.
 ## `banner-cta` (#banner-cta)
 
 - **iframe_title:** Vídeo de fundo decorativo
-- **label:** Ponto7 · currículo com IA
+- **label:** Medpro · currículo com IA
 - **h1:** Simplifique a montagem do seu currículo de residência
 - **p:** Envie certificados, valide por edital e acompanhe sua pontuação em tempo real — com segurança para você focar na aprovação.
 - **cta_primario:** Criar minha conta
