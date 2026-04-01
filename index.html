@@ -69,6 +69,10 @@
        ========================================= */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      scroll-padding-top: clamp(80px, 14vh, 104px);
+    }
+
     body {
       background-color: var(--color-bg-base);
       color: var(--text-main);
@@ -87,15 +91,17 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
+      width: min(max-content, calc(100vw - 24px));
+      max-width: 1180px;
       background: rgba(255, 255, 255, 0.80);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--color-border);
       border-radius: 48px;
-      padding: 10px 12px 10px 24px;
+      padding: 10px 18px 10px 22px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       box-shadow: var(--shadow-sm);
       opacity: 0;
       animation: navReveal 1s 0.2s var(--ease-out-expo) forwards;
@@ -133,20 +139,31 @@
     .navbar-links {
       display: flex;
       align-items: center;
-      gap: 4px;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      gap: 20px;
+      flex-shrink: 0;
     }
+
+    /* Hover alinhado ao .ds-nav do dlocal.com/design-system.html */
     .navbar-links a {
       text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
+      color: #555;
+      font-weight: 600;
       font-size: 14px;
-      padding: 8px 16px;
-      border-radius: 24px;
-      transition: var(--transition-base);
+      padding: 8px 4px;
+      border-radius: 0;
+      transition: color 0.2s ease;
+      white-space: nowrap;
     }
     .navbar-links a:hover {
-      color: var(--text-main);
-      background: var(--color-bg-subtle);
+      color: #000;
+      background: transparent;
+    }
+    .navbar-links a:focus-visible {
+      outline: 2px solid var(--color-primary-base);
+      outline-offset: 3px;
+      border-radius: 2px;
     }
 
     .navbar-cta {
@@ -478,11 +495,47 @@
       display: flex;
       align-items: center;
       gap: 48px;
-      animation: marqueeScroll 25s linear infinite;
       width: max-content;
     }
+
+    /* Hero: uma única faixa (mantém comportamento anterior) */
+    .logo-marquee-wrapper:not(.logo-marquee-wrapper--dual-strip) .logo-marquee-track {
+      animation: marqueeScroll 25s linear infinite;
+    }
+
     .logo-marquee-track:hover {
       animation-play-state: paused;
+    }
+
+    /* Duas faixas full-width (ex.: abaixo de Valores / Planos) */
+    .trust-logos-section {
+      position: relative;
+      padding: 4px 0 clamp(28px, 4vw, 48px);
+      margin-top: -4px;
+      background: var(--color-bg-base);
+      overflow: hidden;
+    }
+
+    .trust-logos-section__rows {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .logo-marquee-wrapper--dual-strip {
+      max-width: none;
+      width: 100%;
+      margin: 0;
+      opacity: 1;
+      animation: none;
+    }
+
+    .logo-marquee-wrapper--dual-strip .logo-marquee-track--ltr {
+      animation: marqueeScrollLtr 32s linear infinite;
+    }
+
+    .logo-marquee-wrapper--dual-strip .logo-marquee-track--rtl {
+      animation: marqueeScroll 28s linear infinite;
     }
 
     .logo-item {
@@ -517,6 +570,205 @@
     @keyframes marqueeScroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
+    }
+
+    @keyframes marqueeScrollLtr {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo-marquee-wrapper--dual-strip .logo-marquee-track--ltr,
+      .logo-marquee-wrapper--dual-strip .logo-marquee-track--rtl {
+        animation: none;
+      }
+    }
+
+    /* =========================================
+       FOOTER
+       ========================================= */
+    .site-footer {
+      position: relative;
+      background: var(--color-white);
+      border-top: 1px solid var(--color-border);
+      padding: clamp(56px, 8vh, 88px) 24px 32px;
+    }
+
+    .site-footer__inner {
+      max-width: var(--wrapper-max);
+      margin: 0 auto;
+    }
+
+    .site-footer__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(40px, 6vw, 64px);
+      align-items: start;
+    }
+
+    .site-footer__logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 16px;
+    }
+
+    .site-footer__logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--color-primary-base), var(--color-primary-dark));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-inverse);
+      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 17px;
+      box-shadow: 0 2px 10px rgba(36, 105, 254, 0.28);
+    }
+
+    .site-footer__logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .site-footer__tagline {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 280px;
+      margin-bottom: 20px;
+    }
+
+    .site-footer__socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .site-footer__social {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-base);
+      color: var(--text-secondary);
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .site-footer__social:hover {
+      color: var(--color-primary-base);
+      border-color: rgba(36, 105, 254, 0.25);
+      background: var(--color-primary-ultralight);
+    }
+
+    .site-footer__social svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .site-footer__col-title {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-primary-base);
+      margin-bottom: 18px;
+    }
+
+    .site-footer__contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .site-footer__contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-main);
+      transition: color 0.2s ease;
+    }
+
+    .site-footer__contact-link:hover {
+      color: var(--color-primary-base);
+    }
+
+    .site-footer__contact-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      color: var(--color-primary-base);
+    }
+
+    .site-footer__contact-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .site-footer__nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .site-footer__nav-list a {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .site-footer__nav-list a:hover {
+      color: var(--text-main);
+    }
+
+    .site-footer__bottom {
+      margin-top: clamp(40px, 6vw, 56px);
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .site-footer__bottom p {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 900px) {
+      .site-footer__grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .site-footer__tagline {
+        max-width: 100%;
+      }
     }
 
     /* =========================================
@@ -1193,6 +1445,1321 @@
     .sol-stagger-7 { transition-delay: 0.35s; }
 
     /* =========================================
+       FUNCIONALIDADES SECTION (tabs + painéis)
+       ========================================= */
+    .features-section {
+      position: relative;
+      padding: clamp(60px, 10vh, 120px) 24px;
+      overflow: hidden;
+      min-height: 640px;
+      display: flex;
+      align-items: center;
+    }
+
+    .features-bg-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .features-bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.75s ease, transform 5s ease-out;
+      transform: scale(1.06);
+    }
+
+    .features-bg-img.active {
+      opacity: 0.22;
+      transform: scale(1);
+    }
+
+    .features-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(250, 250, 250, 0.96) 0%,
+        rgba(243, 246, 250, 0.94) 45%,
+        rgba(250, 250, 250, 0.9) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .features-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: var(--wrapper-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .features-tabs-nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .features-tab-btn {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo),
+        border-color 0.3s, color 0.3s, background 0.3s;
+      white-space: nowrap;
+    }
+
+    .features-tab-btn:hover {
+      color: var(--text-main);
+      border-color: rgba(36, 105, 254, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .features-tab-btn.active {
+      background: linear-gradient(180deg, var(--color-primary-base) 0%, var(--color-primary-dark) 100%);
+      color: var(--text-inverse);
+      border-color: transparent;
+      box-shadow: 0 6px 20px rgba(36, 105, 254, 0.35);
+    }
+
+    .features-tabs-progress-wrap {
+      display: none;
+      width: 100%;
+      max-width: 100%;
+      height: 4px;
+      background: var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: -24px 0 0;
+    }
+
+    .features-tabs-progress {
+      height: 100%;
+      width: 20%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--color-primary-base), var(--color-primary-dark));
+      transition: width 0.35s var(--ease-out-expo);
+    }
+
+    .features-panels-container {
+      position: relative;
+    }
+
+    .features-panel {
+      display: none;
+      grid-template-columns: 45% 1fr;
+      gap: 60px;
+      align-items: center;
+      opacity: 0;
+    }
+
+    .features-panel.active {
+      display: grid;
+      animation: fadeInPanel 0.6s 0.1s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    @keyframes fadeInPanel {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .features-text-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .features-label {
+      font-family: var(--font-body);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--color-primary-base);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .features-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.6vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin: 0 0 16px;
+    }
+
+    .features-desc {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text-muted);
+      margin: 0 0 28px;
+      max-width: 520px;
+    }
+
+    .features-main-cta {
+      gap: 10px;
+    }
+
+    .features-main-cta svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .features-cards-grid {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 24px;
+      margin-bottom: -24px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .features-cards-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .feat-card {
+      flex: 0 0 calc(50% - 8px);
+      scroll-snap-align: start;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 100%;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .features-panel.active .feat-card {
+      animation: featureCardUp 0.6s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+      animation-delay: var(--stagger-delay, 0s);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes featureCardUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(36, 105, 254, 0.12);
+    }
+
+    .feat-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary-ultralight);
+      color: var(--color-primary-base);
+    }
+
+    .feat-card__icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .feat-card__title {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .feat-card__text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin: 0;
+      flex: 1;
+    }
+
+    .feat-card__cta {
+      margin-top: 4px;
+    }
+
+    .feat-fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s var(--ease-out-expo), transform 0.75s var(--ease-out-expo);
+    }
+
+    .feat-fade-up.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .features-panel {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .features-text-col {
+        align-items: center;
+        text-align: center;
+      }
+      .features-desc {
+        max-width: 600px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .features-tabs-nav {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        margin: 0 -8px;
+        padding-left: 8px;
+        padding-right: 8px;
+        scrollbar-width: none;
+      }
+      .features-tabs-nav::-webkit-scrollbar {
+        display: none;
+      }
+      .features-tabs-progress-wrap {
+        display: block;
+      }
+      .feat-card {
+        flex: 0 0 min(100%, 320px);
+      }
+    }
+
+    /* =========================================
+       DEPOIMENTOS SECTION
+       ========================================= */
+    .testimonials-section {
+      position: relative;
+      padding: clamp(60px, 10vh, 120px) 24px;
+      background: var(--color-bg-base);
+      overflow: hidden;
+    }
+
+    .testimonials-wrap {
+      max-width: var(--wrapper-max);
+      margin: 0 auto;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .testimonials-label {
+      font-family: var(--font-body);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--color-primary-base);
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .testimonials-heading {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 4.2vw, 54px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--text-main);
+      margin-bottom: 14px;
+    }
+
+    .testimonials-subtitle {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .testimonials-columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .testi-marquee {
+      position: relative;
+      height: 430px;
+      overflow: hidden;
+      border-radius: 18px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    }
+
+    .testi-track {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      will-change: transform;
+      animation-duration: 34s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .testi-marquee--down .testi-track { animation-name: testiMoveDown; }
+    .testi-marquee--up .testi-track { animation-name: testiMoveUp; }
+    .testi-marquee--slow .testi-track { animation-duration: 38s; }
+    .testi-marquee--fast .testi-track { animation-duration: 30s; }
+
+    @keyframes testiMoveUp {
+      from { transform: translateY(0); }
+      to { transform: translateY(-50%); }
+    }
+
+    @keyframes testiMoveDown {
+      from { transform: translateY(-50%); }
+      to { transform: translateY(0); }
+    }
+
+    .testi-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .testi-card__head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .testi-card__avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .testi-card__name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .testi-card__role {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .testi-card__text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 1024px) {
+      .testimonials-columns {
+        grid-template-columns: 1fr 1fr;
+      }
+      .testimonials-columns .testi-marquee:last-child {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .testimonials-section { padding: clamp(40px, 8vh, 80px) 16px; }
+      .testimonials-columns { grid-template-columns: 1fr; }
+      .testimonials-columns .testi-marquee:last-child {
+        display: block;
+      }
+      .testi-marquee {
+        height: 360px;
+      }
+    }
+
+    /* =========================================
+       BANNER + CTA (vídeo + glass)
+       ========================================= */
+    .banner-cta-section {
+      position: relative;
+      min-height: min(90vh, 920px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--text-main);
+      padding: var(--section-y) 24px;
+    }
+
+    .banner-cta-video-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: var(--text-main);
+      pointer-events: none;
+    }
+
+    .banner-cta-video-wrap iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100%;
+      min-width: 177.77vh;
+      transform: translate(-50%, -50%) scale(1.08);
+      border: 0;
+      display: block;
+      opacity: 0;
+      transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .banner-cta-video-wrap iframe.is-loaded {
+      opacity: 1;
+    }
+
+    .banner-cta-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        135deg,
+        rgba(16, 15, 20, 0.88) 0%,
+        rgba(36, 105, 254, 0.38) 48%,
+        rgba(21, 212, 110, 0.14) 100%
+      );
+      pointer-events: none;
+    }
+
+    .banner-cta-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: var(--wrapper-max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .banner-cta-card {
+      width: 100%;
+      max-width: 820px;
+      padding: clamp(40px, 6vw, 60px) clamp(24px, 4vw, 56px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 32px;
+      box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      will-change: transform, opacity;
+    }
+
+    /* Label tipo pill: alto contraste sobre vídeo/overlay (DS: Inter, uppercase) */
+    .banner-cta-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: var(--text-inverse);
+      margin-bottom: 18px;
+      background: linear-gradient(
+        135deg,
+        rgba(36, 105, 254, 0.55) 0%,
+        rgba(23, 58, 225, 0.45) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.15),
+        0 10px 32px rgba(0, 0, 0, 0.28),
+        0 0 28px rgba(36, 105, 254, 0.35);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      will-change: opacity, transform;
+    }
+
+    .banner-cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin: 0 0 20px;
+      color: var(--text-inverse);
+    }
+
+    .banner-cta-title .banner-cta-char {
+      display: inline-block;
+      opacity: 1;
+      transform: none;
+    }
+
+    .banner-cta-desc {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.4vw, 18px);
+      font-weight: 400;
+      line-height: 1.65;
+      color: rgba(252, 252, 252, 0.82);
+      max-width: 640px;
+      margin: 0 0 36px;
+      will-change: opacity, transform;
+    }
+
+    .banner-cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .banner-cta-actions .btn {
+      font-family: var(--font-body);
+      will-change: opacity, transform, filter;
+      backface-visibility: hidden;
+    }
+
+    .banner-cta-actions .btn-primary {
+      box-shadow: var(--shadow-glow);
+    }
+
+    .banner-cta-actions .btn-primary:hover {
+      box-shadow: 0 14px 36px rgba(36, 105, 254, 0.55);
+    }
+
+    .btn-banner-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-inverse);
+      border: 2px solid rgba(216, 232, 255, 0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .btn-banner-ghost:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: var(--color-primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .banner-cta-actions .btn svg {
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      vertical-align: -3px;
+    }
+
+    @keyframes bannerCtaCharIn {
+      from {
+        opacity: 0;
+        transform: translateY(0.38em);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Entrada dos CTAs: subida + escala + leve “settle” (overshoot suave) */
+    @keyframes bannerCtaBtnIn {
+      0% {
+        opacity: 0;
+        transform: translateY(26px) scale(0.93);
+        filter: blur(5px);
+      }
+      58% {
+        opacity: 1;
+        transform: translateY(-6px) scale(1.02);
+        filter: blur(0);
+      }
+      82% {
+        transform: translateY(2px) scale(0.998);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    html.js .banner-cta-section:not(.is-revealed) .banner-cta-card {
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-card {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition:
+        opacity 0.75s var(--ease-out-expo),
+        transform 0.85s var(--ease-out-expo);
+    }
+
+    html.js .banner-cta-section:not(.is-revealed) .banner-cta-label {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-label {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 0.55s var(--ease-out-expo) 0.18s,
+        transform 0.55s var(--ease-out-expo) 0.18s;
+    }
+
+    html.js .banner-cta-section:not(.is-revealed) .banner-cta-title .banner-cta-char {
+      opacity: 0;
+      transform: translateY(0.38em);
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-title .banner-cta-char {
+      animation: bannerCtaCharIn 0.95s var(--ease-out-expo) forwards;
+      animation-delay: calc(0.32s + var(--i) * 0.052s);
+    }
+
+    html.js .banner-cta-section:not(.is-revealed) .banner-cta-desc {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-desc {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 1s var(--ease-out-expo),
+        transform 1s var(--ease-out-expo);
+      transition-delay: var(--banner-desc-delay, 0.75s);
+    }
+
+    html.js .banner-cta-section:not(.is-revealed) .banner-cta-actions .btn {
+      opacity: 0;
+      transform: translateY(26px) scale(0.93);
+      filter: blur(5px);
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-actions .btn {
+      animation: bannerCtaBtnIn 1.12s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-actions .btn:nth-child(1) {
+      animation-delay: var(--banner-actions-delay, 0.95s);
+    }
+
+    html.js .banner-cta-section.is-revealed .banner-cta-actions .btn:nth-child(2) {
+      animation-delay: calc(var(--banner-actions-delay, 0.95s) + 0.32s);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.js .banner-cta-section:not(.is-revealed) .banner-cta-card,
+      html.js .banner-cta-section:not(.is-revealed) .banner-cta-label,
+      html.js .banner-cta-section:not(.is-revealed) .banner-cta-desc,
+      html.js .banner-cta-section:not(.is-revealed) .banner-cta-actions .btn {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+
+      html.js .banner-cta-section:not(.is-revealed) .banner-cta-title .banner-cta-char {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+
+      html.js .banner-cta-section.is-revealed .banner-cta-title .banner-cta-char {
+        animation: none;
+      }
+
+      html.js .banner-cta-section.is-revealed .banner-cta-actions .btn {
+        animation: none;
+        filter: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .banner-cta-section {
+        min-height: auto;
+        padding: clamp(48px, 10vh, 80px) 16px;
+      }
+      .banner-cta-card {
+        border-radius: 24px;
+        padding: 32px 20px;
+      }
+      .banner-cta-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .banner-cta-actions .btn {
+        width: 100%;
+      }
+    }
+
+    /* =========================================
+       VALORES / PLANOS (alinhado ao DS: bento-card, ds-label, bg-base, primário)
+       ========================================= */
+    .pricing-section {
+      position: relative;
+      padding: var(--section-y) 24px;
+      background: radial-gradient(
+        ellipse 120% 80% at 100% 0%,
+        var(--color-primary-ultralight) 0%,
+        var(--color-bg-base) 55%
+      );
+      overflow-x: visible;
+      overflow-y: hidden;
+    }
+
+    /* Encostar a faixa de logos na seção de Valores */
+    .pricing-section:has(+ .trust-logos-section) {
+      padding-bottom: clamp(8px, 1.5vh, 16px);
+    }
+
+    .pricing-wrap {
+      max-width: var(--wrapper-max);
+      margin: 0 auto;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+      gap: clamp(32px, 5vw, 72px);
+      align-items: start;
+    }
+
+    /* Mesmo padrão .ds-label do design_system.html */
+    .pricing-label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-primary-base);
+      margin-bottom: 14px;
+    }
+
+    .pricing-heading {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3.8vw, 52px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .pricing-heading-accent {
+      color: var(--color-primary-base);
+    }
+
+    .pricing-lead {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.35vw, 18px);
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 32px;
+    }
+
+    .pricing-plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Lista tipo bento / cards DS: branco + borda */
+    .pricing-plan-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .pricing-plan-item:hover {
+      border-color: rgba(36, 105, 254, 0.22);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .pricing-plan-item.is-active {
+      background: linear-gradient(180deg, var(--color-primary-base) 0%, var(--color-primary-dark) 100%);
+      border-color: transparent;
+      color: var(--text-inverse);
+      box-shadow: var(--shadow-md), var(--shadow-glow);
+    }
+
+    .pricing-plan-item svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    .pricing-col--right {
+      position: relative;
+      overflow: visible;
+    }
+
+    .pricing-toggle-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .pricing-toggle {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+      gap: 4px;
+    }
+
+    .pricing-toggle__btn {
+      position: relative;
+      z-index: 1;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: var(--transition-base);
+    }
+
+    .pricing-toggle__btn:hover {
+      color: var(--color-primary-base);
+    }
+
+    .pricing-toggle__btn.is-active {
+      background: linear-gradient(180deg, var(--color-primary-base) 0%, var(--color-primary-dark) 100%);
+      color: var(--text-inverse);
+      box-shadow: 0 4px 14px rgba(36, 105, 254, 0.35);
+    }
+
+    .pricing-stack {
+      position: relative;
+      min-height: 540px;
+      width: min(100%, 560px);
+      margin-left: auto;
+      touch-action: manipulation;
+      user-select: none;
+      cursor: grab;
+      overflow: visible;
+    }
+
+    .pricing-stack.is-dragging {
+      cursor: grabbing;
+      touch-action: none;
+    }
+
+    .pricing-stack.is-dragging .pricing-stack-card {
+      transition: none !important;
+    }
+
+    .pricing-stack-card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      transition:
+        transform 0.58s var(--ease-out-expo),
+        opacity 0.58s var(--ease-out-expo),
+        filter 0.58s var(--ease-out-expo);
+      will-change: transform, opacity, filter;
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month {
+      z-index: 2;
+      transform: translateX(0) scale(1);
+      opacity: 1;
+      filter: blur(0);
+      pointer-events: auto;
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year {
+      z-index: 1;
+      transform: translateX(-108px) scale(0.9);
+      opacity: 0.78;
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year {
+      z-index: 2;
+      transform: translateX(0) scale(1);
+      opacity: 1;
+      filter: blur(0);
+      pointer-events: auto;
+    }
+
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month {
+      z-index: 1;
+      transform: translateX(-108px) scale(0.9);
+      opacity: 0.78;
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    .pricing-stack.is-swapping-billing .pricing-stack-card {
+      transition-duration: 0.5s;
+    }
+
+    /* Card da frente: opaco (bento-card DS) */
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-surface,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-surface {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 24px;
+      padding: clamp(24px, 3vw, 32px);
+      box-shadow: var(--shadow-md), 0 0 0 1px rgba(36, 105, 254, 0.08), var(--shadow-glow);
+      transition: box-shadow 0.45s var(--ease-out-expo), border-color 0.45s var(--ease-out-expo);
+    }
+
+    /* Card de trás: transparente + vidro (backdrop-blur-md do DS) */
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-surface,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-surface {
+      background: rgba(255, 255, 255, 0.42);
+      border: 1px solid rgba(236, 239, 243, 0.95);
+      border-radius: 24px;
+      padding: clamp(24px, 3vw, 32px);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: box-shadow 0.45s var(--ease-out-expo);
+    }
+
+    .pricing-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    /* Texto card frontal */
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-name,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-name {
+      color: var(--text-main);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-price,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-price,
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-price [data-field="price"],
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-price [data-field="price"] {
+      color: var(--text-main);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-price [data-field="suffix"],
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-price [data-field="suffix"] {
+      color: var(--text-muted);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-desc,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-desc {
+      color: var(--text-muted);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-features li,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-features li {
+      color: var(--text-secondary);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-card-features li.is-highlight,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-card-features li.is-highlight {
+      color: var(--color-primary-base);
+      font-weight: 600;
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--month .pricing-bullet,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--year .pricing-bullet {
+      border-bottom-color: var(--color-primary-base);
+    }
+
+    /* Texto card de trás (mais suave) */
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-name,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-name,
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-price,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-price,
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-price [data-field="price"],
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-price [data-field="price"] {
+      color: var(--text-secondary);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-price [data-field="suffix"],
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-price [data-field="suffix"] {
+      color: var(--text-light);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-desc,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-desc {
+      color: var(--text-muted);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-features li,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-features li {
+      color: var(--text-muted);
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-features li.is-highlight,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-features li.is-highlight {
+      color: var(--color-primary-dark);
+      font-weight: 600;
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-bullet,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-bullet {
+      border-bottom-color: var(--color-primary-light);
+    }
+
+    .pricing-card-name {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.2vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .pricing-card-price {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pricing-card-price [data-field="suffix"] {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    /* Badge estilo chip do DS (primary-ultralight) */
+    .pricing-card-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-primary-base);
+      border: 1px solid var(--color-primary-light);
+      background: var(--color-primary-ultralight);
+      margin-bottom: 16px;
+    }
+
+    .pricing-stack[data-billing="month"] .pricing-stack-card--year .pricing-card-badge,
+    .pricing-stack[data-billing="year"] .pricing-stack-card--month .pricing-card-badge {
+      background: rgba(245, 251, 255, 0.65);
+    }
+
+    .pricing-card-badge:empty {
+      display: none;
+    }
+
+    .pricing-card-desc {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .pricing-card-features {
+      list-style: none;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-card-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .pricing-bullet {
+      flex-shrink: 0;
+      width: 0;
+      height: 0;
+      margin-top: 5px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 7px solid transparent;
+    }
+
+    .pricing-card-cta.btn {
+      width: 100%;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .pricing-card-cta.btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .pricing-stack--plan-switch .pricing-stack-card {
+      animation: pricingPlanSwitchPulse 0.38s var(--ease-out-expo);
+    }
+
+    @keyframes pricingPlanSwitchPulse {
+      0% { opacity: 1; }
+      45% { opacity: 0.85; }
+      100% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pricing-stack-card {
+        transition-duration: 0.2s;
+      }
+
+      .pricing-stack[data-billing="month"] .pricing-stack-card--year,
+      .pricing-stack[data-billing="year"] .pricing-stack-card--month {
+        filter: none;
+      }
+
+      .pricing-stack--plan-switch .pricing-stack-card {
+        animation: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-toggle-row {
+        justify-content: flex-start;
+      }
+
+      /* Cards empilhados: um acima, outro abaixo (sem sobreposição) */
+      .pricing-stack {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-height: 0;
+        width: 100%;
+        max-width: 560px;
+        margin-left: auto;
+        margin-right: auto;
+        cursor: default;
+        touch-action: manipulation;
+      }
+
+      .pricing-stack-card {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        pointer-events: auto;
+      }
+
+      .pricing-stack[data-billing="month"] .pricing-stack-card--month {
+        order: 1;
+        z-index: auto;
+      }
+
+      .pricing-stack[data-billing="month"] .pricing-stack-card--year {
+        order: 2;
+        z-index: auto;
+      }
+
+      .pricing-stack[data-billing="year"] .pricing-stack-card--year {
+        order: 1;
+        z-index: auto;
+      }
+
+      .pricing-stack[data-billing="year"] .pricing-stack-card--month {
+        order: 2;
+        z-index: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .pricing-section {
+        padding: clamp(48px, 8vh, 88px) 16px;
+      }
+
+      .pricing-section:has(+ .trust-logos-section) {
+        padding-bottom: 10px;
+      }
+    }
+
+    /* =========================================
        PASSO A PASSO SECTION
        ========================================= */
     .steps-section {
@@ -1241,6 +2808,29 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.06);
       border: 1px solid var(--color-border);
       overflow: hidden;
+    }
+
+    .steps-progress {
+      display: none;
+    }
+
+    .steps-progress__track {
+      position: relative;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--color-border);
+      overflow: hidden;
+    }
+
+    .steps-progress__fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--color-primary-base), var(--color-primary-dark));
+      transition: width 0.45s var(--ease-out-expo);
     }
 
     /* Top Process Navigation Bar */
@@ -1916,6 +3506,12 @@
       }
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      .steps-progress__fill {
+        transition: none;
+      }
+    }
+
     /* =========================================
        RESPONSIVE
        ========================================= */
@@ -1925,6 +3521,13 @@
         gap: 4px;
       }
       .navbar-links { display: none; }
+
+      .steps-progress {
+        display: block;
+        padding: 16px 20px 14px;
+        border-bottom: 1px solid var(--color-border);
+        background: var(--color-white);
+      }
 
       .hero {
         padding: 140px 16px 64px;
@@ -2017,6 +3620,9 @@
       .solution-section {
         padding: clamp(40px, 8vh, 80px) 16px;
       }
+      .features-section {
+        padding: clamp(40px, 8vh, 80px) 16px;
+      }
       .sol-card {
         padding: 28px 24px 24px;
       }
@@ -2037,8 +3643,11 @@
     </a>
 
     <div class="navbar-links">
-      <a href="#about">Sobre</a>
+      <a href="#about">Quem somos</a>
+      <a href="#steps">Como funciona</a>
       <a href="#solution">Solução</a>
+      <a href="#funcionalidades">Funcionalidades</a>
+      <a href="#testimonials">Depoimentos</a>
       <a href="#pricing">Planos</a>
     </div>
 
@@ -2178,9 +3787,7 @@
       <div class="about-text">
         <span class="about-label about-fade-up">Quem Somos</span>
         <h1 class="about-heading about-fade-up about-stagger-1">
-          Tecnologia que
-          transforma carreiras
-          médicas.
+          Tecnologia que transforma carreiras médicas.
         </h1>
         <p class="about-description about-fade-up about-stagger-2">
           O Ponto7 nasceu da dor real de quem já passou pelo processo seletivo de residência médica. Combinamos inteligência artificial e análise de editais para automatizar o que sempre foi manual.
@@ -2232,6 +3839,19 @@
       </div>
 
       <div class="steps-box steps-fade-up steps-stagger-2">
+        <div class="steps-progress">
+          <div
+            class="steps-progress__track"
+            id="stepsProgressBar"
+            role="progressbar"
+            aria-valuemin="1"
+            aria-valuemax="5"
+            aria-valuenow="1"
+            aria-valuetext="Passo 1 de 5"
+          >
+            <div class="steps-progress__fill" id="stepsProgressFill"></div>
+          </div>
+        </div>
         <!-- Top Process Navigation -->
         <nav class="steps-nav" id="steps-nav">
           <button class="steps-nav-item active" data-step-index="0">
@@ -2697,8 +4317,1117 @@
     </div>
   </section>
 
+  <!-- ============ FUNCIONALIDADES (tabs) ============ -->
+  <section class="features-section" id="funcionalidades" aria-label="Funcionalidades">
+    <div class="features-bg-container">
+      <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=2069&q=80" alt="" class="features-bg-img active" id="feat-bg-0" width="2069" height="1379" loading="lazy" decoding="async">
+      <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=2070&q=80" alt="" class="features-bg-img" id="feat-bg-1" width="2070" height="1380" loading="lazy" decoding="async">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2070&q=80" alt="" class="features-bg-img" id="feat-bg-2" width="2070" height="1380" loading="lazy" decoding="async">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2070&q=80" alt="" class="features-bg-img" id="feat-bg-3" width="2070" height="1380" loading="lazy" decoding="async">
+      <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2070&q=80" alt="" class="features-bg-img" id="feat-bg-4" width="2070" height="1380" loading="lazy" decoding="async">
+    </div>
+    <div class="features-overlay" aria-hidden="true"></div>
+
+    <div class="features-wrap">
+      <div class="features-tabs-nav feat-fade-up" role="tablist" aria-label="Categorias de funcionalidades">
+        <button type="button" class="features-tab-btn active" data-target="feat-panel-0" data-bg="feat-bg-0">Pontuação Automática</button>
+        <button type="button" class="features-tab-btn" data-target="feat-panel-1" data-bg="feat-bg-1">Leitura por IA</button>
+        <button type="button" class="features-tab-btn" data-target="feat-panel-2" data-bg="feat-bg-2">Cofre de Certificados</button>
+        <button type="button" class="features-tab-btn" data-target="feat-panel-3" data-bg="feat-bg-3">Análise de Gaps</button>
+        <button type="button" class="features-tab-btn" data-target="feat-panel-4" data-bg="feat-bg-4">Benchmarking</button>
+      </div>
+
+      <div class="features-tabs-progress-wrap" aria-hidden="true">
+        <div class="features-tabs-progress" id="featuresTabsProgress"></div>
+      </div>
+
+      <div class="features-panels-container">
+        <div class="features-panel active" id="feat-panel-0" role="tabpanel">
+          <div class="features-text-col">
+            <p class="features-label">Funcionalidades</p>
+            <h1 class="features-title">Pontuação automática<br>alinhada ao edital</h1>
+            <p class="features-desc">O Ponto7 calcula seus pontos conforme regras de editais de referência. Menos planilhas, mais transparência em cada etapa do processo.</p>
+            <a href="#steps" class="btn btn-primary features-main-cta">Ver como funciona
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="features-cards-grid">
+            <article class="feat-card" style="--stagger-delay: 0.2s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+              </div>
+              <h3 class="feat-card__title">Critérios por instituição</h3>
+              <p class="feat-card__text">Editais USP, UNIFESP, ENARE e outros mapeados em regras de pontuação que você pode auditar a qualquer momento.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+            <article class="feat-card" style="--stagger-delay: 0.3s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+              </div>
+              <h3 class="feat-card__title">Histórico versionado</h3>
+              <p class="feat-card__text">Acompanhe mudanças nos critérios e simule seu score antes de publicar o currículo final.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+          </div>
+        </div>
+
+        <div class="features-panel" id="feat-panel-1" role="tabpanel">
+          <div class="features-text-col">
+            <p class="features-label">Inteligência aplicada</p>
+            <h1 class="features-title">Leitura inteligente<br>de certificados</h1>
+            <p class="features-desc">Envie PDFs ou fotos e a IA extrai categorias, horas e datas para transformar documentos em pontos auditáveis.</p>
+            <a href="#steps" class="btn btn-primary features-main-cta">Enviar certificado
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="features-cards-grid">
+            <article class="feat-card" style="--stagger-delay: 0.2s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>
+              </div>
+              <h3 class="feat-card__title">OCR e categorização</h3>
+              <p class="feat-card__text">Identificação automática de monitoria, congresso, publicação e outras categorias conforme o edital.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+            <article class="feat-card" style="--stagger-delay: 0.3s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <h3 class="feat-card__title">Validação e consistência</h3>
+              <p class="feat-card__text">Alertas para duplicidade, sobreposição de datas e inconsistências antes da submissão.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+          </div>
+        </div>
+
+        <div class="features-panel" id="feat-panel-2" role="tabpanel">
+          <div class="features-text-col">
+            <p class="features-label">Organização</p>
+            <h1 class="features-title">Cofre de certificados</h1>
+            <p class="features-desc">Armazene tudo em um só lugar com segurança. Importe do Google Drive e mantenha histórico pronto para o processo seletivo.</p>
+            <a href="#" class="btn btn-primary features-main-cta">Organizar meu cofre
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="features-cards-grid">
+            <article class="feat-card" style="--stagger-delay: 0.2s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.27 6.96 8.73 5.05 8.73-5.05"/><path d="M12 22.08V12"/></svg>
+              </div>
+              <h3 class="feat-card__title">Importação do Drive</h3>
+              <p class="feat-card__text">Centralize PDFs e imagens já existentes na nuvem sem baixar arquivo por arquivo.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+            <article class="feat-card" style="--stagger-delay: 0.3s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="m6 16 6-6 6 6"/><path d="M12 4v12"/></svg>
+              </div>
+              <h3 class="feat-card__title">Busca e etiquetas</h3>
+              <p class="feat-card__text">Encontre certificados por palavra-chave, período ou tipo de atividade em segundos.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+          </div>
+        </div>
+
+        <div class="features-panel" id="feat-panel-3" role="tabpanel">
+          <div class="features-text-col">
+            <p class="features-label">Estratégia</p>
+            <h1 class="features-title">Análise de<br>gaps no currículo</h1>
+            <p class="features-desc">Veja quantos pontos faltam para o objetivo e priorize atividades de maior impacto no seu edital.</p>
+            <a href="#solution" class="btn btn-primary features-main-cta">Ver o que falta
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="features-cards-grid">
+            <article class="feat-card" style="--stagger-delay: 0.2s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              </div>
+              <h3 class="feat-card__title">Meta por programa</h3>
+              <p class="feat-card__text">Defina o programa desejado e acompanhe a distância até a nota de corte estimada.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+            <article class="feat-card" style="--stagger-delay: 0.3s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+              </div>
+              <h3 class="feat-card__title">Plano de ação</h3>
+              <p class="feat-card__text">Sugestões ordenadas por custo-benefício para maximizar pontos até a data limite.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+          </div>
+        </div>
+
+        <div class="features-panel" id="feat-panel-4" role="tabpanel">
+          <div class="features-text-col">
+            <p class="features-label">Comparativo</p>
+            <h1 class="features-title">Benchmarking<br>entre programas</h1>
+            <p class="features-desc">Compare sua pontuação entre institutos e entenda onde você está no cenário competitivo.</p>
+            <a href="#solution" class="btn btn-primary features-main-cta">Comparar programas
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="features-cards-grid">
+            <article class="feat-card" style="--stagger-delay: 0.2s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8"/><path d="m16 11-4-4-4 4"/><path d="M21 16v5h-5"/><path d="M8 21H3v-5"/></svg>
+              </div>
+              <h3 class="feat-card__title">Cenários simultâneos</h3>
+              <p class="feat-card__text">Simule USP, UNIFESP e ENARE lado a lado sem recalcular tudo na mão.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+            <article class="feat-card" style="--stagger-delay: 0.3s;">
+              <div class="feat-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <h3 class="feat-card__title">Ranking relativo</h3>
+              <p class="feat-card__text">Visualize percentis e gaps médios da comunidade para calibrar expectativas.</p>
+              <a href="#" class="feat-card__cta sol-card__cta">Saiba mais
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEPOIMENTOS ============ -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="testimonials-wrap">
+      <div class="testimonials-header">
+        <span class="testimonials-label">Depoimentos</span>
+        <h1 class="testimonials-heading">Resultados reais de quem usou o Ponto7.</h1>
+        <p class="testimonials-subtitle">
+          Médicos de diferentes fases da preparação já reduziram retrabalho, organizaram seus documentos e ganharam clareza de pontuação.
+        </p>
+      </div>
+
+      <div class="testimonials-columns">
+        <!-- Coluna 1: descendo -->
+        <div class="testi-marquee testi-marquee--down testi-marquee--slow">
+          <div class="testi-track">
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=80&h=80&fit=crop&crop=face" alt="Dra. Ana">
+                <div>
+                  <div class="testi-card__name">Dra. Ana L.</div>
+                  <div class="testi-card__role">@ana.creates</div>
+                </div>
+              </div>
+              <p class="testi-card__text">"Em duas semanas consegui organizar certificados que estavam espalhados há meses. Hoje sei exatamente meus pontos por edital."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=80&h=80&fit=crop&crop=face" alt="Dr. Lucas">
+                <div>
+                  <div class="testi-card__name">Dr. Lucas P.</div>
+                  <div class="testi-card__role">@lucaspmed</div>
+                </div>
+              </div>
+              <p class="testi-card__text">"A análise por IA me poupou horas de planilha. Subi os PDFs e o sistema já categorizou tudo com precisão."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=80&h=80&fit=crop&crop=face" alt="Dr. Rafael">
+                <div>
+                  <div class="testi-card__name">Dr. Rafael S.</div>
+                  <div class="testi-card__role">@rafael.study</div>
+                </div>
+              </div>
+              <p class="testi-card__text">"Descobri onde eu estava perdendo pontuação e consegui priorizar atividades com mais impacto antes da inscrição."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=80&h=80&fit=crop&crop=face" alt="Dra. Marina">
+                <div>
+                  <div class="testi-card__name">Dra. Marina C.</div>
+                  <div class="testi-card__role">@marinacmed</div>
+                </div>
+              </div>
+              <p class="testi-card__text">"O cofre de certificados virou meu centro de controle. Não perco mais documento na hora de montar currículo."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face" alt="Dr. Bruno">
+                <div>
+                  <div class="testi-card__name">Dr. Bruno M.</div>
+                  <div class="testi-card__role">@brunomedrj</div>
+                </div>
+              </div>
+              <p class="testi-card__text">"Comparar USP e ENARE no mesmo lugar trouxe clareza para meu plano. Parei de estudar no escuro."</p>
+            </article>
+
+            <!-- Duplicado para loop -->
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=80&h=80&fit=crop&crop=face" alt="Dra. Ana">
+                <div><div class="testi-card__name">Dra. Ana L.</div><div class="testi-card__role">@ana.creates</div></div>
+              </div>
+              <p class="testi-card__text">"Em duas semanas consegui organizar certificados que estavam espalhados há meses. Hoje sei exatamente meus pontos por edital."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=80&h=80&fit=crop&crop=face" alt="Dr. Lucas">
+                <div><div class="testi-card__name">Dr. Lucas P.</div><div class="testi-card__role">@lucaspmed</div></div>
+              </div>
+              <p class="testi-card__text">"A análise por IA me poupou horas de planilha. Subi os PDFs e o sistema já categorizou tudo com precisão."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=80&h=80&fit=crop&crop=face" alt="Dr. Rafael">
+                <div><div class="testi-card__name">Dr. Rafael S.</div><div class="testi-card__role">@rafael.study</div></div>
+              </div>
+              <p class="testi-card__text">"Descobri onde eu estava perdendo pontuação e consegui priorizar atividades com mais impacto antes da inscrição."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=80&h=80&fit=crop&crop=face" alt="Dra. Marina">
+                <div><div class="testi-card__name">Dra. Marina C.</div><div class="testi-card__role">@marinacmed</div></div>
+              </div>
+              <p class="testi-card__text">"O cofre de certificados virou meu centro de controle. Não perco mais documento na hora de montar currículo."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face" alt="Dr. Bruno">
+                <div><div class="testi-card__name">Dr. Bruno M.</div><div class="testi-card__role">@brunomedrj</div></div>
+              </div>
+              <p class="testi-card__text">"Comparar USP e ENARE no mesmo lugar trouxe clareza para meu plano. Parei de estudar no escuro."</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Coluna 2: subindo -->
+        <div class="testi-marquee testi-marquee--up testi-marquee--fast">
+          <div class="testi-track">
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=80&h=80&fit=crop&crop=face" alt="Dra. Paula">
+                <div><div class="testi-card__name">Dra. Paula R.</div><div class="testi-card__role">@paularesid</div></div>
+              </div>
+              <p class="testi-card__text">"Usei o benchmarking para decidir onde tinha maior chance. Foi decisivo para meu direcionamento final."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt="Dr. Thiago">
+                <div><div class="testi-card__name">Dr. Thiago N.</div><div class="testi-card__role">@thiagomed</div></div>
+              </div>
+              <p class="testi-card__text">"A plataforma mostrou inconsistências que eu nem tinha percebido. Evitei enviar documentação com erro."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=80&h=80&fit=crop&crop=face" alt="Dra. Beatriz">
+                <div><div class="testi-card__name">Dra. Beatriz F.</div><div class="testi-card__role">@biafaria</div></div>
+              </div>
+              <p class="testi-card__text">"A visão de gaps me deu um plano semanal objetivo. Senti que parei de desperdiçar esforço."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=80&h=80&fit=crop&crop=face" alt="Dr. Igor">
+                <div><div class="testi-card__name">Dr. Igor T.</div><div class="testi-card__role">@igortavares</div></div>
+              </div>
+              <p class="testi-card__text">"Consegui importar tudo do Drive em minutos. Antes eu demorava uma tarde só para separar arquivos."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1541534401786-2077eed87a72?w=80&h=80&fit=crop&crop=face" alt="Dra. Carol">
+                <div><div class="testi-card__name">Dra. Carol V.</div><div class="testi-card__role">@carolvmed</div></div>
+              </div>
+              <p class="testi-card__text">"A confiança de saber meu score em tempo real mudou meu ritmo de estudo e de escolha das atividades."</p>
+            </article>
+
+            <!-- Duplicado para loop -->
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=80&h=80&fit=crop&crop=face" alt="Dra. Paula">
+                <div><div class="testi-card__name">Dra. Paula R.</div><div class="testi-card__role">@paularesid</div></div>
+              </div>
+              <p class="testi-card__text">"Usei o benchmarking para decidir onde tinha maior chance. Foi decisivo para meu direcionamento final."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt="Dr. Thiago">
+                <div><div class="testi-card__name">Dr. Thiago N.</div><div class="testi-card__role">@thiagomed</div></div>
+              </div>
+              <p class="testi-card__text">"A plataforma mostrou inconsistências que eu nem tinha percebido. Evitei enviar documentação com erro."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=80&h=80&fit=crop&crop=face" alt="Dra. Beatriz">
+                <div><div class="testi-card__name">Dra. Beatriz F.</div><div class="testi-card__role">@biafaria</div></div>
+              </div>
+              <p class="testi-card__text">"A visão de gaps me deu um plano semanal objetivo. Senti que parei de desperdiçar esforço."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=80&h=80&fit=crop&crop=face" alt="Dr. Igor">
+                <div><div class="testi-card__name">Dr. Igor T.</div><div class="testi-card__role">@igortavares</div></div>
+              </div>
+              <p class="testi-card__text">"Consegui importar tudo do Drive em minutos. Antes eu demorava uma tarde só para separar arquivos."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1541534401786-2077eed87a72?w=80&h=80&fit=crop&crop=face" alt="Dra. Carol">
+                <div><div class="testi-card__name">Dra. Carol V.</div><div class="testi-card__role">@carolvmed</div></div>
+              </div>
+              <p class="testi-card__text">"A confiança de saber meu score em tempo real mudou meu ritmo de estudo e de escolha das atividades."</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Coluna 3: descendo -->
+        <div class="testi-marquee testi-marquee--down">
+          <div class="testi-track">
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" alt="Dr. Henrique">
+                <div><div class="testi-card__name">Dr. Henrique A.</div><div class="testi-card__role">@henriqueres</div></div>
+              </div>
+              <p class="testi-card__text">"O sistema me mostrou prioridade por impacto. Troquei tarefas de baixo retorno por atividades que pontuavam mais."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=80&h=80&fit=crop&crop=face" alt="Dra. Julia">
+                <div><div class="testi-card__name">Dra. Julia M.</div><div class="testi-card__role">@juliamed</div></div>
+              </div>
+              <p class="testi-card__text">"A parte que mais gostei foi a clareza. Em poucos cliques entendi minha posição para cada programa."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1542204625-de293a65c843?w=80&h=80&fit=crop&crop=face" alt="Dr. Pedro">
+                <div><div class="testi-card__name">Dr. Pedro C.</div><div class="testi-card__role">@pedromed</div></div>
+              </div>
+              <p class="testi-card__text">"Os alertas de inconsistência evitaram dor de cabeça no envio final. Isso sozinho já valeu o uso."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" alt="Dra. Fernanda">
+                <div><div class="testi-card__name">Dra. Fernanda I.</div><div class="testi-card__role">@fernandai</div></div>
+              </div>
+              <p class="testi-card__text">"Com o Ponto7 eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1546961329-78bef0414d7c?w=80&h=80&fit=crop&crop=face" alt="Dr. Marcelo">
+                <div><div class="testi-card__name">Dr. Marcelo G.</div><div class="testi-card__role">@marcelog</div></div>
+              </div>
+              <p class="testi-card__text">"A experiência é muito fluida e clara. Fiz tudo em uma noite e já saí com plano para as próximas semanas."</p>
+            </article>
+
+            <!-- Duplicado para loop -->
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" alt="Dr. Henrique">
+                <div><div class="testi-card__name">Dr. Henrique A.</div><div class="testi-card__role">@henriqueres</div></div>
+              </div>
+              <p class="testi-card__text">"O sistema me mostrou prioridade por impacto. Troquei tarefas de baixo retorno por atividades que pontuavam mais."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=80&h=80&fit=crop&crop=face" alt="Dra. Julia">
+                <div><div class="testi-card__name">Dra. Julia M.</div><div class="testi-card__role">@juliamed</div></div>
+              </div>
+              <p class="testi-card__text">"A parte que mais gostei foi a clareza. Em poucos cliques entendi minha posição para cada programa."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1542204625-de293a65c843?w=80&h=80&fit=crop&crop=face" alt="Dr. Pedro">
+                <div><div class="testi-card__name">Dr. Pedro C.</div><div class="testi-card__role">@pedromed</div></div>
+              </div>
+              <p class="testi-card__text">"Os alertas de inconsistência evitaram dor de cabeça no envio final. Isso sozinho já valeu o uso."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" alt="Dra. Fernanda">
+                <div><div class="testi-card__name">Dra. Fernanda I.</div><div class="testi-card__role">@fernandai</div></div>
+              </div>
+              <p class="testi-card__text">"Com o Ponto7 eu finalmente consegui transformar meu currículo em estratégia, não só em acúmulo de certificados."</p>
+            </article>
+            <article class="testi-card">
+              <div class="testi-card__head">
+                <img class="testi-card__avatar" src="https://images.unsplash.com/photo-1546961329-78bef0414d7c?w=80&h=80&fit=crop&crop=face" alt="Dr. Marcelo">
+                <div><div class="testi-card__name">Dr. Marcelo G.</div><div class="testi-card__role">@marcelog</div></div>
+              </div>
+              <p class="testi-card__text">"A experiência é muito fluida e clara. Fiz tudo em uma noite e já saí com plano para as próximas semanas."</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BANNER + CTA ============ -->
+  <section class="banner-cta-section" id="banner-cta" aria-labelledby="banner-cta-title">
+    <div class="banner-cta-video-wrap" aria-hidden="true">
+      <iframe
+        title="Vídeo de fundo decorativo"
+        src="https://www.youtube-nocookie.com/embed/V_2mmgzp274?autoplay=1&amp;mute=1&amp;controls=0&amp;loop=1&amp;playlist=V_2mmgzp274&amp;modestbranding=1&amp;rel=0&amp;iv_load_policy=3&amp;playsinline=1"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        loading="lazy"></iframe>
+    </div>
+    <div class="banner-cta-overlay" aria-hidden="true"></div>
+    <div class="banner-cta-inner">
+      <div class="banner-cta-card">
+        <p class="banner-cta-label">Ponto7 · currículo com IA</p>
+        <h1 class="banner-cta-title" id="banner-cta-title">Simplifique a montagem do seu currículo de residência</h1>
+        <p class="banner-cta-desc">
+          Envie certificados, valide por edital e acompanhe sua pontuação em tempo real — com segurança para você focar na aprovação.
+        </p>
+        <div class="banner-cta-actions">
+          <a href="#hero" class="btn btn-primary">
+            Criar minha conta
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="#solution" class="btn btn-banner-ghost">Ver a solução</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALORES / PLANOS ============ -->
+  <section class="pricing-section" id="pricing" aria-labelledby="pricing-heading">
+    <div class="pricing-wrap">
+      <div class="pricing-grid">
+        <div class="pricing-col pricing-col--left">
+          <span class="pricing-label about-fade-up">Investimento &amp; estratégia</span>
+          <h2 class="pricing-heading about-fade-up about-stagger-1" id="pricing-heading">
+            Sua preparação<br>
+            <span class="pricing-heading-accent">no nível certo</span>
+          </h2>
+          <p class="pricing-lead about-fade-up about-stagger-2">
+            Planos por assinatura para médicos que querem currículo validado, pontuação clara e menos burocracia. Escolha o ritmo do seu crescimento.
+          </p>
+          <ul class="pricing-plan-list about-fade-up about-stagger-3" role="tablist" aria-label="Planos disponíveis">
+            <li role="none">
+              <button type="button" class="pricing-plan-item is-active" role="tab" aria-selected="true" data-plan="landing" id="pricing-tab-landing">
+                <span>Explorador</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="pricing-plan-item" role="tab" aria-selected="false" data-plan="institucional" id="pricing-tab-institucional">
+                <span>Candidato</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="pricing-plan-item" role="tab" aria-selected="false" data-plan="ecommerce" id="pricing-tab-ecommerce">
+                <span>Estrategista</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pricing-col pricing-col--right about-fade-up about-stagger-4">
+          <div class="pricing-toggle-row">
+            <div class="pricing-toggle" role="group" aria-label="Período de cobrança">
+              <button type="button" class="pricing-toggle__btn is-active" data-billing-toggle="month" aria-pressed="true">Mês</button>
+              <button type="button" class="pricing-toggle__btn" data-billing-toggle="year" aria-pressed="false">Ano</button>
+            </div>
+          </div>
+
+          <div class="pricing-stack" id="pricing-stack" data-billing="month">
+            <div class="pricing-stack-card pricing-stack-card--month" data-stack="month">
+              <div class="pricing-card-surface">
+                <div class="pricing-card-top">
+                  <h3 class="pricing-card-name" data-field="name">Explorador</h3>
+                  <div class="pricing-card-price">
+                    <span data-field="price">Grátis</span><span data-field="suffix">/mês</span>
+                  </div>
+                </div>
+                <div class="pricing-card-badge" data-field="badge" hidden></div>
+                <p class="pricing-card-desc" data-field="desc"></p>
+                <ul class="pricing-card-features" data-field="features"></ul>
+                <a href="#hero" class="btn btn-primary pricing-card-cta">
+                  <span data-field="ctaText">Começar grátis</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+            <div class="pricing-stack-card pricing-stack-card--year" data-stack="year">
+              <div class="pricing-card-surface">
+                <div class="pricing-card-top">
+                  <h3 class="pricing-card-name" data-field="name">Explorador</h3>
+                  <div class="pricing-card-price">
+                    <span data-field="price">Grátis</span><span data-field="suffix">/ano</span>
+                  </div>
+                </div>
+                <div class="pricing-card-badge" data-field="badge" hidden></div>
+                <p class="pricing-card-desc" data-field="desc"></p>
+                <ul class="pricing-card-features" data-field="features"></ul>
+                <a href="#hero" class="btn btn-primary pricing-card-cta">
+                  <span data-field="ctaText">Começar grátis</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logos em dupla faixa (abaixo de Valores / Planos): LTR + RTL -->
+  <section class="trust-logos-section" id="trust-logos" aria-label="Instituições e programas de referência">
+    <div class="trust-logos-section__rows">
+      <div class="logo-marquee-wrapper logo-marquee-wrapper--dual-strip">
+        <div class="logo-marquee-track logo-marquee-track--ltr">
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">🏥</div>
+            <span class="logo-item-name">USP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">🔬</div>
+            <span class="logo-item-name">Santa Casa</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🩺</div>
+            <span class="logo-item-name">UNIFESP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#fff8ee;">🧬</div>
+            <span class="logo-item-name">UNICAMP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">⚕️</div>
+            <span class="logo-item-name">HC-FMUSP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">📋</div>
+            <span class="logo-item-name">ENARE</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🎓</div>
+            <span class="logo-item-name">SUS-SP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">🏥</div>
+            <span class="logo-item-name">USP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">🔬</div>
+            <span class="logo-item-name">Santa Casa</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🩺</div>
+            <span class="logo-item-name">UNIFESP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#fff8ee;">🧬</div>
+            <span class="logo-item-name">UNICAMP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">⚕️</div>
+            <span class="logo-item-name">HC-FMUSP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">📋</div>
+            <span class="logo-item-name">ENARE</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🎓</div>
+            <span class="logo-item-name">SUS-SP</span>
+          </div>
+        </div>
+      </div>
+      <div class="logo-marquee-wrapper logo-marquee-wrapper--dual-strip">
+        <div class="logo-marquee-track logo-marquee-track--rtl">
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">🏥</div>
+            <span class="logo-item-name">USP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">🔬</div>
+            <span class="logo-item-name">Santa Casa</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🩺</div>
+            <span class="logo-item-name">UNIFESP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#fff8ee;">🧬</div>
+            <span class="logo-item-name">UNICAMP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">⚕️</div>
+            <span class="logo-item-name">HC-FMUSP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">📋</div>
+            <span class="logo-item-name">ENARE</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🎓</div>
+            <span class="logo-item-name">SUS-SP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">🏥</div>
+            <span class="logo-item-name">USP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">🔬</div>
+            <span class="logo-item-name">Santa Casa</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🩺</div>
+            <span class="logo-item-name">UNIFESP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#fff8ee;">🧬</div>
+            <span class="logo-item-name">UNICAMP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#eef4ff;">⚕️</div>
+            <span class="logo-item-name">HC-FMUSP</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f0faf4;">📋</div>
+            <span class="logo-item-name">ENARE</span>
+          </div>
+          <div class="logo-item">
+            <div class="logo-item-icon" style="background:#f5f0ff;">🎓</div>
+            <span class="logo-item-name">SUS-SP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" id="contato">
+    <div class="site-footer__inner">
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <a href="#hero" class="site-footer__logo">
+            <span class="site-footer__logo-icon" aria-hidden="true">P7</span>
+            <span class="site-footer__logo-text">Ponto7</span>
+          </a>
+          <p class="site-footer__tagline">
+            Assistente de currículo para residência médica com IA: organize certificados, valide por edital e acompanhe sua pontuação com clareza.
+          </p>
+          <div class="site-footer__socials">
+            <a class="site-footer__social" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a class="site-footer__social" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a class="site-footer__social" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="site-footer__contact">
+          <p class="site-footer__col-title">Contato</p>
+          <ul class="site-footer__contact-list">
+            <li>
+              <a class="site-footer__contact-link" href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
+                <span class="site-footer__contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </span>
+                <span>(11) 99999-9999</span>
+              </a>
+            </li>
+            <li>
+              <a class="site-footer__contact-link" href="mailto:contato@ponto7.com.br">
+                <span class="site-footer__contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </span>
+                <span>contato@ponto7.com.br</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <nav class="site-footer__quick" aria-label="Links rápidos">
+          <p class="site-footer__col-title">Links rápidos</p>
+          <ul class="site-footer__nav-list">
+            <li><a href="#about">Quem somos</a></li>
+            <li><a href="#steps">Como funciona</a></li>
+            <li><a href="#solution">Solução</a></li>
+            <li><a href="#funcionalidades">Funcionalidades</a></li>
+            <li><a href="#testimonials">Depoimentos</a></li>
+            <li><a href="#pricing">Planos</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© 2026 Ponto7. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
   <!-- ============ SCRIPTS ============ -->
   <script>
+    document.documentElement.classList.add('js');
+
+    // Banner + CTA: letras no título + entrada em sequência (IntersectionObserver)
+    (function initBannerCtaReveal() {
+      const section = document.querySelector('.banner-cta-section');
+      const titleEl = document.querySelector('#banner-cta-title');
+      if (!section || !titleEl) return;
+
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (mq.matches) {
+        section.classList.add('is-revealed');
+        return;
+      }
+
+      const fullText = titleEl.textContent.trim();
+      titleEl.setAttribute('aria-label', fullText);
+      titleEl.innerHTML = '';
+      [...fullText].forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.className = 'banner-cta-char';
+        span.setAttribute('aria-hidden', 'true');
+        span.style.setProperty('--i', String(i));
+        span.textContent = ch === ' ' ? '\u00A0' : ch;
+        titleEl.appendChild(span);
+      });
+      const n = fullText.length;
+      const charStagger = 0.052;
+      const titleAnimEnd = 0.32 + n * charStagger + 0.95;
+      section.style.setProperty('--banner-desc-delay', `${titleAnimEnd + 0.12}s`);
+      section.style.setProperty('--banner-actions-delay', `${titleAnimEnd + 0.28}s`);
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            section.classList.add('is-revealed');
+            io.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.18, rootMargin: '0px 0px -6% 0px' }
+      );
+      io.observe(section);
+    })();
+
+    // Valores / Planos: tabs, toggle mês/ano, stack de cards, swipe
+    (function initPricingSection() {
+      const stackEl = document.getElementById('pricing-stack');
+      const planButtons = document.querySelectorAll('.pricing-plan-item[data-plan]');
+      const billingButtons = document.querySelectorAll('[data-billing-toggle]');
+      if (!stackEl || !planButtons.length) return;
+
+      const PRICING_PLANS = {
+        landing: {
+          monthly: {
+            cardTitle: 'Explorador',
+            price: 'Grátis',
+            suffix: '/mês',
+            badge: '',
+            desc: 'Para começar sua jornada.',
+            features: [
+              { text: 'Acesso básico', highlight: false },
+              { text: 'Até 10 certificados', highlight: false },
+              { text: 'Até 1 programa de residência', highlight: false },
+            ],
+            cta: 'Começar grátis',
+          },
+          annual: {
+            cardTitle: 'Explorador',
+            price: 'Grátis',
+            suffix: '/ano',
+            badge: '',
+            desc: 'Para começar sua jornada.',
+            features: [
+              { text: 'Acesso básico', highlight: false },
+              { text: 'Até 10 certificados', highlight: false },
+              { text: 'Até 1 programa de residência', highlight: false },
+            ],
+            cta: 'Começar grátis',
+          },
+        },
+        institucional: {
+          monthly: {
+            cardTitle: 'Candidato',
+            price: 'R$ 19,90',
+            suffix: '/mês',
+            badge: '',
+            desc: 'Para candidatos focados.',
+            features: [
+              { text: 'Acesso estendido', highlight: false },
+              { text: 'Até 50 certificados', highlight: false },
+              { text: 'Até 3 programas de residência', highlight: false },
+            ],
+            cta: 'Assinar agora',
+          },
+          annual: {
+            cardTitle: 'Candidato',
+            price: 'R$ 199,00',
+            suffix: '/ano',
+            badge: '',
+            desc: 'Para candidatos focados.',
+            features: [
+              { text: 'Acesso estendido', highlight: false },
+              { text: 'Até 50 certificados', highlight: false },
+              { text: 'Até 3 programas de residência', highlight: false },
+            ],
+            cta: 'Assinar agora',
+          },
+        },
+        ecommerce: {
+          monthly: {
+            cardTitle: 'Estrategista',
+            price: 'R$ 49,90',
+            suffix: '/mês',
+            badge: '',
+            desc: 'Para estrategistas completos.',
+            features: [
+              { text: 'Acesso total', highlight: false },
+              { text: 'Certificados ilimitados', highlight: false },
+              { text: 'Programas de residência ilimitados', highlight: false },
+            ],
+            cta: 'Assinar',
+          },
+          annual: {
+            cardTitle: 'Estrategista',
+            price: 'R$ 499,00',
+            suffix: '/ano',
+            badge: '',
+            desc: 'Para estrategistas completos.',
+            features: [
+              { text: 'Acesso total', highlight: false },
+              { text: 'Certificados ilimitados', highlight: false },
+              { text: 'Programas de residência ilimitados', highlight: false },
+            ],
+            cta: 'Assinar',
+          },
+        },
+      };
+
+      let currentPlan = 'landing';
+
+      function fillFeatures(ul, items) {
+        ul.innerHTML = '';
+        items.forEach((f) => {
+          const li = document.createElement('li');
+          if (f.highlight) li.classList.add('is-highlight');
+          const bullet = document.createElement('span');
+          bullet.className = 'pricing-bullet';
+          bullet.setAttribute('aria-hidden', 'true');
+          li.appendChild(bullet);
+          li.appendChild(document.createTextNode(f.text));
+          ul.appendChild(li);
+        });
+      }
+
+      function renderCard(cardRoot, period) {
+        const data = PRICING_PLANS[currentPlan][period === 'month' ? 'monthly' : 'annual'];
+        cardRoot.querySelector('[data-field="name"]').textContent = data.cardTitle;
+        cardRoot.querySelector('[data-field="price"]').textContent = data.price;
+        cardRoot.querySelector('[data-field="suffix"]').textContent = data.suffix;
+        const badge = cardRoot.querySelector('[data-field="badge"]');
+        if (data.badge) {
+          badge.textContent = data.badge;
+          badge.hidden = false;
+        } else {
+          badge.textContent = '';
+          badge.hidden = true;
+        }
+        cardRoot.querySelector('[data-field="desc"]').textContent = data.desc;
+        fillFeatures(cardRoot.querySelector('[data-field="features"]'), data.features);
+        cardRoot.querySelector('[data-field="ctaText"]').textContent = data.cta;
+      }
+
+      function renderBothCards() {
+        const monthCard = stackEl.querySelector('.pricing-stack-card--month');
+        const yearCard = stackEl.querySelector('.pricing-stack-card--year');
+        if (monthCard) renderCard(monthCard, 'month');
+        if (yearCard) renderCard(yearCard, 'year');
+      }
+
+      function setBilling(mode) {
+        const next = mode === 'year' ? 'year' : 'month';
+        if (stackEl.dataset.billing === next) return;
+        stackEl.classList.add('is-swapping-billing');
+        stackEl.dataset.billing = next;
+        billingButtons.forEach((btn) => {
+          const on = btn.getAttribute('data-billing-toggle') === next;
+          btn.classList.toggle('is-active', on);
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        window.setTimeout(() => stackEl.classList.remove('is-swapping-billing'), 520);
+      }
+
+      function setPlan(planKey) {
+        if (currentPlan === planKey) return;
+        currentPlan = planKey;
+        stackEl.classList.add('pricing-stack--plan-switch');
+        renderBothCards();
+        planButtons.forEach((btn) => {
+          const on = btn.getAttribute('data-plan') === planKey;
+          btn.classList.toggle('is-active', on);
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        window.setTimeout(() => stackEl.classList.remove('pricing-stack--plan-switch'), 420);
+      }
+
+      billingButtons.forEach((btn) => {
+        btn.addEventListener('click', () => setBilling(btn.getAttribute('data-billing-toggle')));
+      });
+
+      planButtons.forEach((btn) => {
+        btn.addEventListener('click', () => setPlan(btn.getAttribute('data-plan')));
+      });
+
+      const monthCard = stackEl.querySelector('.pricing-stack-card--month');
+      const yearCard = stackEl.querySelector('.pricing-stack-card--year');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const DRAG_MAX = 130;
+      const COMMIT_PX = 68;
+      const FLICK_V = 0.42;
+
+      function getBillingMode() {
+        return stackEl.dataset.billing === 'year' ? 'year' : 'month';
+      }
+
+      function backCardBaseX() {
+        return window.matchMedia('(max-width: 900px)').matches ? -72 : -108;
+      }
+
+      function clearInlineStackTransforms() {
+        [monthCard, yearCard].forEach((el) => {
+          if (!el) return;
+          el.style.transform = '';
+          el.style.opacity = '';
+          el.style.filter = '';
+        });
+      }
+
+      function applyStackDrag(dxClient) {
+        if (reduceMotion || !monthCard || !yearCard) return;
+        const dx = Math.max(-DRAG_MAX, Math.min(DRAG_MAX, dxClient));
+        const pull = Math.min(1, Math.abs(dx) / DRAG_MAX);
+        const BACK = backCardBaseX();
+        if (getBillingMode() === 'month') {
+          const pullL = Math.min(0, dx);
+          const pullR = Math.max(0, dx);
+          const frontX = pullL * 0.92 + pullR * 0.55;
+          const sf = 1 - pull * 0.042;
+          monthCard.style.transform = `translateX(${frontX}px) scale(${sf})`;
+          monthCard.style.filter = pull > 0.22 ? 'blur(0.55px)' : 'none';
+          const backX = BACK + Math.abs(dx) * 0.52;
+          yearCard.style.transform = `translateX(${backX}px) scale(0.9)`;
+          yearCard.style.opacity = String(Math.min(0.98, 0.78 + pull * 0.2));
+          yearCard.style.filter = pull > 0.18 ? 'blur(0px)' : 'blur(1px)';
+        } else {
+          const pullR = Math.max(0, dx);
+          const pullL = Math.min(0, dx);
+          const frontX = pullR * 0.92 + pullL * 0.55;
+          const sf = 1 - pull * 0.042;
+          yearCard.style.transform = `translateX(${frontX}px) scale(${sf})`;
+          yearCard.style.filter = pull > 0.22 ? 'blur(0.55px)' : 'none';
+          const backX = BACK + Math.abs(dx) * 0.52;
+          monthCard.style.transform = `translateX(${backX}px) scale(0.9)`;
+          monthCard.style.opacity = String(Math.min(0.98, 0.78 + pull * 0.2));
+          monthCard.style.filter = pull > 0.18 ? 'blur(0px)' : 'blur(1px)';
+        }
+      }
+
+      let stackDragging = false;
+      let stackStartX = 0;
+      let stackLastX = 0;
+      let stackLastT = 0;
+      let stackVelX = 0;
+
+      stackEl.addEventListener('pointerdown', (e) => {
+        if (window.matchMedia('(max-width: 900px)').matches) return;
+        if (e.target.closest('a, button')) return;
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        stackDragging = true;
+        stackStartX = e.clientX;
+        stackLastX = e.clientX;
+        stackLastT = performance.now();
+        stackVelX = 0;
+        stackEl.classList.add('is-dragging');
+        try {
+          stackEl.setPointerCapture(e.pointerId);
+        } catch (_) {}
+      });
+
+      stackEl.addEventListener('pointermove', (e) => {
+        if (!stackDragging) return;
+        const now = performance.now();
+        const dt = Math.max(5, now - stackLastT);
+        stackVelX = (e.clientX - stackLastX) / dt;
+        stackLastX = e.clientX;
+        stackLastT = now;
+        applyStackDrag(e.clientX - stackStartX);
+      });
+
+      function endStackDrag() {
+        if (!stackDragging) return;
+        stackDragging = false;
+        stackEl.classList.remove('is-dragging');
+        const dx = stackLastX - stackStartX;
+        const swipeCommit = Math.abs(dx) > COMMIT_PX;
+        const flickCommit = Math.abs(stackVelX) > FLICK_V && Math.abs(dx) > 20;
+        if (swipeCommit || flickCommit) {
+          setBilling(getBillingMode() === 'month' ? 'year' : 'month');
+        }
+        requestAnimationFrame(() => clearInlineStackTransforms());
+      }
+
+      stackEl.addEventListener('pointerup', (e) => {
+        if (!stackDragging) return;
+        endStackDrag();
+        try {
+          stackEl.releasePointerCapture(e.pointerId);
+        } catch (_) {}
+      });
+
+      stackEl.addEventListener('pointercancel', () => {
+        if (stackDragging) endStackDrag();
+      });
+
+      stackEl.addEventListener('lostpointercapture', () => {
+        if (stackDragging) {
+          stackDragging = false;
+          stackEl.classList.remove('is-dragging');
+          requestAnimationFrame(() => clearInlineStackTransforms());
+        }
+      });
+
+      renderBothCards();
+
+      const pricingRevealEls = document.querySelectorAll('.pricing-section .about-fade-up');
+      if (pricingRevealEls.length) {
+        const pObs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -5% 0px' }
+        );
+        pricingRevealEls.forEach((el) => pObs.observe(el));
+      }
+    })();
+
     // 1. Navbar scroll effect — adds shadow on scroll
     const navbar = document.getElementById('navbar');
 
@@ -2721,6 +5450,22 @@
       
       // Fallback de segurança para garantir que apareça (caso o evento não dispare)
       setTimeout(showVideo, 3000);
+    }
+
+    // Banner CTA: iframe fade-in (mesmo padrão do hero)
+    const bannerCtaIframe = document.querySelector('.banner-cta-video-wrap iframe');
+    if (bannerCtaIframe) {
+      const showBannerVideo = () => {
+        setTimeout(() => {
+          bannerCtaIframe.classList.add('is-loaded');
+        }, 400);
+      };
+      if (bannerCtaIframe.complete || bannerCtaIframe.readyState === 'complete') {
+        showBannerVideo();
+      } else {
+        bannerCtaIframe.addEventListener('load', showBannerVideo);
+      }
+      setTimeout(showBannerVideo, 3500);
     }
 
     window.addEventListener('scroll', () => {
@@ -2852,6 +5597,56 @@
       dorChartObserver.observe(dorChartCard);
     }
 
+    // --- Funcionalidades: tabs + fundo + progresso mobile ---
+    (function() {
+      const tabBtns = document.querySelectorAll('.features-tab-btn');
+      const panels = document.querySelectorAll('.features-panel');
+      const bgImages = document.querySelectorAll('.features-bg-img');
+      const progressBar = document.getElementById('featuresTabsProgress');
+      if (!tabBtns.length || !panels.length) return;
+
+      tabBtns.forEach((btn, index) => {
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+          bgImages.forEach(img => img.classList.remove('active'));
+
+          btn.classList.add('active');
+          tabBtns.forEach((b, i) => b.setAttribute('aria-selected', i === index ? 'true' : 'false'));
+
+          const targetPanelId = btn.getAttribute('data-target');
+          const targetPanel = document.getElementById(targetPanelId);
+          if (targetPanel) targetPanel.classList.add('active');
+
+          const targetBgId = btn.getAttribute('data-bg');
+          const targetBg = document.getElementById(targetBgId);
+          if (targetBg) targetBg.classList.add('active');
+
+          if (progressBar) {
+            const percent = ((index + 1) / tabBtns.length) * 100;
+            progressBar.style.width = `${percent}%`;
+          }
+        });
+      });
+
+      if (progressBar && tabBtns.length) {
+        progressBar.style.width = `${(1 / tabBtns.length) * 100}%`;
+      }
+    })();
+
+    // --- Funcionalidades: scroll reveal ---
+    const featFadeEls = document.querySelectorAll('.feat-fade-up');
+    const featObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.12 });
+    featFadeEls.forEach(el => featObserver.observe(el));
+
     // --- Steps Section: Interactive Slider Logic ---
     (function() {
       let stepsCurrent = 0;
@@ -2863,8 +5658,18 @@
       const stepsBigNum = document.getElementById('stepsBigNum');
       const stepsPrev = document.getElementById('stepsPrev');
       const stepsNext = document.getElementById('stepsNext');
+      const stepsProgressFill = document.getElementById('stepsProgressFill');
+      const stepsProgressBar = document.getElementById('stepsProgressBar');
 
       if (!stepsNavItems.length) return;
+
+      function updateStepsProgress() {
+        if (!stepsProgressFill || !stepsProgressBar) return;
+        const pct = ((stepsCurrent + 1) / stepsTotal) * 100;
+        stepsProgressFill.style.width = pct + '%';
+        stepsProgressBar.setAttribute('aria-valuenow', String(stepsCurrent + 1));
+        stepsProgressBar.setAttribute('aria-valuetext', `Passo ${stepsCurrent + 1} de ${stepsTotal}`);
+      }
 
       function goToStep(index) {
         if (index === stepsCurrent) return;
@@ -2895,6 +5700,8 @@
         stepsDots.forEach(d => d.classList.remove('active'));
         stepsDots[stepsCurrent].classList.add('active');
 
+        updateStepsProgress();
+
         // Scroll active nav item into view on mobile
         stepsNavItems[stepsCurrent].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
@@ -2922,6 +5729,8 @@
           goToStep(parseInt(dot.dataset.stepDot));
         });
       });
+
+      updateStepsProgress();
     })();
 
     // 5. Clean Parallax Effect

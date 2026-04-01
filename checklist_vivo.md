@@ -72,6 +72,48 @@
   - [x] Inserir seção no HTML acima da seção "Solução" e abaixo de "Passo a Passo".
   - [x] Testar aspecto de "continuidade" visual com seções adjacentes.
   - [x] Atualizar worklog.md com registro da implementação.
-- [ ] Implementar Seção de Depoimentos.
+- [x] **Seção "Funcionalidades" (abaixo de Solução)**
+  - [x] Planejar no checklist: layout tipo ponto7 Serviços (tabs + painel esq/dir), tema claro DS.
+  - [x] Inserir HTML após `#solution`: filtros (pills), painéis com título (h1 na coluna esquerda), subtítulo, CTA à esquerda; 2 cards à direita (h3, texto, CTA).
+  - [x] Estilizar com tokens do `index.html` / `@assets/design_system.html` (azul primário, cards brancos, overlay claro sobre BG Unsplash).
+  - [x] JS: troca de tab → painel ativo + imagem de fundo + barra de progresso mobile.
+  - [x] Scroll reveal (`feat-fade-up`) + responsivo (tabs scroll horizontal).
+  - [x] Refinar padronização da coluna esquerda: largura fixa visual + recuo interno uniforme em todas as abas.
+  - [x] Refatorar interação para palco fixo de 2 colunas, trocando apenas conteúdo interno por JS.
+  - [x] Replicar a mecânica da seção `servicos` de `ponto7.site/index.html` no `index.html` atual (tabs + painel ativo + fundo ativo).
+  - [x] Manter as abas estáticas ao clicar, removendo a rolagem automática horizontal.
+  - [x] Ajustar quebras de linha dos títulos: `Leitura inteligente` na 1ª linha e `Cofre de certificados` em linha única.
+  - [x] Atualizar `worklog.md` e marcar itens concluídos neste checklist.
+- [x] **Implementar Seção de Depoimentos (abaixo de Funcionalidades)**
+  - [x] Criar estrutura da seção com label, h1 e subtítulo.
+  - [x] Criar layout de 3 colunas com cards de depoimentos.
+  - [x] Implementar efeito de carrossel vertical em loop (coluna 1 descendo, coluna 2 subindo, coluna 3 descendo).
+  - [x] Aplicar fade de entrada/saída nos limites superior/inferior de cada coluna.
+  - [x] Garantir consistência visual com o design system (`@assets/design_system.html`) e responsividade.
+  - [x] Atualizar `worklog.md` e concluir checklist da seção.
+- [x] **Implementar Seção Banner + CTA (abaixo de Depoimentos)**
+  - [x] Inserir HTML: vídeo YouTube de fundo (`V_2mmgzp274`), overlay, card glass com label, h1, subtítulo e duas CTAs.
+  - [x] Estilizar com tokens do design system (vidro, botão primário azul, secundário outline claro).
+  - [x] JS: fade-in do iframe após load (mesmo padrão do hero).
+  - [x] Ajustar timing da animação de entrada do subtítulo e CTAs para ritmo mais lento.
+  - [x] Atualizar `worklog.md` e marcar itens neste checklist.
+- [x] **Seção Valores / Planos (abaixo de Banner + CTA)**
+  - [x] Planejar no checklist: layout 2 colunas (esq: label, título, lista de planos; dir: toggle mês/ano + stack de cards).
+  - [x] CSS apenas com tokens de `index.html` / `@assets/design_system.html` (amarelo accent, texto, fontes, sombras, easing).
+  - [x] Reutilizar padrão de reveal `.about-fade-up` + `IntersectionObserver`.
+  - [x] Lista de planos clicável com estado ativo, hover e ícones; card com badge, lista, CTA estilo pill amarelo (mesmos tokens do hero social-proof).
+  - [x] Toggle mês/ano com animação de stack (z-index, scale, translate, opacity, blur leve).
+  - [x] Swipe horizontal no stack + clique no toggle; transição ao trocar de plano.
+  - [x] `prefers-reduced-motion`: reduzir blur/deslocamento do stack.
+  - [x] Inserir HTML após `#banner-cta`; atualizar `worklog.md` e marcar checklist.
+  - [x] Refino visual: tema claro DS (`color-bg-base`, primário, bento-card); card frontal opaco, traseiro em vidro; CTA `btn-primary`.
+  - [x] Ajustar largura do stack para não invadir a coluna esquerda + swipe em qualquer direção para alternar cards.
+- [x] **Arquivo `copy.md` (fonte de copy do site)**
+  - [x] Atualizar este checklist como plano antes de executar.
+  - [x] Definir formato por seção (IDs estáveis, campos: label, h1, p, cta, etc.).
+  - [x] Extrair copy atual do `index.html` (HTML estático + objeto `PRICING_PLANS` no JS).
+  - [x] Criar `copy.md` na raiz do repositório com instruções de uso e fluxo “editar MD → avisar → sincronizar `index.html`”.
+  - [x] Atualizar `worklog.md`.
+  - [x] Sincronizar `index.html` + `PRICING_PLANS` com revisão do `copy.md` (planos Explorador / Candidato / Estrategista).
 - [ ] Implementar Seção de FAQ (usando o novo Accordion dLocal).
 - [ ] Implementar Footer.
